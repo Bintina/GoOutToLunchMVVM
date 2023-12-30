@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.bintina.goouttolunchmvvm"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.bintina.goouttolunchmvvm"

@@ -1,4 +1,6 @@
 package com.bintina.goouttolunchmvvm.list
 
-class ListViewModel {
+import androidx.lifecycle.ViewModel
+
+class ListViewModel: ViewModel() {
 }

@@ -1,3 +1,158 @@
-<resources>
-    <string name="app_name">Go Out To Lunch MVVM</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Preference Titles -->
+    <string name="Messages" translatable="false">Messages</string>
+    <string name="sync_header" translatable="false">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title" translatable="false">Sync email periodically</string>
+    <string name="attachment_title" translatable="false">Download incoming attachments</string>
+    <string name="attachment_summary_on" translatable="false">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
+    <string name="title_activity_settings" translatable="false">SettingsActivity</string>
+    <string name="user_avatar" translatable="false">User avatar</string>
+    <string name="delete_account">Delete account</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_account_delete">Are you sure you want to delete your account? All data will be lost forever.</string>
+    <string name="dialog_account_title">Delete my account</string>
+    <string name="OK" translatable="false">OK</string>
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="permission_required_toast">Permission required</string>
+    <string name="permission_rationale_location">This app needs location permission to function properly</string>
+
+    <!-- links -->
+    <string name="login_and_menu_background" translatable="false">https://images.pexels.com/photos/3184188/pexels-photo-3184188.jpeg?cs=srgb&amp;dl=pexels-fauxels-3184188.jpg&amp;fm=jpg</string>
+    <string name="nav_drawer_background" translatable="false">https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?cs=srgb&amp;dl=pexels-fauxels-3184183.jpg&amp;fm=jpg</string>
+    <string name="restaurantPlaceHolder" translatable="false">https://images.pexels.com/photos/3184192/pexels-photo-3184192.jpeg?cs=srgb&amp;dl=pexels-fauxels-3184192.jpg&amp;fm=jpg"</string>
+    <string name="restaurant_photo" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&amp;photo_reference=%s&amp;key=%s;</string>
+    <string name="gif_eating_alone" translatable="false">https://media.giphy.com/media/p1NqIBmDgA2P8Kwz8E/giphy.gif</string>
+    <string name="we_need_your_location_gif" translatable="false" tools:ignore="Typos">https://media.giphy.com/media/Vh8zf1nIfQRRXksAm1/giphy.gif</string>
+    <string name="fetching_list_gif" translatable="false">https://media.giphy.com/media/0KiLnOipDAnfk5Jgsf/giphy.gif</string>
+    <string name="no_results_gif" translatable="false">https://media.giphy.com/media/MdeHHwPzLpzbEkzl70/giphy.gif</string>
+    <string name="user_does_not_have_picture" translatable="false">https://images.pexels.com/photos/3179911/pexels-photo-3179911.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1260&amp;h=750&amp;dpr=2</string>
+    <string name="fake_avatar" translatable="false">https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png</string>
+
+    <!--  Keys -->
+    <string name="default_web_client_id_google" translatable="false">407532419271-qimb705lnldgpbks9mb0bhoveskv8po6.apps.googleusercontent.com</string>
+    <string name="facebook_app_id" translatable="false">275016551500747</string>
+    <string name="facebook_application_id" translatable="false">fb275016551500747</string>
+
+    <!--  SharedPreferences -->
+    <string name="preferences_main_file" translatable="false">preferencesMainFile</string>
+    <string name="shared_pref_current_User_ID" translatable="false">currentUserID</string>
+    <string name="shared_pref_current_User_Username" translatable="false">currentUserUsername</string>
+    <string name="shared_pref_restaurant_ID" translatable="false">bookedRestaurantID</string>
+    <string name="shared_pref_restaurant_Name" translatable="false">bookedRestaurantName</string>
+    <string name="shared_pref_restaurant_Address" translatable="false">bookedRestaurantAddress</string>
+    <string name="shared_pref_notifications" translatable="false">notificationPref</string>
+
+    <!-- location -->
+    <string name="office_location" translatable="false">48.86501071160738,2.3467211059168793</string>
+    <string name="office_name">Office</string>
+
+    <!-- notification -->
+    <string name="notification_title">It is lunch time!</string>
+    <string name="notification_text">Time to make it to %s, at %s. \n %s </string>
+    <string name="channel_name" translatable="false">Lunch</string>
+    <string name="channel_description" translatable="false">Lunch time reminder</string>
+    <string name="notification_line_1">Time to go to %s at %s</string>
+    <string name="notification_line_2">You are going with%s</string>
+    <string name="user_joining_append" translatable="false">%s, %s</string>
+    <string name="final_notification" translatable="false">"%s.\n%s"</string>
+    <string name="default_notification_channel_id" translatable="false">com.google.firebase.messaging.default_notification_channel_id</string>
+    <string name="notification_you_are_going_with">You are going with%s</string>
+    <string name="notification_you_are_eating_alone">You are eating alone today</string>
+
+    <string name="app_name">Go4Lunch</string>
+    <string name="slogan">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="app_logo" translatable="false">App logo</string>
+    <string name="co_workers_having_lunch" translatable="false">Co-workers having lunch</string>
+    <string name="facebook_sign_in">Sign in with Facebook</string>
+    <string name="Google_sign_in">Sign in with Google</string>
+    <string name="Twitter_sign_in">Sign in with Twitter</string>
+    <string name="You_are_connected">You are connected</string>
+    <string name="Disconnect">Disconnect</string>
+    <string name="error_not_connected">Please log in first</string>
+    <string name="error_authentication_canceled">Login aborted</string>
+    <string name="error_no_internet">Network unavailable</string>
+    <string name="error_unknown_error">An unknown error occurred</string>
+    <string name="connection_succeed">Login successful!</string>
+    <string name="button_login_text_logged">View your profile</string>
+    <string name="button_login_text_not_logged" translatable="false">Log In</string>
+    <string name="welcome_back">Welcome back %1$s</string>
+    <string name="map_view">Map View</string>
+    <string name="list_view">List View</string>
+    <string name="workmates">Workmates</string>
+    <string name="i_m_hungry">I\'m Hungry</string>
+    <string name="available_workmates">Available workmates</string>
+    <string name="your_lunch">YOUR LUNCH</string>
+    <string name="settings">SETTINGS</string>
+    <string name="logout" translatable="false">LOGOUT</string>
+    <string name="Open_drawer_menu">Open drawer menu</string>
+    <string name="Close_drawer_menu">Close drawer menu</string>
+    <string name="search_title" translatable="false">Search title</string>
+    <string name="search_query_hint">Search for a restaurant</string>
+    <string name="activate">Activate</string>
+    <string name="background_image" translatable="false">Background image</string>
+    <string name="less_than_1km">Less than 1km</string>
+    <string name="high_rating" translatable="false">High rating</string>
+    <string name="my_location_button" translatable="false">My location button</string>
+    <string name="person_icon" translatable="false">Person Icon</string>
+    <string name="picture_of_the_restaurant" translatable="false">Picture of the restaurant</string>
+    <string name="number_of_guests" translatable="false">(%i)</string>
+    <string name="distance_in_meters" translatable="false">%i m</string>
+    <string name="distance_in_meters_d" translatable="false">%d m</string>
+    <string name="hungry_bear" translatable="false">Hungry Bear</string>
+    <string name="button_to_select_a_restaurant" translatable="false">Button to select a restaurant</string>
+    <string name="button_to_call_the_restaurant" translatable="false">Button to call the restaurant</string>
+    <string name="button_to_add_the_restaurant_to_the_favourite" translatable="false">Button to add the restaurant to the favourite</string>
+    <string name="button_to_visit_the_website_of_the_restaurant" translatable="false">Button to visit the webSite of the restaurant</string>
+    <string name="call">CALL</string>
+    <string name="like">LIKE</string>
+    <string name="website">WEBSITE</string>
+    <string name="gif_showing_if_you_are_eating_alone" translatable="false">GIF showing if you are eating alone</string>
+    <string name="no_restaurant_in_your_area">No results in your area, where are you?</string>
+    <string name="open_now">Open now</string>
+    <string name="closed">Closed</string>
+    <string name="restaurant_icon" translatable="false">Restaurant Icon</string>
+    <string name="location_missing">We need your location, return to the MapView</string>
+    <string name="message_activity_result_not_ok">Something went wrong with the search</string>
+    <string name="message_activity_result_ok">Selected restaurant: %s</string>
+    <string name="location_to_string" translatable="false">%s,%s</string>
+    <string name="remove_query" translatable="false" />
+    <string name="style_parsing_failed" translatable="false">Style parsing failed</string>
+    <string name="style_parsing_error" translatable="false">Style_parsing_error</string>
+    <string name="get_info_selected_restaurant">%s added to the map</string>
+    <string name="get_details">More info</string>
+    <string name="restaurant_location" translatable="false">Restaurant location</string>
+    <string name="dial_phone_number" translatable="false">"tel:%s"</string>
+    <string name="restaurant_not_in_list">Selected restaurant not in the list</string>
+    <string name="fetching_near_by_restaurant_list">Fetching near by restaurant list</string>
+    <string name="workmates_avatar" translatable="false">Workmates avatar</string>
+    <string name="workmate_has_not_selected_a_restaurant">%s has not decided yet.</string>
+    <string name="workmate_has_selected_a_restaurant">%s is eating at %s</string>
+    <string name="nothing_to_see_here">Nothing to see here</string>
+    <string name="is_joining">%s is joining!</string>
+    <string name="update_booking">Do you want to update your booking?</string>
+    <string name="update_booking_title">You already have a booking today</string>
+    <string name="updated_booking">Your booking has been updated successfully</string>
+    <string name="deleted_booking">Your booking has been deleted successfully</string>
+    <string name="delete_booking">Do you want to delete your booking?</string>
+    <string name="delete_booking_title">You already have a booking at that restaurant</string>
+    <string name="unlike">UNLIKE</string>
+    <string name="no_booking">You have not taken a decision yet</string>
+    <string name="yes_booking">You have selected %s for lunch today</string>
+    <string name="your_favourite_restaurants">Your favourite restaurants</string>
+    <string name="msg_token_fmt" translatable="false">%s</string>
+    <string name="created_booking">Your booking has been created</string>
+    <!-- Preference Titles -->
+    <string name="messages_header" translatable="false">Messages</string>
+    <string name="no_notification">You will receive lunch notification</string>
+    <string name="yes_notification">You will not receive notifications</string>
+    <string name="Notification" translatable="false">Notification</string>
 </resources>

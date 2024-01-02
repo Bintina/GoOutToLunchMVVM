@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.bintina.goouttolunchmvvm"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.bintina.goouttolunchmvvm"
@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -44,4 +47,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+//Fragments support
+    //Java language implementation
+    implementation("androidx.fragment:fragment:1.6.2")
+    //Kotlin
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    //Gson dependancy
+    implementation("com.google.code.gson:gson:2.9.1")
 }

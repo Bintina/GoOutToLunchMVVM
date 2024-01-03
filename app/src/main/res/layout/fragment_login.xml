@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/login_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/go4lunch4"
-    android:paddingTop="50dp"
-    android:padding="20dp"
+    android:layout_gravity="center"
     android:orientation="vertical"
-    >
+    android:background="@drawable/go4lunch4">
+
+        <LinearLayout
+            android:id="@+id/login_overlay_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/home_overlay"
+            android:orientation="vertical"
+            android:paddingTop = "420dp"
+            >
 
 
+            <Button
+                android:id="@+id/facebook_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:background="@color/design_default_color_secondary_variant"
+                android:text="@{viewModel.facebookLoginBtn}"
+                app:layout_constraintBottom_toTopOf="@id/google_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <Button
-        android:id="@+id/facebook_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{viewModel.facebookLoginBtn}"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/google_login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/design_default_color_secondary_variant"
-        />
-    <Button
-        android:id="@+id/google_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/facebook_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/cardview_dark_background"
-        />
+            <Button
+                android:id="@+id/google_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:background="@color/cardview_dark_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/facebook_login" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
+
+
+</FrameLayout>

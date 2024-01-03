@@ -21,4 +21,5 @@
     <color name="black_overlay">#66000000</color>
     <color name="gold">#deb20b</color>
     <color name="whiteSmoke">#eaeff0</color>
+    <color name="home_overlay">#40ffffff</color>
 </resources>

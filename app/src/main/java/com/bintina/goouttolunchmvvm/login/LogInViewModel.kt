@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 
 //
 // @HiltViewModel

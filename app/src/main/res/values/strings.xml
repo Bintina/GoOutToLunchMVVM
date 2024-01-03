@@ -1,4 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+
     <!-- Preference Titles -->
     <string name="Messages" translatable="false">Messages</string>
     <string name="sync_header" translatable="false">Sync</string>
@@ -68,7 +70,7 @@
     <string name="notification_you_are_going_with">You are going with%s</string>
     <string name="notification_you_are_eating_alone">You are eating alone today</string>
 
-    <string name="app_name">Go4Lunch</string>
+    <string name="app_name">Go Out To Lunch MVVM</string>
     <string name="slogan">Find a nice restaurant and invite your co-workers for lunch!</string>
     <string name="app_logo" translatable="false">App logo</string>
     <string name="co_workers_having_lunch" translatable="false">Co-workers having lunch</string>

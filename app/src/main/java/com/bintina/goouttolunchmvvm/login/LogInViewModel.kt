@@ -13,13 +13,13 @@ import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 class LogInViewModel(name: String) : ViewModel() {
     var myName = name
 
-
     val logInFragment = LogInFragment()
     val KEY_LOGIN_FRAGMENT = "KEY_LOGIN_FRAGMENT"
-val image: Int = R.drawable.go4lunch4
+    val mainContainerInt = R.id.main_fragment_container
+
 
     init{
-        Log.d("ViewModelProvider","My youtube channel name is $myName")
+        Log.d("ViewModelProviderLog","My youtube channel name is $myName")
     }
 
    /* private val _facebookLoginBtn = MutableLiveData<String>()

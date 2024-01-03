@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -56,4 +60,31 @@ dependencies {
 
     //Gson dependancy
     implementation("com.google.code.gson:gson:2.9.1")
+    //ViewModel dependency
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    //Hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.44")
+   kapt("com.google.dagger:hilt-android-compiler:2.44")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+
+kotlin{
+    android{
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+}
+
+// Ensure the correct configuration for kapt tasks
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

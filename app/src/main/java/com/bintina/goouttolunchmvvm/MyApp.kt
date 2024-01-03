@@ -8,8 +8,6 @@ class MyApp: Application() {
 
     companion object{
 
-        //KEYS......................................................................................
-        val KEY_LOGIN_FRAGMENT = "KEY_LOGIN_FRAGMENT"
 
     }
 }

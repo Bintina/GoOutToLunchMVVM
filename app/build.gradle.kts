@@ -5,6 +5,9 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -37,8 +40,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -61,12 +65,43 @@ dependencies {
     //Gson dependancy
     implementation("com.google.code.gson:gson:2.9.1")
     //ViewModel dependency
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
     //Hilt dependencies
     implementation("com.google.dagger:hilt-android:2.44")
-   kapt("com.google.dagger:hilt-android-compiler:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
+
+    // Google Identity Services SDK (only required for Auth with Google)
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // Firebase UI
+    // Used in FirebaseUIActivity.
+    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+
+    // Facebook Android SDK (only required for Facebook Login)
+    // Used in FacebookLoginActivity.
+    implementation("com.facebook.android:facebook-login:13.2.0")
+    implementation("androidx.browser:browser:1.5.0")
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
 }
 
 // Allow references to generated code
@@ -74,8 +109,8 @@ kapt {
     correctErrorTypes = true
 }
 
-kotlin{
-    android{
+kotlin {
+    android {
         kotlinOptions {
             jvmTarget = "1.8"
         }

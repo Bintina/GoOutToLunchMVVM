@@ -6,11 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
 //
-// @HiltViewModel
-class LogInViewModel(name: String) : ViewModel() {
+@HiltViewModel
+class LogInViewModel @Inject constructor(name: String) : ViewModel() {
     var myName = name
 
     val logInFragment = LogInFragment()

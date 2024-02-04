@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "479173260988",
+    "project_id": "go-out-to-lunch-mvvm",
+    "storage_bucket": "go-out-to-lunch-mvvm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479173260988:android:acc5eddeac20d2609c42b9",
+        "android_client_info": {
+          "package_name": "com.bintina.goouttolunchmvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479173260988-opr5ivfkticbj30hbf27eahhula9tta7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3W1LLL_eLh3c1LDJCEAtsRiOXbVbS8hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479173260988-opr5ivfkticbj30hbf27eahhula9tta7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

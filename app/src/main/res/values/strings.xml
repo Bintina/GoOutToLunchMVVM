@@ -42,9 +42,9 @@
     <!--  Keys -->
     <string name="default_web_client_id_google" translatable="false">407532419271-qimb705lnldgpbks9mb0bhoveskv8po6.apps.googleusercontent.com</string>
     //Fb necessary strings
-    <string name="facebook_app_id">320855947588684</string>
-    <string name="fb_login_protocol_scheme">fb320855947588684</string>
-    <string name="facebook_client_token">dfd5ca83f664ec256cef64b84c623825</string>
+    <string name="facebook_app_id" translatable="false">320855947588684</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb320855947588684</string>
+    <string name="facebook_client_token" translatable="false">dfd5ca83f664ec256cef64b84c623825</string>
 
     <!--  SharedPreferences -->
     <string name="preferences_main_file" translatable="false">preferencesMainFile</string>

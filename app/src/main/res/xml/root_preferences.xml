@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Notification">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_message_24"
+            app:key="@string/Notification"
+            app:summaryOff="@string/yes_notification"
+            app:summaryOn="@string/no_notification"
+            app:title="@string/Notification" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

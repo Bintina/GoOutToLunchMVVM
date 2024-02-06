@@ -1,4 +1,8 @@
 package com.bintina.goouttolunchmvvm.list
 
-class ListViewModel {
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+
+@HiltViewModel
+class ListViewModel: ViewModel() {
 }

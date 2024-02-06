@@ -1,4 +1,8 @@
 package com.bintina.goouttolunchmvvm.coworkers
 
-class CoworkersViewModel {
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+
+@HiltViewModel
+class CoworkersViewModel: ViewModel() {
 }

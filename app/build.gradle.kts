@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import org.gradle.internal.classpath.Instrumented
+
 
 plugins {
     id("com.android.application")
@@ -43,6 +44,17 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+    testOptions {
+        unitTests {
+            // Disable StrictMode for instrumented tests
+            all {
+                Instrumented.systemProperty(
+                    "org.junit.runners.JUnitCore.defaultResourceName",
+                    "JUnit3"
+                )
+            }
+        }
     }
 }
 

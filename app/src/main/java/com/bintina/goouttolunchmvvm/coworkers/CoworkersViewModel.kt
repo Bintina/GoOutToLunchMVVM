@@ -2,7 +2,8 @@ package com.bintina.goouttolunchmvvm.coworkers
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+/*
 
 @HiltViewModel
-class CoworkersViewModel: ViewModel() {
-}
+class CoworkersViewModel@Inject constructor(name: String) : ViewModel()*/

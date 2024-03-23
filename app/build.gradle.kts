@@ -77,18 +77,18 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
     //Gson dependancy
-    implementation("com.google.code.gson:gson:2.9.1")
+    implementation("com.google.code.gson:gson:2.10.1")
     //ViewModel dependency
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
     //Hilt dependencies
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
 
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
 
 
     // TODO: Add the dependencies for Firebase products you want to use
@@ -103,7 +103,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     // Firebase UI
     // Used in FirebaseUIActivity.
@@ -111,8 +111,8 @@ dependencies {
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation("com.facebook.android:facebook-login:13.2.0")
-    implementation("androidx.browser:browser:1.5.0")
+    implementation("com.facebook.android:facebook-login:16.3.0")
+    implementation("androidx.browser:browser:1.8.0")
 
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test:rules:1.5.0")
@@ -124,17 +124,17 @@ dependencies {
     // Used in FacebookLoginActivity.
     implementation("com.facebook.android:facebook-login:16.3.0")
     implementation ("com.facebook.android:facebook-android-sdk:16.3.0")
-    implementation("androidx.browser:browser:1.7.0")
+    implementation("androidx.browser:browser:1.8.0")
 
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
 
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
 
     // Also add the dependency for the Google Play services library and specify its version
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
 

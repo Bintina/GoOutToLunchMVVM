@@ -9,13 +9,12 @@ package com.bintina.goouttolunchmvvm.login.view//
     import androidx.lifecycle.ViewModelProvider
     import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
     import com.bintina.goouttolunchmvvm.login.viewmodel.LogInViewModel
-    import dagger.hilt.android.AndroidEntryPoint
-    import javax.inject.Inject
 
-    @AndroidEntryPoint
+
+
     class LogInFragment : Fragment() {
         lateinit var binding: FragmentLoginBinding
-        @Inject lateinit var viewModel: LogInViewModel
+        lateinit var viewModel: LogInViewModel
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 /*
 
-class LoginViewModelFactory(private var name: String): ViewModelProvider.Factory {
+class LoginViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if(modelClass.isAssignableFrom(LogInViewModel::class.java)){
             return LogInViewModel(name) as T

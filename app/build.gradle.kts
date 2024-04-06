@@ -5,7 +5,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
 
@@ -82,9 +81,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 
-    //Hilt dependencies
-    implementation("com.google.dagger:hilt-android:2.48")
-
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Import the Firebase BoM
@@ -118,7 +114,6 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
 
-   kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.

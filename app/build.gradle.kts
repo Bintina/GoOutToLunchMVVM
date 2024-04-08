@@ -77,9 +77,10 @@ dependencies {
 
     //Gson dependancy
     implementation("com.google.code.gson:gson:2.10.1")
-    //ViewModel dependency
+    //ViewModel dependencies
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("android.arch.lifecycle:extensions:1.1.1")
 
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 

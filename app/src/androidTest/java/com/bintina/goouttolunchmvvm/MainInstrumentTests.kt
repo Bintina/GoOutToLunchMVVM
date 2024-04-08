@@ -27,11 +27,17 @@ class MainInstrumentTests {
     }
 
     @Test
-    fun login_buttons_function_as_expected(){
-        assertNotNull(withId(R.id.facebook_login))
-        onView(withId(R.id.facebook_login)).perform(click())
+    fun facebook_button_function_as_expected(){
+        assertNotNull(withId(R.id.facebook_btn))
+        onView(withId(R.id.facebook_btn)).perform(click())
 
+    }
+
+    @Test
+    fun google_button_functions_as_expected(){
         assertNotNull(withId(R.id.google_login))
         onView(withId(R.id.google_login)).perform(click())
+
     }
+
 }

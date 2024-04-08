@@ -133,6 +133,9 @@ dependencies {
 
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
 
+    //Room
+    implementation("android.arch.persistence.room:runtime:1.1.1")
+    kapt("android.arch.persistence.room:compiler:1.1.1")
 }
 
 // Allow references to generated code

@@ -6,7 +6,7 @@ data class Restaurant(
     @PrimaryKey(autoGenerate = true)
     val restaurantId: Int,
     val name: String,
-    val locationUrl: String,
+    val location: Location,
     val photoUrl: String?,
     val numberOfInterestedUsers: Int?,
     val visited: Boolean

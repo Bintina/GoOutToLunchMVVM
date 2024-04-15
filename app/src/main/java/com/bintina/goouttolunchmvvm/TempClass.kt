@@ -28,4 +28,16 @@ class TempClass {
     </style>
 </resources>
      */
+
+/*    testOptions {
+        unitTests {
+            // Disable StrictMode for instrumented tests
+            all {
+                Instrumented.systemProperty(
+                    "org.junit.runners.JUnitCore.defaultResourceName",
+                    "JUnit3"
+                )
+            }
+        }
+    }*/
 }

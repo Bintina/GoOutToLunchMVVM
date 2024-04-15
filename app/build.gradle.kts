@@ -119,6 +119,14 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+    //RecyclerView dependency
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    //Glide Image dependancy
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.11.0")
+
 }
 
 // Allow references to generated code

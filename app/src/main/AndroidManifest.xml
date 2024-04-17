@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".coworkers.CoworkersActivity"
+            android:name=".coworkers.view.CoworkersActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAP" />

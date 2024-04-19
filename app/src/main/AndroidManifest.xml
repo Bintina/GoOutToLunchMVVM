@@ -19,7 +19,7 @@
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token" tools:replace="android:value"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".login.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".coworkers.CoworkersActivity"
+            android:name=".coworkers.view.CoworkersActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAP" />

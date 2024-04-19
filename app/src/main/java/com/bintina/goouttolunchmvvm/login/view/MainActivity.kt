@@ -1,9 +1,9 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.login.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.ViewModelProvider
+import com.bintina.goouttolunchmvvm.R
+
 //import com.bintina.goouttolunchmvvm.login.viewmodel.LogInViewModel
 //import com.bintina.goouttolunchmvvm.login.viewmodel.LoginViewModelFactory
 

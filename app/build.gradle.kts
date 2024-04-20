@@ -34,40 +34,44 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         viewBinding = true
-        buildConfig = true
-    }
-    testOptions {
-        unitTests {
-            // Disable StrictMode for instrumented tests
-            all {
-                Instrumented.systemProperty(
-                    "org.junit.runners.JUnitCore.defaultResourceName",
-                    "JUnit3"
-                )
-            }
-        }
     }
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.android.support:support-annotations:28.0.0")
     implementation("androidx.annotation:annotation:1.7.1")
+
+    //Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    // Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
+    //Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    androidTestImplementation("androidx.room:room-testing:2.6.1")
+
+    //ViewModel dependencies
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.7.0")
 
     //Fragments support
     //Java language implementation
@@ -77,43 +81,30 @@ dependencies {
 
     //Gson dependancy
     implementation("com.google.code.gson:gson:2.10.1")
-    //ViewModel dependency
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-
-
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
-
-
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
-
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
-
-    // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
-
     // Firebase UI
     // Used in FirebaseUIActivity.
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+    // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
 
-    // Facebook Android SDK (only required for Facebook Login)
-    // Used in FacebookLoginActivity.
-    implementation("com.facebook.android:facebook-login:16.3.0")
-    implementation("androidx.browser:browser:1.8.0")
-
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-
+    // Google Identity Services SDK (only required for Auth with Google)
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
@@ -121,21 +112,18 @@ dependencies {
     implementation ("com.facebook.android:facebook-android-sdk:16.3.0")
     implementation("androidx.browser:browser:1.8.0")
 
-    // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    // Kotlin components
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-auth")
+    //RecyclerView dependency
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
-    // Also add the dependency for the Google Play services library and specify its version
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
-
-    //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
-
-    //Room
-    implementation("android.arch.persistence.room:runtime:1.1.1")
-    kapt("android.arch.persistence.room:compiler:1.1.1")
+    //Glide Image dependancy
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.11.0")
 }
 
 // Allow references to generated code
@@ -146,7 +134,7 @@ kapt {
 kotlin {
     android {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = "1.8"
         }
     }
 }
@@ -154,6 +142,6 @@ kotlin {
 // Ensure the correct configuration for kapt tasks
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
 }

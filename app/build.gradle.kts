@@ -34,8 +34,10 @@ android {
         }
     }
     compileOptions {
+
         sourceCompatibility = JavaVersion.VERSION_18
         targetCompatibility = JavaVersion.VERSION_18
+
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -43,6 +45,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {

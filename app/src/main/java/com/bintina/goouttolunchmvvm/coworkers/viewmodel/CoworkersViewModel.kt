@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.coworkers
+package com.bintina.goouttolunchmvvm.coworkers.viewmodel
 
 import androidx.lifecycle.ViewModel
 

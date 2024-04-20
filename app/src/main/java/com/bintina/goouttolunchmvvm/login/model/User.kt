@@ -1,14 +1,18 @@
 package com.bintina.goouttolunchmvvm.login.model
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 
-@Entity
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+
+@Entity()
 data class User(
     @PrimaryKey(autoGenerate = true)
-    val userId: Int,
-    val name: String,
-    val loginState: Int,
-    val profilePicture: String,
-    var restaurant: String?
+    val userId: Long = 1,
+    val name: String? = null,
+    val loginState: Int = 0,
+    val profilePicture: String? = null,
+    var restaurant: Restaurant? = null
+
 )

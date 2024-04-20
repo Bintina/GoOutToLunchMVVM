@@ -5,6 +5,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bintina.goouttolunchmvvm.login.view.MainActivity
 import junit.framework.TestCase.assertNotNull
 import org.junit.Rule
 import org.junit.Test

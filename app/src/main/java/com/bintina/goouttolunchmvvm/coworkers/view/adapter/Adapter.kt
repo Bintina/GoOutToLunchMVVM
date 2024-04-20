@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.MyApp
 import com.bintina.goouttolunchmvvm.R
+import com.bintina.goouttolunchmvvm.coworkers.view.adapter.Adapter.ItemViewHolder
 import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
 import com.bintina.goouttolunchmvvm.login.model.User
 import com.bumptech.glide.Glide
+
 
 class Adapter(): RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
@@ -18,8 +20,10 @@ class Adapter(): RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
         fun bind(coworker: User){
             val userId = coworker.userId
-            val userImageUrl = coworker.profilePicture
+            
 
+          //Load User picture
+          val userImageUrl = coworker.profilePicture
             Glide.with(view.ivWorkmateAvatar.context)
                 .load(userImageUrl)
                 .placeholder(R.drawable.ic_baseline_person_outline_24)
@@ -30,20 +34,22 @@ class Adapter(): RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val coworkerName = coworker.name.toString()
 
 
-            //Set text
-            val coworkerText = "$coworkerName hasn't decided yet"
-            view.tvWorkmateRestaurantChoice.text = coworkerText
-
-
+            val coworkerRestaurantChoiceContent = "${coworker.name} is going to Restaurant Choice"
+            view.tvWorkmateRestaurantChoice.text = coworkerRestaurantChoiceContent
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ItemCoworkersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        Log.d("RestaurantAdapterLog", "Restaurant adapter onCreateViewHolder called")
-        Log.d("RestaurantAdapterLog","result size = ${coworkerList.size}")
-        return ItemViewHolder(binding, parent.context)
+        val binding =
+            ItemCoworkersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        Log.d("CoworkerAdapterLog", "Coworker adapter onCreateViewHolder called")
+        Log.d("CoworkerAdapterLog", "result size = ${coworkerList.size}")
+        return ItemViewHolder(
+            binding,
+            parent.context
+        )
     }
 
     override fun getItemCount(): Int = coworkerList.size

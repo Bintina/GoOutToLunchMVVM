@@ -20,6 +20,7 @@ class Adapter() : RecyclerView.Adapter<com.bintina.goouttolunchmvvm.restaurants.
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
+
         RecyclerView.ViewHolder(view.root) {
         /**
          * Binds the restaurant data to the view holder.

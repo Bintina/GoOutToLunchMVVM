@@ -159,4 +159,9 @@
     <string name="no_notification">You will receive lunch notification</string>
     <string name="yes_notification">You will not receive notifications</string>
     <string name="Notification" translatable="false">Notification</string>
+    <string name="search_btn">Search</string>
+    <string name="coworker_btn_title">Coworkers</string>
+    <string name="restaurant_map_btn_title">Restaurant Map</string>
+    <string name="restaurant_list_btn_title">Restaurant List</string>
+    <string name="fetching_coworker_list">Finding your coworkers</string>
 </resources>

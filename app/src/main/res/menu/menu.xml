@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/menu_search_btn"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/search_btn"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/coworker_btn"
+        android:title="@string/coworker_btn_title"
+        app:showAsAction="never"/>
+    <item android:id="@+id/restaurant_map_btn"
+        android:title="@string/restaurant_map_btn_title"
+        app:showAsAction="never"/>
+    <item android:id="@+id/restaurant_list_btn"
+        android:title="@string/restaurant_list_btn_title"
+        app:showAsAction="never"/>
+</menu>

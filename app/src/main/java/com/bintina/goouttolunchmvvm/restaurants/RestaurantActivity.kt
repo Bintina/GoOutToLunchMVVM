@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.coworkers.view
+package com.bintina.goouttolunchmvvm.restaurants
 
 import android.os.Bundle
 import android.util.Log
@@ -9,25 +9,28 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bintina.goouttolunchmvvm.R
+import com.bintina.goouttolunchmvvm.coworkers.view.CoworkerListFragment
 import com.bintina.goouttolunchmvvm.databinding.ActivityCoworkersBinding
+import com.bintina.goouttolunchmvvm.databinding.ActivityRestaurantsBinding
 import com.bintina.goouttolunchmvvm.openCoworkerActivity
 import com.bintina.goouttolunchmvvm.openRestaurantListActivity
 import com.bintina.goouttolunchmvvm.openRestaurantMapActivity
 import com.bintina.goouttolunchmvvm.openSearchActivity
+import com.bintina.goouttolunchmvvm.restaurants.list.RestaurantListFragment
 
+class RestaurantActivity(): AppCompatActivity() {
 
-class CoworkersActivity: AppCompatActivity() {
-    lateinit var binding: ActivityCoworkersBinding
+    lateinit var binding: ActivityRestaurantsBinding
     companion object {
         // Key for the notification fragment
-        const val KEY_COWORKER_FRAGMENT = "KEY_COWORKER_FRAGMENT"
+        const val KEY_RESTAURANT_FRAGMENT = "KEY_RESTAURANT_FRAGMENT"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCoworkersBinding.inflate(layoutInflater)
+        binding = ActivityRestaurantsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("CoworkerActivityLog", "CoworkerActivity Inflated")
+        Log.d("RestaurantActivityLog", "RestaurantActivity Inflated")
 
         setSupportActionBar(binding.myToolbar)
         //Customize the toolbar color
@@ -42,18 +45,19 @@ class CoworkersActivity: AppCompatActivity() {
         //Set up click listener for search button
         val searchBtn = findViewById<View>(R.id.menu_search_btn)
         searchBtn.setOnClickListener {
-            openSearchActivity()}
+            openSearchActivity()
+        }
 
-        // Set up the CoworkerFragment
-        val coworkerFragment = CoworkerListFragment()
-        //coworkerFragment.listener = this
+        // Set up the RestaurantListFragment
+        val restaurantFragment = RestaurantListFragment()
+        //restaurantFragment.listener = this
 
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
         transaction.add(
-            R.id.coworker_fragment_container,
-            coworkerFragment,
-            KEY_COWORKER_FRAGMENT
+            R.id.restaurant_fragment_container,
+            restaurantFragment,
+            KEY_RESTAURANT_FRAGMENT
         )
         transaction.commit()
     }
@@ -85,5 +89,4 @@ class CoworkersActivity: AppCompatActivity() {
 
         }
     }
-
 }

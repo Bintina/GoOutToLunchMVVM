@@ -14,5 +14,4 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE userId = :userId")
     fun getUser(userId: Long): LiveData<User>
-    
 }

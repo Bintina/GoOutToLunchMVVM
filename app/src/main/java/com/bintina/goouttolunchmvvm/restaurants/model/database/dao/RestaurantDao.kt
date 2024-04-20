@@ -1,8 +1,8 @@
 package com.bintina.goouttolunchmvvm.restaurants.model.database.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Query
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 
 @Dao

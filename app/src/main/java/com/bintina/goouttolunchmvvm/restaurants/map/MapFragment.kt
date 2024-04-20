@@ -1,3 +1,7 @@
 package com.bintina.goouttolunchmvvm.restaurants.map
 
-class MapActivity
+import androidx.fragment.app.Fragment
+
+class MapFragment(): Fragment(){
+
+}

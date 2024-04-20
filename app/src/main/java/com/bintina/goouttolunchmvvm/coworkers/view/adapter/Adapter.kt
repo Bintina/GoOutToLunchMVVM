@@ -12,11 +12,13 @@ import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
 import com.bintina.goouttolunchmvvm.login.model.User
 import com.bumptech.glide.Glide
 
-class Adapter(): RecyclerView.Adapter<ItemViewHolder>() {
+class Adapter() : RecyclerView.Adapter<ItemViewHolder>() {
 
     val coworkerList = MyApp.coworkerList
-    class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context): RecyclerView.ViewHolder(view.root){
-        fun bind(coworker: User){
+
+    class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context) :
+        RecyclerView.ViewHolder(view.root) {
+        fun bind(coworker: User) {
 
             //Load User picture
             Glide.with(view.ivWorkmateAvatar.context)
@@ -32,10 +34,11 @@ class Adapter(): RecyclerView.Adapter<ItemViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ItemCoworkersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemCoworkersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         Log.d("CoworkerAdapterLog", "Coworker adapter onCreateViewHolder called")
-        Log.d("CoworkerAdapterLog","result size = ${coworkerList.size}")
+        Log.d("CoworkerAdapterLog", "result size = ${coworkerList.size}")
         return ItemViewHolder(
             binding,
             parent.context

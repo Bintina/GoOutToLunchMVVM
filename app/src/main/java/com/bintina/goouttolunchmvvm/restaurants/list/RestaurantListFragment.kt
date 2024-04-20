@@ -1,3 +1,7 @@
 package com.bintina.goouttolunchmvvm.restaurants.list
 
-class ListActivity
+import androidx.fragment.app.Fragment
+
+class RestaurantListFragment(): Fragment(){
+
+}

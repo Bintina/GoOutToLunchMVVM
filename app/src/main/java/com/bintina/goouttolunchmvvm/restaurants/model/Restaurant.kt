@@ -1,12 +1,16 @@
 package com.bintina.goouttolunchmvvm.restaurants.model
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 
 @Entity
 data class Restaurant(
     @PrimaryKey(autoGenerate = true)
     val restaurantId: Int,
     val name: String,
-    val locationUrl: String
+    val location: Location,
+    val photoUrl: String?,
+    val numberOfInterestedUsers: Int?,
+    val visited: Boolean
 )

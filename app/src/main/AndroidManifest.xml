@@ -19,7 +19,7 @@
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token" tools:replace="android:value"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".login.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".map.MapActivity"
+            android:name=".coworkers.view.CoworkersActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAP" />
@@ -52,19 +52,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".list.ListActivity"
+            android:name=".restaurants.RestaurantActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAP" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".coworkers.CoworkersActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAP" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

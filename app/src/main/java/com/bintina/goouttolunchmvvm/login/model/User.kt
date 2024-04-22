@@ -12,7 +12,7 @@ data class User(
     val userId: Long = 1,
     val name: String? = null,
     val loginState: Int = 0,
-    val profilePicture: String? = null,
-    var restaurant: Restaurant? = null
+    val profilePicture: String? = null//,
+    //var restaurant: Restaurant? = null
 
 )

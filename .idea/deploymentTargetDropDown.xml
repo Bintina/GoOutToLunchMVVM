@@ -5,6 +5,9 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="insertUser()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

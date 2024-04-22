@@ -4,16 +4,18 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
+import com.bintina.goouttolunchmvvm.login.model.User
 import com.bintina.goouttolunchmvvm.login.model.database.SaveUserDatabase
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class UserDaoInstrumentedTest {
-    private var database: SaveUserDatabase.SaveUserDatabase? = null
+    private var database: SaveUserDatabase? = null
 
     @Rule
     @JvmField
@@ -24,7 +26,7 @@ class UserDaoInstrumentedTest {
     fun initDb() {
         this.database = Room.inMemoryDatabaseBuilder(
             getApplicationContext(),
-            SaveUserDatabase.SaveUserDatabase::class.java
+            SaveUserDatabase::class.java
         )
             .allowMainThreadQueries()
             .build()
@@ -32,7 +34,26 @@ class UserDaoInstrumentedTest {
 
     @After
     @Throws(Exception::class)
-    fun closeDb(){
+    fun closeDb() {
         database?.close()
+    }
+
+    //Data Set for Test
+
+    private val USER_ID: Long = 1
+    private val USER_DEMO =
+        User(USER_ID,
+            "Philippe",
+            1,
+            "https://picsum.photos/seed/picsum/200/200")
+    @Test
+    @Throws(InterruptedException::class)
+    fun insertUser() {
+        //Before: Adding a new user
+        this.database?.userDao()?.createUser(USER_DEMO)
+        //Test
+        val user = LiveDataTestUtil.getValue(this.database?.userDao()?.getUser(USER_ID))
+        assertTrue(user.name == USER_DEMO.name && user.userId == USER_DEMO.userId)
+
     }
 }

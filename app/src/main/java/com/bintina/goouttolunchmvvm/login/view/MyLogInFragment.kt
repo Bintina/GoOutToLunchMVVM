@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.login.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.utils.MyApp
 
 
 class MyLogInFragment : Fragment() {
@@ -25,7 +27,7 @@ class MyLogInFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
 
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel = Injection.provideUserViewModel(MyApp.myContext)
         initializeViews()
 
         //viewModel.setUserName("Facebook Login")

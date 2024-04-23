@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.bintina.goouttolunchmvvm.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.login.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
@@ -14,19 +14,14 @@ import java.util.concurrent.Executor
 
 open class MainActivity : AppCompatActivity() {
 
-    private lateinit var userDao: UserDao
-    private lateinit var executor: Executor
     private lateinit var viewModel: UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        val viewModelFactory = Injection.provideViewModelFactory(MyApp.myContext)
-        viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
+        configureViewModel()
 
-        userDao = viewModel.vmUserDao
-        executor = viewModel.vmExecutor
 
         Log.d("MainActivityLog", "Activity Main created")
 
@@ -43,6 +38,8 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun configureViewModel() {
+
+        viewModel = Injection.provideUserViewModel(MyApp.myContext)
 
     }
 

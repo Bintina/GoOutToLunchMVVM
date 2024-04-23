@@ -1,10 +1,10 @@
 package com.bintina.goouttolunchmvvm.login.viewmodel.injection
 
 import android.content.Context
-import com.bintina.goouttolunchmvvm.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.login.model.database.SaveUserDatabase
-import com.bintina.goouttolunchmvvm.login.model.database.UserDao
 import com.bintina.goouttolunchmvvm.login.model.database.repositories.UserDataRepository
+import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.login.viewmodel.ViewModelFactory
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -26,5 +26,14 @@ object Injection {
         val userDao = SaveUserDatabase.getInstance(context).userDao()
         val application = MyApp()
         return ViewModelFactory(application, dataSourceUser, userDao, executor)
+    }
+
+    fun provideUserViewModel(context: Context): UserViewModel {
+        val dataSourceUser = provideUserDataSource(context)
+        val executor = provideExecutor()
+        val userDao = SaveUserDatabase.getInstance(context).userDao()
+        val application = MyApp() // Assuming MyApp extends Application
+        val factory = ViewModelFactory(application, dataSourceUser, userDao, executor)
+        return factory.create(UserViewModel::class.java)
     }
 }

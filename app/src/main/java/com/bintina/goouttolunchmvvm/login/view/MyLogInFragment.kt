@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
-import com.bintina.goouttolunchmvvm.login.viewmodel.LogInViewModel
 import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
 
 
-class LogInFragment : Fragment() {
+class MyLogInFragment : Fragment() {
 
     lateinit var viewModel: UserViewModel
 
@@ -24,6 +23,7 @@ class LogInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
 
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         initializeViews()

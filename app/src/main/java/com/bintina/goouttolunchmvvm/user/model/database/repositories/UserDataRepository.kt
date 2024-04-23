@@ -1,8 +1,8 @@
-package com.bintina.goouttolunchmvvm.login.model.database.repositories
+package com.bintina.goouttolunchmvvm.user.model.database.repositories
 
 import androidx.lifecycle.LiveData
-import com.bintina.goouttolunchmvvm.login.model.User
-import com.bintina.goouttolunchmvvm.login.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
 class UserDataRepository(private val userDao: UserDao) {
 

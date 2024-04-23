@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.login
+package com.bintina.goouttolunchmvvm.user.login
 
 interface OnLogInOnClickListener {
 

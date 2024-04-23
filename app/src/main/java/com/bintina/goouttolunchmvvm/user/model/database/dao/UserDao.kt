@@ -1,11 +1,11 @@
-package com.bintina.goouttolunchmvvm.login.model.database.dao
+package com.bintina.goouttolunchmvvm.user.model.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.bintina.goouttolunchmvvm.login.model.User
+import com.bintina.goouttolunchmvvm.user.model.User
 
 @Dao
 interface UserDao {

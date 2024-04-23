@@ -2,7 +2,7 @@ package com.bintina.goouttolunchmvvm.utils
 
 import android.app.Application
 import android.content.Context
-import com.bintina.goouttolunchmvvm.login.model.User
+import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 
 

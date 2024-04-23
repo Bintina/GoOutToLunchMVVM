@@ -2,7 +2,6 @@ package com.bintina.goouttolunchmvvm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.bintina.goouttolunchmvvm.login.model.User
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 

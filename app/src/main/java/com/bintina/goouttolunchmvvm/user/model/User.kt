@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.login.model
+package com.bintina.goouttolunchmvvm.user.model
 
 
 import androidx.room.Entity

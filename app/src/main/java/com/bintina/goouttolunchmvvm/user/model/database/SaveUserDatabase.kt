@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.login.model.database
+package com.bintina.goouttolunchmvvm.user.model.database
 
 
 import android.content.ContentValues
@@ -8,8 +8,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.bintina.goouttolunchmvvm.login.model.User
-import com.bintina.goouttolunchmvvm.login.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
 @Database(entities = [User::class], version = 1, exportSchema = false)
 abstract class SaveUserDatabase : RoomDatabase() {

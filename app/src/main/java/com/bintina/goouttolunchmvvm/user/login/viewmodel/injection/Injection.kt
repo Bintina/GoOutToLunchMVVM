@@ -1,11 +1,11 @@
-package com.bintina.goouttolunchmvvm.login.viewmodel.injection
+package com.bintina.goouttolunchmvvm.user.login.viewmodel.injection
 
 import android.content.Context
 import com.bintina.goouttolunchmvvm.utils.MyApp
-import com.bintina.goouttolunchmvvm.login.model.database.SaveUserDatabase
-import com.bintina.goouttolunchmvvm.login.model.database.repositories.UserDataRepository
-import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.login.viewmodel.ViewModelFactory
+import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
+import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.ViewModelFactory
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -20,7 +20,7 @@ object Injection {
         return Executors.newSingleThreadExecutor()
     }
 
-    fun provideViewModelFactory(context: Context): ViewModelFactory{
+    fun provideViewModelFactory(context: Context): ViewModelFactory {
         val dataSourceUser = provideUserDataSource(context)
         val executor = provideExecutor()
         val userDao = SaveUserDatabase.getInstance(context).userDao()

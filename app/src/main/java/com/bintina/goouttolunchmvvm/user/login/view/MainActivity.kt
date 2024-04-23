@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.login.view
+package com.bintina.goouttolunchmvvm.user.login.view
 
 import android.os.Bundle
 import android.util.Log
@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.login.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.login.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import java.util.concurrent.Executor
 
 

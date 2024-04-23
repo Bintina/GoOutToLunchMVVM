@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.login.view//
+package com.bintina.goouttolunchmvvm.user.login.view//
 
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
-import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.login.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
 
 

@@ -1,20 +1,15 @@
-package com.bintina.goouttolunchmvvm.login.viewmodel
+package com.bintina.goouttolunchmvvm.user.login.viewmodel
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.login.model.User
-import com.bintina.goouttolunchmvvm.login.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.login.model.database.repositories.UserDataRepository
-import com.bintina.goouttolunchmvvm.login.view.MyLogInFragment
-import com.bintina.goouttolunchmvvm.login.viewmodel.injection.Injection
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import java.util.concurrent.Executor
+import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
+import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
 
 
 class UserViewModel(

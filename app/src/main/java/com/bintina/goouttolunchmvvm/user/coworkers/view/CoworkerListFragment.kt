@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.coworkers.view
+package com.bintina.goouttolunchmvvm.user.coworkers.view
 
 import android.os.Bundle
 import android.util.Log
@@ -6,10 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bintina.goouttolunchmvvm.coworkers.view.adapter.Adapter
+import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.databinding.FragmentCoworkersListBinding
+import com.bintina.goouttolunchmvvm.user.coworkers.viewmodel.CoworkersViewModel
+import com.bintina.goouttolunchmvvm.user.coworkers.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.utils.MyApp
 
 class CoworkerListFragment() : Fragment() {
+
+    lateinit var viewModel: CoworkersViewModel
     lateinit var adapter: Adapter
 
     private var _binding: FragmentCoworkersListBinding? = null
@@ -19,9 +25,10 @@ class CoworkerListFragment() : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCoworkersListBinding.inflate(inflater, container, false)
 
+        viewModel = Injection.provideCoworkerViewModel(MyApp.myContext)
         initializeViews()
 
         Log.d("CoworkerFragmentLog", "CoworkerListFragment inflated")

@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bintina.goouttolunchmvvm.login.model.User
-import com.bintina.goouttolunchmvvm.login.model.database.SaveUserDatabase
+import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before

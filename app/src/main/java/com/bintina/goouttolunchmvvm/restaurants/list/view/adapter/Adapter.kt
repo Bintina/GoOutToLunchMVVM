@@ -5,11 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.bintina.goouttolunchmvvm.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
-import com.bintina.goouttolunchmvvm.databinding.RestaurantItemViewBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bumptech.glide.Glide

@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants
+package com.bintina.goouttolunchmvvm.restaurants.view
 
 import android.os.Bundle
 import android.util.Log
@@ -9,14 +9,12 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.coworkers.view.CoworkerListFragment
-import com.bintina.goouttolunchmvvm.databinding.ActivityCoworkersBinding
 import com.bintina.goouttolunchmvvm.databinding.ActivityRestaurantsBinding
-import com.bintina.goouttolunchmvvm.openCoworkerActivity
-import com.bintina.goouttolunchmvvm.openRestaurantListActivity
-import com.bintina.goouttolunchmvvm.openRestaurantMapActivity
-import com.bintina.goouttolunchmvvm.openSearchActivity
-import com.bintina.goouttolunchmvvm.restaurants.list.RestaurantListFragment
+import com.bintina.goouttolunchmvvm.utils.openCoworkerActivity
+import com.bintina.goouttolunchmvvm.utils.openRestaurantListActivity
+import com.bintina.goouttolunchmvvm.utils.openRestaurantMapActivity
+import com.bintina.goouttolunchmvvm.utils.openSearchActivity
+import com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment
 
 class RestaurantActivity(): AppCompatActivity() {
 

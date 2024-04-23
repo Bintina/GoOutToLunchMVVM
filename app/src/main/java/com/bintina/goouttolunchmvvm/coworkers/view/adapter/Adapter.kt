@@ -5,9 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bintina.goouttolunchmvvm.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.coworkers.view.adapter.Adapter.ItemViewHolder
 import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
 import com.bintina.goouttolunchmvvm.login.model.User
 import com.bumptech.glide.Glide

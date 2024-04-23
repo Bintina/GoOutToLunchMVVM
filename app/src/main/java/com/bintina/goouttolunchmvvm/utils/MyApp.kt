@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.utils
 
 import android.app.Application
 import android.content.Context

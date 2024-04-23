@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.map
+package com.bintina.goouttolunchmvvm.restaurants.map.view
 
 import androidx.fragment.app.Fragment
 

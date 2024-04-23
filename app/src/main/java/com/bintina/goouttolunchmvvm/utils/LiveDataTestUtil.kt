@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants
+package com.bintina.goouttolunchmvvm.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

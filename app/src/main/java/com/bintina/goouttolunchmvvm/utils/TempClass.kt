@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.utils
 
 class TempClass {
     /* Strings

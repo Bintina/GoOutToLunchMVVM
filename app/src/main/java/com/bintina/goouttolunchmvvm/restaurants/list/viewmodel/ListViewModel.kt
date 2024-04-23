@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.list
+package com.bintina.goouttolunchmvvm.restaurants.list.viewmodel
 
 import androidx.lifecycle.ViewModel
 /*

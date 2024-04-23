@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityCoworkersBinding
-import com.bintina.goouttolunchmvvm.openCoworkerActivity
-import com.bintina.goouttolunchmvvm.openRestaurantListActivity
-import com.bintina.goouttolunchmvvm.openRestaurantMapActivity
-import com.bintina.goouttolunchmvvm.openSearchActivity
+import com.bintina.goouttolunchmvvm.utils.openCoworkerActivity
+import com.bintina.goouttolunchmvvm.utils.openRestaurantListActivity
+import com.bintina.goouttolunchmvvm.utils.openRestaurantMapActivity
+import com.bintina.goouttolunchmvvm.utils.openSearchActivity
 
 
 class CoworkersActivity: AppCompatActivity() {
@@ -42,7 +42,8 @@ class CoworkersActivity: AppCompatActivity() {
         //Set up click listener for search button
         val searchBtn = findViewById<View>(R.id.menu_search_btn)
         searchBtn.setOnClickListener {
-            openSearchActivity()}
+            openSearchActivity()
+        }
 
         // Set up the CoworkerFragment
         val coworkerFragment = CoworkerListFragment()

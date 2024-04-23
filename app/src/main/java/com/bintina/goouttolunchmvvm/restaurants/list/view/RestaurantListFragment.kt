@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.list
+package com.bintina.goouttolunchmvvm.restaurants.list.view
 
 import android.os.Bundle
 import android.util.Log

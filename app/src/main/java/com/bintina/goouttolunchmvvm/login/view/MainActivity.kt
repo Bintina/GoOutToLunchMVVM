@@ -1,27 +1,32 @@
 package com.bintina.goouttolunchmvvm.login.view
 
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bintina.goouttolunchmvvm.MyApp
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.login.viewmodel.LogInViewModel
-import com.bintina.goouttolunchmvvm.login.viewmodel.LoginViewModelFactory
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import com.bintina.goouttolunchmvvm.login.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.login.viewmodel.injection.Injection
+import java.util.concurrent.Executor
 
 
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
+
+    private lateinit var userDao: UserDao
+    private lateinit var executor: Executor
+    private lateinit var viewModel: UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var viewModelFactory = LoginViewModelFactory()
-        var viewModel = ViewModelProvider(this, viewModelFactory).get(LogInViewModel::class.java)
+
+        val viewModelFactory = Injection.provideViewModelFactory(MyApp.myContext)
+        viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
+
+        userDao = viewModel.vmUserDao
+        executor = viewModel.vmExecutor
 
         Log.d("MainActivityLog", "Activity Main created")
 
@@ -29,11 +34,15 @@ class MainActivity : AppCompatActivity() {
         val transaction = fragmentManager.beginTransaction()
         transaction.add(
             viewModel.mainContainerInt,
-            viewModel.logInFragment,
+            viewModel.vmLogInFragment,
             viewModel.KEY_LOGIN_FRAGMENT
         )
+        Log.d("MainActLog", "viewModel value is ${viewModel.vmLogInFragment}")
         transaction.commit()
         Log.d("MainActivityLog", "Fragment committed")
+    }
+
+    private fun configureViewModel() {
 
     }
 

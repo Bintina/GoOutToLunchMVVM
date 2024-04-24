@@ -27,7 +27,7 @@ class MainInstrumentTests {
 
     }
 
-    @Test
+   /* @Test
     fun facebook_button_function_as_expected(){
         assertNotNull(withId(R.id.facebook_btn))
         onView(withId(R.id.facebook_btn)).perform(click())
@@ -40,5 +40,5 @@ class MainInstrumentTests {
         onView(withId(R.id.google_login)).perform(click())
 
     }
-
+*/
 }

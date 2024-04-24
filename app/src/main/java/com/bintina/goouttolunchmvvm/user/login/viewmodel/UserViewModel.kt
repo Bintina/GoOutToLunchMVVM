@@ -13,7 +13,6 @@ import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
 
 
 class UserViewModel(
-    application: Application,
     private val userDataSource: UserDataRepository,
     private val userDao: UserDao
 ) : ViewModel() {

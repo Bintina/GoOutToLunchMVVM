@@ -6,9 +6,9 @@ import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 
 
-class MyApp: Application() {
+class MyApp : Application() {
 
-    companion object{
+    companion object {
 
         // Application instance
         lateinit var instance: MyApp
@@ -21,9 +21,9 @@ class MyApp: Application() {
         var coworkerList = mutableListOf<User>()
     }
 
-    override fun onCreate(){
+    override fun onCreate() {
         super.onCreate()
         instance = this
-        myContext = this
+        myContext = applicationContext
     }
 }

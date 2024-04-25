@@ -21,13 +21,13 @@ object Injection {
         return Executors.newSingleThreadExecutor()
     }
 
-    fun provideViewModelFactory(context: Context): ViewModelFactory {
+/*    fun provideViewModelFactory(context: Context): ViewModelFactory {
         val dataSourceUser = provideUserDataSource(context)
         val executor = provideExecutor()
         val userDao = SaveUserDatabase.getInstance(context).userDao()
         val application = MyApp()
-        return ViewModelFactory(application, dataSourceUser, userDao, executor)
-    }
+        return ViewModelFactory(context, application, dataSourceUser, userDao)
+    }*/
 
     fun provideCoworkerViewModel(context: Context): CoworkersViewModel {
         val dataSourceUser = provideUserDataSource(context)

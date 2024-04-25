@@ -19,7 +19,7 @@ class ViewModelFactory (
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-                UserViewModel(application, userDataSource, userDao) as T
+                UserViewModel(application, userDataSource, userDao, executor) as T
             } else {
                 throw IllegalArgumentException("Unknown ViewModel class")
             }

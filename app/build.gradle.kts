@@ -7,6 +7,8 @@ plugins {
     kotlin("kapt")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    //Hilt
+    id("com.google.dagger.hilt.android")
 
 }
 
@@ -57,9 +59,11 @@ dependencies {
     implementation("androidx.annotation:annotation:1.7.1")
 
     //Testing
+    implementation("androidx.test:core-ktx:1.5.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
 
     // Navigation Component
@@ -71,6 +75,10 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
+    //mockito
+    testImplementation ("org.mockito:mockito-core:3.12.4")
+    androidTestImplementation("org.mockito:mockito-android:3.10.0")
+    testImplementation ("io.mockk:mockk:1.12.0")
 
     //ViewModel dependencies
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -104,11 +112,11 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
     // Also add the dependency for the Google Play services library and specify its version
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
@@ -128,6 +136,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     implementation("com.github.bumptech.glide:okhttp3-integration:4.11.0")
+
+    //Hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 }
 
 // Allow references to generated code

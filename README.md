@@ -5,6 +5,9 @@
 
  Home Screen 
  - xml
+ - ViewModel Imp
+ - ViewModel Testing
+ - Jetpack Navigation Imp
  - Facebook Sign in
  - Google sign in
    

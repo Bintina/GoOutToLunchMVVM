@@ -1,0 +1,113 @@
+package com.bintina.goouttolunchmvvm.utils
+
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.R
+import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
+import java.util.concurrent.Executor
+
+
+open class MainActivity : AppCompatActivity() {
+
+    private lateinit var appBarConfiguration : AppBarConfiguration
+    lateinit var binding: ActivityMainBinding
+    lateinit var navController: NavController
+    //private lateinit var viewModel: UserViewModel
+
+    companion object{
+        //KEYS
+        const val KEY_LOGIN_FRAGMENT = "KEY_LOGIN_FRAGMENT"
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+
+
+        val toolbar = binding.myToolbar
+        setSupportActionBar(toolbar)
+        //Customize the toolbar color
+        toolbar.setBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                com.google.android.material.R.color.design_default_color_secondary
+            )
+        )
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
+
+        val navController = host.navController
+
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        Log.d("MainActivityLog", "Fragment committed")
+    }
+
+    //Initialize the contents of the Activity's standard options menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    //Called when menu item is selected.
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.coworker_btn -> {
+                //openNotificationsActivity()
+                return true
+            }
+
+            R.id.restaurant_list_btn -> {
+                //openHelpActivity()
+                return true
+            }
+
+            R.id.restaurant_map_btn -> {
+                //openAboutActivity()
+                return true
+            }
+
+
+            else -> return super.onOptionsItemSelected(item)
+
+        }
+    }
+/*
+    private fun configureViewModel() {
+
+        viewModel = Injection.provideUserViewModel(MyApp.myContext)
+
+    }
+*/
+
+}
+//From onCreate
+        /*configureViewModel()
+
+
+        Log.d("MainActivityLog", "Activity Main created")
+
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.add(
+            viewModel.mainContainerInt,
+            viewModel.vmLogInFragment,
+            viewModel.KEY_LOGIN_FRAGMENT
+        )
+        Log.d("MainActLog", "viewModel value is ${viewModel.vmLogInFragment}")
+        transaction.commit()*/

@@ -26,7 +26,7 @@ class UserViewModel(
     private var currentUser: LiveData<User>? = null
     val vmLogInFragment = MyLogInFragment()
     val KEY_LOGIN_FRAGMENT = "KEY_USER_LOGIN_FRAGMENT"
-    val mainContainerInt = R.id.main_fragment_container
+    //val mainContainerInt = R.id.main_fragment_container
     val viewModel: ViewModel = this
 
 

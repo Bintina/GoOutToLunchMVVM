@@ -11,16 +11,22 @@
         android:name="com.bintina.goouttolunchmvvm.utils.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home">
-
-        <!-- TODO STEP 7.1 - Add action with transitions -->
+        <argument
+            android:name="myarg"
+            android:defaultValue="Android!" />
+        <!--<deepLink app:uri="www.example.com/{myarg}" />-->
+        <!-- TODO add safeArgs -->
         <action
             android:id="@+id/go_to_coworkers"
-            app:destination="@id/coworkers_dest"
-        />
+            app:destination="@id/coworkers_dest" />
         <action
-            android:id="@+id/go_to_restaurants"
-            app:destination="@id/restaurants_dest"
-            />
+            android:id="@+id/go_to_restaurants_map"
+            app:destination="@id/restaurant_map_dest" />
+
+        <action
+            android:id="@+id/go_to_restaurants_list"
+            app:destination="@id/restaurant_list_dest" />
+
         <!--android:id="@+id/next_action"-->
         <!--app:destination="@+id/flow_step_one_dest"-->
         <!--app:enterAnim="@anim/slide_in_right"-->
@@ -29,16 +35,19 @@
         <!--app:popExitAnim="@anim/slide_out_right" -->
         <!-- TODO END STEP 7.1 -->
 
-    </fragment>    <fragment
+    </fragment>
+    <fragment
         android:id="@+id/coworkers_dest"
         android:name="com.bintina.goouttolunchmvvm.user.coworkers.view.CoworkerListFragment"
         android:label="Coworkers Fragment"
         tools:layout="@layout/fragment_coworkers_list">
 
-    <action
-        android:id="@+id/go_to_restaurants"
-        app:destination="@id/restaurants_dest"
-        />
+        <action
+            android:id="@+id/go_to_restaurants_map"
+            app:destination="@id/restaurant_map_dest" />
+        <action
+            android:id="@+id/go_to_restaurants_list"
+            app:destination="@id/restaurant_list_dest" />
         <!-- TODO STEP 7.1 - Add action with transitions -->
         <!--<action-->
         <!--android:id="@+id/next_action"-->
@@ -58,31 +67,51 @@
 
         <action
             android:id="@+id/go_to_coworkers"
-            app:destination="@id/coworkers_dest"
-            />
+            app:destination="@id/coworkers_dest" />
+
+        <action
+            android:id="@+id/go_to_restaurants_map"
+            app:destination="@id/restaurant_map_dest" />
+
         <!-- TODO STEP 7.1 - Add action with transitions -->
         <!--<action-->
         <!--android:id="@+id/next_action"-->
         <!--app:destination="@+id/flow_step_one_dest"-->
         <!--app:enterAnim="@anim/slide_in_right"-->
-        <!--app:exitAnim="@anim/slide_out_left"-->
+        <!--
+        app:exitAnim="@anim/slide_out_left"-->
         <!--app:popEnterAnim="@anim/slide_in_left"-->
         <!--app:popExitAnim="@anim/slide_out_right" />-->
         <!-- TODO END STEP 7.1 -->
-        <fragment
-            android:id= "@id/restaurant_list_dest"
-            android:name= "com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment"
-            android:label = "Restaurant List"
-            tools:layout= "@layout/fragment_restaurant_list">
 
-        </fragment>
-        <fragment
-            android:id= "@id/restaurant_map_dest"
-            android:name= "com.bintina.goouttolunchmvvm.restaurants.map.view.MapFragment"
-            android:label = "Restaurant Map"
-            tools:layout= "@layout/fragment_restaurant_map">
+    </fragment>
 
-        </fragment>
+    <fragment
+        android:id="@+id/restaurant_list_dest"
+        android:name="com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment"
+        android:label="Restaurant List"
+        tools:layout="@layout/fragment_restaurant_list">
+        <action
+            android:id="@+id/go_to_coworkers"
+            app:destination="@id/coworkers_dest" />
+        <action
+            android:id="@+id/go_to_restaurants_map"
+            app:destination="@id/restaurant_map_dest" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/restaurant_map_dest"
+        android:name="com.bintina.goouttolunchmvvm.restaurants.map.view.MapFragment"
+        android:label="Restaurant Map"
+        tools:layout="@layout/fragment_restaurant_map">
+        <action
+            android:id="@+id/go_to_coworkers"
+            app:destination="@id/coworkers_dest" />
+        <action
+            android:id="@+id/go_to_restaurants_list"
+            app:destination="@id/restaurant_list_dest" />
+
+
     </fragment>
 
 

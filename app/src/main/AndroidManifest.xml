@@ -19,7 +19,7 @@
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token" tools:replace="android:value"/>
 
         <activity
-            android:name=".user.login.view.MainActivity"
+            android:name=".utils.MainActivity"
             android:launchMode="standard"
             android:exported="true">
             <intent-filter>

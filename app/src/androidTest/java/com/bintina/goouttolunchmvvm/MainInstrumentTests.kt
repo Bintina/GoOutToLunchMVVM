@@ -1,11 +1,9 @@
 package com.bintina.goouttolunchmvvm
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bintina.goouttolunchmvvm.user.login.view.MainActivity
+import com.bintina.goouttolunchmvvm.utils.MainActivity
 import junit.framework.TestCase.assertNotNull
 import org.junit.Rule
 import org.junit.Test

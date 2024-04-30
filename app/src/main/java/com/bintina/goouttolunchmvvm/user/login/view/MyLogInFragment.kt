@@ -15,6 +15,7 @@ import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.login.viewmodel.ViewModelFactory
 import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import androidx.navigation.fragment.navArgs
 
 
 class MyLogInFragment : Fragment() {
@@ -22,6 +23,7 @@ class MyLogInFragment : Fragment() {
     lateinit var viewModel: UserViewModel
     //private lateinit var context: Context
 
+    private val safeArgs: MyLogInFragmentArgs by navArgs()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
@@ -36,11 +38,21 @@ class MyLogInFragment : Fragment() {
         return binding.root
 
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val safeArgs = MyLogInFragmentArgs by navArgs()
-        val argsUserName = safeArgs.userName
+        //val argsUserName = safeArgs.userName
+        var argsUserName = safeArgs.userName
+
+        Log.d("MyLoginFragLog","safe args userName value is $argsUserName")
+
+        // Create a new Bundle and set the new value
+        val newArgs = Bundle().apply {
+            putString("userName", "Belladona")
+        }
+        val newArgValue = safeArgs.userName
+        Log.d("MyLoginFragLog","new safe args userName value is $newArgValue")
         // Initialize viewModel here
         //context = ApplicationProvider.getApplicationContext()
         //val viewModelFactory = Injection.provideViewModelFactory(context)
@@ -52,6 +64,7 @@ class MyLogInFragment : Fragment() {
 
         Log.d("LoginFragLog", "LoginFragment inflated")
     }
+
     private fun initializeViews() {
         binding.facebookBtn.text = "Login with Facebook"
         binding.googleLogin.text = "Login with Google"

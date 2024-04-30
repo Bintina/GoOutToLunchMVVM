@@ -13,9 +13,9 @@
         tools:layout="@layout/fragment_login">
         <argument
             android:name="userName"
-            app:argType="String?"
-            android:defaultValue="Annabelle" />
-        <!--<deepLink app:uri="www.example.com/{myarg}" />-->
+        android:defaultValue="Annabelle" />
+        <!--app:argType="String"-->
+    <!--<deepLink app:uri="www.example.com/{myarg}" />-->
         <!-- TODO add safeArgs -->
         <action
             android:id="@+id/go_to_coworkers"

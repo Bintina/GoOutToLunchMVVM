@@ -18,8 +18,7 @@ import java.util.concurrent.Executor
 class UserViewModel(
     private val application: Application,
     private val userDataSource: UserDataRepository,
-    private val userDao: UserDao,
-    private val executor: Executor
+
 ) : AndroidViewModel(application) {
 
 

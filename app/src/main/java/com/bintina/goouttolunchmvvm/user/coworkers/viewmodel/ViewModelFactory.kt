@@ -12,14 +12,13 @@ class ViewModelFactory (
 
         val application: Application,
         private val userDataSource: UserDataRepository,
-        private val userDao: UserDao,
-        private val executor: Executor
+
     ) : ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-                UserViewModel(application, userDataSource, userDao, executor) as T
+                UserViewModel(application, userDataSource) as T
             } else {
                 throw IllegalArgumentException("Unknown ViewModel class")
             }

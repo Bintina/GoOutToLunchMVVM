@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.test.core.app.ApplicationProvider
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
@@ -19,7 +20,7 @@ import com.bintina.goouttolunchmvvm.utils.MyApp
 class MyLogInFragment : Fragment() {
 
     lateinit var viewModel: UserViewModel
-    private lateinit var context: Context
+    //private lateinit var context: Context
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -38,10 +39,12 @@ class MyLogInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val safeArgs = MyLogInFragmentArgs by navArgs()
+        val argsUserName = safeArgs.userName
         // Initialize viewModel here
-        context = ApplicationProvider.getApplicationContext()
-        val viewModelFactory = Injection.provideViewModelFactory(context)
-        viewModel = viewModelFactory.create(UserViewModel::class.java)
+        //context = ApplicationProvider.getApplicationContext()
+        //val viewModelFactory = Injection.provideViewModelFactory(context)
+        //viewModel = viewModelFactory.create(UserViewModel::class.java)
 
         //viewModel = Injection.provideUserViewModel(context)
 

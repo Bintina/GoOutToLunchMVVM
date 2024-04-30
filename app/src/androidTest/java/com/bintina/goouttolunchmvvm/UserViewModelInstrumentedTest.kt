@@ -1,8 +1,8 @@
 package com.bintina.goouttolunchmvvm
 
 import android.content.Context
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
+//import androidx.fragment.app.testing.FragmentScenario
+//import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
@@ -20,13 +20,13 @@ import java.util.concurrent.Executors
 
 @RunWith(AndroidJUnit4::class)
 class UserViewModelInstrumentedTest {
-    private lateinit var scenario: FragmentScenario<MyLogInFragment>
+//    private lateinit var scenario: FragmentScenario<MyLogInFragment>
     private lateinit var context: Context
     private lateinit var viewModel: UserViewModel
 
     @Before
     fun setUp() {
-        scenario = launchFragmentInContainer<MyLogInFragment>()
+//        scenario = launchFragmentInContainer<MyLogInFragment>()
         context = ApplicationProvider.getApplicationContext<Context>()
         val application = MyApp.instance
         val executors = Executors.newSingleThreadExecutor() // Example executor

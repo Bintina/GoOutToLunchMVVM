@@ -8,12 +8,12 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toTopOf="@id/my_nav_host_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/my_toolbar"
@@ -30,7 +30,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:layout_width="0dp"
         android:layout_height="8dp"
         android:layout_weight="1"
@@ -42,7 +42,6 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:navGraph="@navigation/navigation"
         app:defaultNavHost="true"
-
         />
 <!--<androidx.fragment.app.FragmentContainerView
     android:id="@+id/main_fragment_container"

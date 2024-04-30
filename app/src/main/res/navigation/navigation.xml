@@ -3,22 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@+id/home_dest">
+    app:startDestination="@+id/login_dest">
 
     <!-- to be replaced by login-->
     <fragment
-        android:id="@+id/home_dest"
-        android:name="com.bintina.goouttolunchmvvm.utils.HomeFragment"
-        android:label="@string/home"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/login_dest"
+        android:name="com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
         <argument
-            android:name="myarg"
-            android:defaultValue="Android!" />
+            android:name="userName"
+            app:argType="String?"
+            android:defaultValue="Annabelle" />
         <!--<deepLink app:uri="www.example.com/{myarg}" />-->
         <!-- TODO add safeArgs -->
         <action
             android:id="@+id/go_to_coworkers"
-            app:destination="@id/coworkers_dest" />
+            app:destination="@id/coworkers_dest"
+            app:enterAnim="@transition/fade_change_bounds"
+            app:exitAnim="@transition/fade_change_bounds"
+            app:popEnterAnim="@transition/fade_change_bounds"
+            app:popExitAnim="@transition/fade_change_bounds" />
         <action
             android:id="@+id/go_to_restaurants_map"
             app:destination="@id/restaurant_map_dest" />
@@ -27,12 +32,6 @@
             android:id="@+id/go_to_restaurants_list"
             app:destination="@id/restaurant_list_dest" />
 
-        <!--android:id="@+id/next_action"-->
-        <!--app:destination="@+id/flow_step_one_dest"-->
-        <!--app:enterAnim="@anim/slide_in_right"-->
-        <!--app:exitAnim="@anim/slide_out_left"-->
-        <!--app:popEnterAnim="@anim/slide_in_left"-->
-        <!--app:popExitAnim="@anim/slide_out_right" -->
         <!-- TODO END STEP 7.1 -->
 
     </fragment>

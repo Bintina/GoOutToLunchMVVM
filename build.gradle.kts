@@ -5,6 +5,8 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.9.20" apply false
     // Add the dependency for the Google services Gradle plugin
     id("com.google.gms.google-services") version "4.4.0" apply false
+    //SafeArgs
+    id ("androidx.navigation.safeargs.kotlin") version "2.7.7" apply false
 
 }
 buildscript{

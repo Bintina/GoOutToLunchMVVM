@@ -1,14 +1,25 @@
-import org.gradle.internal.classpath.Instrumented
 
-
+buildscript {
+    repositories {
+        google()
+        // Other repositories if needed
+    }
+    dependencies{
+    classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
+    }
+}
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    // SafeArgs plugin
+    id("androidx.navigation.safeargs.kotlin")
 
 }
+
+
 
 android {
     namespace = "com.bintina.goouttolunchmvvm"
@@ -61,7 +72,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -124,7 +135,7 @@ dependencies {
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
     implementation("com.facebook.android:facebook-login:16.3.0")
-    implementation ("com.facebook.android:facebook-android-sdk:16.3.0")
+    implementation("com.facebook.android:facebook-android-sdk:16.3.0")
     implementation("androidx.browser:browser:1.8.0")
 
     // Kotlin components
@@ -137,7 +148,7 @@ dependencies {
 
     //Glide Image dependancy
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("com.github.bumptech.glide:okhttp3-integration:4.11.0")
 }
 

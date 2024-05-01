@@ -1,25 +1,18 @@
 package com.bintina.goouttolunchmvvm.user.login.viewmodel
 
-import android.app.Application
-import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.user.model.User
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
-import java.util.concurrent.Executor
 
 
-class UserViewModel(
-    private val application: Application,
-    private val userDataSource: UserDataRepository,
+class LoginViewModel(
+   /* private val application: Application,
+    private val userDataSource: UserDataRepository,*/
 
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
 
     private var currentUser: LiveData<User>? = null
@@ -39,7 +32,7 @@ class UserViewModel(
         if (currentUser != null) {
             return
         }
-        currentUser = userDataSource.getUser(userId)
+       // currentUser = userDataSource.getUser(userId)
 
     }
 //For Facebook login
@@ -49,6 +42,7 @@ class UserViewModel(
 
     fun setUserName(facebookLoginBtn: String) {
         _facebookLoginBtn.value = facebookLoginBtn
+    Log.d("UserViewModelLog","UserViewModel called")
     }
 
     //For User

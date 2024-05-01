@@ -5,8 +5,7 @@ import android.content.Context
 //import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.LoginViewModel
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
@@ -14,7 +13,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 
@@ -22,7 +20,7 @@ import java.util.concurrent.Executors
 class UserViewModelInstrumentedTest {
 //    private lateinit var scenario: FragmentScenario<MyLogInFragment>
     private lateinit var context: Context
-    private lateinit var viewModel: UserViewModel
+    private lateinit var viewModel: LoginViewModel
 
     @Before
     fun setUp() {
@@ -32,7 +30,7 @@ class UserViewModelInstrumentedTest {
         val executors = Executors.newSingleThreadExecutor() // Example executor
         val userDao: UserDao = mock(UserDao::class.java)
         val mockUserDataSource = UserDataRepository(userDao)
-        viewModel = UserViewModel(application, mockUserDataSource, userDao, executors)
+        viewModel = LoginViewModel(application, mockUserDataSource, userDao, executors)
     }
 
 

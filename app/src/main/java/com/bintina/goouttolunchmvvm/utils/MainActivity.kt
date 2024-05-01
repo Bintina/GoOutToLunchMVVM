@@ -4,21 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
-import java.util.concurrent.Executor
 
 
 open class MainActivity : AppCompatActivity() {

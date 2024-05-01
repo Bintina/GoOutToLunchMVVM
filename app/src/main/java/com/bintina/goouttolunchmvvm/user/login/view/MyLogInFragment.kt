@@ -51,6 +51,7 @@ class MyLogInFragment : Fragment() {
         val newArgs = Bundle().apply {
             putString("userName", "Belladona")
         }
+        Log.d("MyLoginFragLog","newArgs value is $newArgs")
         val newArgValue = safeArgs.userName
         Log.d("MyLoginFragLog","new safe args userName value is $newArgValue")
         // Initialize viewModel here

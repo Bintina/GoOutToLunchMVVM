@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/restaurants_dest"
-        android:name="com.bintina.goouttolunchmvvm.utils.HomeFragment"
+        android:name="com.bintina.goouttolunchmvvm.restaurants.view.RestaurantFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_restaurants">
 

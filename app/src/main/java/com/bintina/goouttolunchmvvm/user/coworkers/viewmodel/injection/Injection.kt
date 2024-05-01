@@ -2,7 +2,6 @@ package com.bintina.goouttolunchmvvm.user.coworkers.viewmodel.injection
 
 import android.content.Context
 import com.bintina.goouttolunchmvvm.user.coworkers.viewmodel.CoworkersViewModel
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.login.viewmodel.ViewModelFactory
 import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository

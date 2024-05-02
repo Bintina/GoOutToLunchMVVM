@@ -67,12 +67,18 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.annotation:annotation:1.7.1")
     implementation("androidx.test:core-ktx:1.5.0")
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
 
     //Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    // Add Mockito dependency
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    // If you're using Kotlin, include the Kotlin test dependencies
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.7.7")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")

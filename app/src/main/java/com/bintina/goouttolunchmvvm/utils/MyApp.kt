@@ -19,6 +19,9 @@ class MyApp : Application() {
 
         var restaurantList = mutableListOf<Restaurant>()
         var coworkerList = mutableListOf<User>()
+
+        //Testing vals
+        val sleepDuration: Long = 50000
     }
 
     override fun onCreate() {

@@ -5,6 +5,12 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="insertRestaurant()">
+        <State />
+      </entry>
+      <entry key="user_view_model_facebook_button_is_initialized()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

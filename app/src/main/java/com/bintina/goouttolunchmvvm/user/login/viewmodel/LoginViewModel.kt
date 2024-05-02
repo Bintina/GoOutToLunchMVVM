@@ -6,20 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 
 
 class LoginViewModel(
    /* private val application: Application,
-    private val userDataSource: UserDataRepository,*/
-
+    ,*/
+    //private val userId: Long,
+    private val userDao: UserDao
 ) : ViewModel() {
 
 
     private var currentUser: LiveData<User>? = null
-    val vmLogInFragment = MyLogInFragment()
+
+    //TODO 1. Holding an instance for fragment and views here is not advised.
+
     val KEY_LOGIN_FRAGMENT = "KEY_USER_LOGIN_FRAGMENT"
     //val mainContainerInt = R.id.main_fragment_container
-    val viewModel: ViewModel = this
+
+    val vmUserDao: UserDao = userDao
+    private val userDataSource: UserDataRepository = UserDataRepository(userDao)
 
 
 /*
@@ -32,7 +39,7 @@ class LoginViewModel(
         if (currentUser != null) {
             return
         }
-       // currentUser = userDataSource.getUser(userId)
+        currentUser = userDataSource.getUser(userId)
 
     }
 //For Facebook login

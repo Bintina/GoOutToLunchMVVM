@@ -11,11 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.user.login.viewmodel.LoginViewModel
+import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
 
 class MyLogInFragment : Fragment(), LifecycleOwner {
 
-    lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: LoginViewModel
     //private lateinit var context: Context
 
     private val safeArgs: MyLogInFragmentArgs by navArgs()
@@ -28,7 +31,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        val viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel = Injection.provideUserViewModel(requireContext())
         viewModel.setUserName("Facebook Login")
 
         initializeViews()
@@ -39,6 +42,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
 
 /*    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         //val argsUserName = safeArgs.userName
         var argsUserName = safeArgs.userName

@@ -8,6 +8,6 @@ import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 @Dao
 interface RestaurantDao {
 
-    @Query("SELECT * FROM Restaurant ")
-    fun getRestaurant(userId: Long): LiveData<Restaurant>
+    @Query("SELECT * FROM Restaurant WHERE restaurantId = :restaurantId")
+    fun getRestaurant(restaurantId: Long): LiveData<Restaurant>
 }

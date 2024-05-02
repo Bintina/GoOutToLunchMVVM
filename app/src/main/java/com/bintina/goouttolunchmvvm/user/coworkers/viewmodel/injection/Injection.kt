@@ -33,7 +33,7 @@ object Injection {
         val executor = provideExecutor()
         val userDao = SaveUserDatabase.getInstance(context).userDao()
         val application = MyApp() // Assuming MyApp extends Application
-        val factory = ViewModelFactory(application, dataSourceUser, userDao, executor)
+        val factory = ViewModelFactory(userDao)
         return factory.create(CoworkersViewModel::class.java)
     }
 }

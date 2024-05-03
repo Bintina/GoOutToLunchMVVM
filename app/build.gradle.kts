@@ -7,6 +7,7 @@ buildscript {
     dependencies{
     classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
     }
+
 }
 plugins {
     id("com.android.application")
@@ -16,6 +17,7 @@ plugins {
     id("com.google.gms.google-services")
     // SafeArgs plugin
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 
 }
 
@@ -55,8 +57,22 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
+    secrets {
+        // Optionally specify a different file name containing your secrets.
+        // The plugin defaults to "local.properties"
+        propertiesFileName = "secrets.properties"
 
+        // A properties file containing default secret values. This file can be
+        // checked in version control.
+        defaultPropertiesFileName = "local.defaults.properties"
+
+        // Configure which keys should be ignored by the plugin by providing regular expressions.
+        // "sdk.dir" is ignored by default.
+        ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+        ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
+    }
 }
 
 dependencies {
@@ -156,6 +172,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("com.github.bumptech.glide:okhttp3-integration:4.11.0")
+
+    //Google Maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.maps.android:android-maps-utils:3.8.0")
+
 }
 
 // Allow references to generated code

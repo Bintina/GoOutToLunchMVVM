@@ -5,12 +5,17 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesUtil.isGooglePlayServicesAvailable
+import java.security.Provider
 
 
 open class MainActivity : AppCompatActivity() {
@@ -29,8 +34,14 @@ open class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
+        // Check if Google Play Services are available
+        if (isGooglePlayServicesAvailable()) {
+            Log.d("MainActLog","Google Play Services are available")
+        } else {
+            // Handle the case where Google Play Services are not available
+            Log.d("MainActLog","Google Play Services are not available")
+            // For example, you can show an error message or prompt the user to update Google Play Services.
+        }
 
         val toolbar = binding.myToolbar
         setSupportActionBar(toolbar)
@@ -49,6 +60,12 @@ open class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         Log.d("MainActivityLog", "Fragment committed")
+    }
+
+    private fun isGooglePlayServicesAvailable(): Boolean {
+        val apiAvailability = GoogleApiAvailability.getInstance()
+        val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)
+        return resultCode == ConnectionResult.SUCCESS
     }
 
     //Initialize the contents of the Activity's standard options menu

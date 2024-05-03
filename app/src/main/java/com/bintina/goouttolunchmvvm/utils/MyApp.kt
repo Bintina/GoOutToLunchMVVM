@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.google.android.libraries.places.api.Places
 
 
 class MyApp : Application() {
@@ -28,5 +29,8 @@ class MyApp : Application() {
         super.onCreate()
         instance = this
         myContext = applicationContext
+
+        // Initialize the Places SDK
+        Places.initialize(applicationContext, "MAP_API_KEY")
     }
 }

@@ -21,7 +21,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
     private lateinit var viewModel: LoginViewModel
     //private lateinit var context: Context
 
-    private val safeArgs: MyLogInFragmentArgs by navArgs()
+    //private val safeArgs: MyLogInFragmentArgs by navArgs()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(

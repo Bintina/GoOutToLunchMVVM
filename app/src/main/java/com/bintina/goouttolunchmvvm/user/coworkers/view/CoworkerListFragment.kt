@@ -12,7 +12,7 @@ import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.databinding.FragmentCoworkersListBinding
 import com.bintina.goouttolunchmvvm.user.coworkers.viewmodel.CoworkersViewModel
 
-class CoworkerListFragment() : Fragment(), LifecycleOwner {
+class CoworkerListFragment : Fragment(), LifecycleOwner {
 
     lateinit var viewModel: CoworkersViewModel
     lateinit var adapter: Adapter

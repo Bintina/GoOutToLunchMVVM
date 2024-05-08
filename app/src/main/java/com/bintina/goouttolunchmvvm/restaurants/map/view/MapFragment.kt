@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.restaurants.map.view
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,14 +12,20 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantMapBinding
 import com.bintina.goouttolunchmvvm.restaurants.map.viewmodel.Injection
 import com.bintina.goouttolunchmvvm.restaurants.map.viewmodel.MapViewModel
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 
-class MapFragment(): Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: MapViewModel
+    private lateinit var myMap: GoogleMap
 
     private var _binding: FragmentRestaurantMapBinding? = null
     private val binding get() = _binding!!
@@ -44,28 +51,64 @@ class MapFragment(): Fragment(), OnMapReadyCallback {
 
         // Log the restaurant name
         restaurant?.let {
-            Toast.makeText(requireContext(), "Restaurant name is ${restaurant.toString()}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Restaurant name is $restaurant", Toast.LENGTH_SHORT).show()
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+
+        initializeAutocomplet()
     }
+
+    private fun initializeAutocomplet() {
+// Initialize the AutocompleteSupportFragment.
+        val autocompleteFragment =
+            childFragmentManager.findFragmentById(R.id.search_autocomplete_fragment)
+                    as AutocompleteSupportFragment
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: ${place.name}, ${place.id}")
+                val latLng = place.latLng
+                if (latLng != null) {
+                    zoomOnMap(latLng)
+                }
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: $status")
+            }
+        })
+
+    }
+
+
     private fun initializeViews() {
         Toast.makeText(requireContext(),"Map Fragment views initialized", Toast.LENGTH_LONG).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onMapReady(googleMap: GoogleMap) {
-        googleMap.uiSettings.isZoomControlsEnabled = true
-        googleMap.addMarker(
+        myMap = googleMap
+        val defaultLatLng = LatLng(-4.3015359, 39.5744260)
+        myMap.uiSettings.isZoomControlsEnabled = true
+        myMap.addMarker(
             MarkerOptions()
-                .position(LatLng(0.0, 0.0))
+                .position(defaultLatLng)
                 .title("Marker")
         )
+        myMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng))
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12f))
     }
 
+    private fun zoomOnMap(latLng: LatLng) {
+        val newLatLngZoom = CameraUpdateFactory.newLatLngZoom(latLng, 12f)// 12f -> amount of zoom
+        myMap.animateCamera(newLatLngZoom)
+    }
 }

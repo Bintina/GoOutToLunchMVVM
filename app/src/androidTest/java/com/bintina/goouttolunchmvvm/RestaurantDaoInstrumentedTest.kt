@@ -1,4 +1,3 @@
 package com.bintina.goouttolunchmvvm
 
-class RestaurantDaoInstrumentedTest {
-}
+class RestaurantDaoInstrumentedTest

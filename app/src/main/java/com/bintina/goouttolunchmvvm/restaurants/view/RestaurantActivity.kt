@@ -16,7 +16,7 @@ import com.bintina.goouttolunchmvvm.utils.openRestaurantMapActivity
 import com.bintina.goouttolunchmvvm.utils.openSearchActivity
 import com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment
 
-class RestaurantActivity(): AppCompatActivity() {
+class RestaurantActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRestaurantsBinding
     companion object {

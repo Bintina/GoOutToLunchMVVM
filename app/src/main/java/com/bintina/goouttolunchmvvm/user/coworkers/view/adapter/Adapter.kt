@@ -12,7 +12,7 @@ import com.bintina.goouttolunchmvvm.user.model.User
 import com.bumptech.glide.Glide
 
 
-class Adapter(): RecyclerView.Adapter<Adapter.ItemViewHolder>() {
+class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     val coworkerList = MyApp.coworkerList
     class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context): RecyclerView.ViewHolder(view.root){

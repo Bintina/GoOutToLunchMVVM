@@ -13,7 +13,7 @@ object Injection {
 
     private fun provideRestaurantDataSource(context: Context): RestaurantDataRepository {
         val database = SaveRestaurantDatabase.getInstance(context)
-        return RestaurantDataRepository(database!!.restaurantDao())
+        return RestaurantDataRepository(database.restaurantDao())
     }
 
     fun provideExecutor(): Executor {

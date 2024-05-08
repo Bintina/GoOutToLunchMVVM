@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 
-class RestaurantListFragment(): Fragment(){
+class RestaurantListFragment : Fragment(){
 
     lateinit var adapter: Adapter
 
@@ -20,7 +20,7 @@ class RestaurantListFragment(): Fragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRestaurantListBinding.inflate(inflater, container, false)
 
         initializeViews()

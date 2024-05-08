@@ -13,7 +13,7 @@ object Injection {
 
     private fun provideUserDataSource(context: Context): UserDataRepository {
         val database = SaveUserDatabase.getInstance(context)
-        return UserDataRepository(database!!.userDao())
+        return UserDataRepository(database.userDao())
     }
 
     fun provideExecutor(): Executor{

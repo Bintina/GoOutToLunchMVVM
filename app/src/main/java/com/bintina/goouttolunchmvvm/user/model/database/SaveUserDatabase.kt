@@ -36,8 +36,8 @@ abstract class SaveUserDatabase : RoomDatabase() {
 
 
         //
-        private fun prepopulateDatabase(): RoomDatabase.Callback {
-            return object : RoomDatabase.Callback() {
+        private fun prepopulateDatabase(): Callback {
+            return object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
 

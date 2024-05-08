@@ -12,7 +12,7 @@ import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedLis
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bumptech.glide.Glide
 
-class Adapter() : RecyclerView.Adapter<com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter.ItemViewHolder>() {
+class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     val resaurantList = MyApp.restaurantList
     lateinit var listener: OnRestaurantClickedListener

@@ -18,7 +18,7 @@ class MyApp : Application() {
         lateinit var myContext: Context
 
 
-        var restaurantList = mutableListOf<Restaurant>()
+        var restaurantList = listOf<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?>()
         var coworkerList = mutableListOf<User>()
 
         //Testing vals

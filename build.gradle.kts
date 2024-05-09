@@ -7,6 +7,8 @@ plugins {
     id("com.google.gms.google-services") version "4.4.0" apply false
     //SafeArgs
     id ("androidx.navigation.safeargs.kotlin") version "2.7.7" apply false
+    //Maps secrets plugin
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
 
 }
 buildscript{

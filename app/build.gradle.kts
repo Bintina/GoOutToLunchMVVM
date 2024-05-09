@@ -84,6 +84,7 @@ dependencies {
     implementation("androidx.annotation:annotation:1.7.1")
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("com.google.android.libraries.places:places:3.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
     debugImplementation("androidx.fragment:fragment-testing:1.6.2")
 
     //Testing

@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantMapBinding
 import com.bintina.goouttolunchmvvm.restaurants.map.viewmodel.Injection
 import com.bintina.goouttolunchmvvm.restaurants.map.viewmodel.MapViewModel
+import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,6 +25,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: MapViewModel
@@ -110,5 +115,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun zoomOnMap(latLng: LatLng) {
         val newLatLngZoom = CameraUpdateFactory.newLatLngZoom(latLng, 12f)// 12f -> amount of zoom
         myMap.animateCamera(newLatLngZoom)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch(Dispatchers.IO){
+            val result = try {
+                DataSource.loadRestaurantList(lifecycleScope)
+            } catch (e: Exception){
+                Log.d("RestaurantResultTryCatch", "Error is $e")
+                emptyList<Restaurant>()
+            }
+        }
     }
 }

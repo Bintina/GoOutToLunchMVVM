@@ -10,11 +10,12 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantList
 import com.bumptech.glide.Glide
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
-    val resaurantList = MyApp.restaurantList
+    var resaurantList = MyApp.restaurantList
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
@@ -23,14 +24,14 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
         /**
          * Binds the restaurant data to the view holder.
          */
-        fun bind(restaurant: Restaurant, listener: OnRestaurantClickedListener) {
-            val restaurantId = restaurant.restaurantId.toString()
+        fun bind(restaurant: com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?, listener: OnRestaurantClickedListener) {
+            val restaurantId = restaurant?.place_id.toString()
             //clickedRestaurantLink = restaurantId
 
 
 
             //Load image using Glide
-            val restaurantImageUrl = restaurant.photoUrl
+            val restaurantImageUrl = restaurant?.photos?.first()?.html_attributions
 
             Glide.with(view.ivPhotoRestaurant.context)
                 .load(restaurantImageUrl)
@@ -39,7 +40,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                 .into(view.ivPhotoRestaurant)
 
             //Set Name
-            val restaurantName = restaurant.name
+            val restaurantName = restaurant?.name
             view.tvRestaurantName.text = restaurantName
 
             //Set Location and type
@@ -64,6 +65,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(resaurantList[position], listener)
+        Log.d("RestListAdapterLog", "adapter restaurantList has ${restaurantList.size} items")
     }
 
     override fun getItemCount(): Int = resaurantList.size

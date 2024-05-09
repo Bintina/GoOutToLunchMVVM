@@ -179,6 +179,9 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:3.8.0")
     implementation("com.google.android.libraries.places:places:2.5.0")
 
+    //Retrofit implementations
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
 
 // Allow references to generated code

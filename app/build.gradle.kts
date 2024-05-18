@@ -18,7 +18,8 @@ plugins {
     // SafeArgs plugin
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-
+    //KSP plugin
+    id("com.google.devtools.ksp")
 }
 
 
@@ -52,9 +53,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
 
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures {
         viewBinding = true
         buildConfig = true
@@ -77,15 +80,16 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.13.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.annotation:annotation:1.7.1")
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("com.google.android.libraries.places:places:3.4.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.21")
-    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
+
+    debugImplementation("androidx.fragment:fragment-testing:1.7.0")
 
     //Testing
     testImplementation("junit:junit:4.13.2")
@@ -94,9 +98,11 @@ dependencies {
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     // Add Mockito dependency
     testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation ("io.mockk:mockk:1.13.10")
+
     // If you're using Kotlin, include the Kotlin test dependencies
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.7.7")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    //testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.7.7")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -125,15 +131,15 @@ dependencies {
 
     //Fragments support
     //Java language implementation
-    implementation("androidx.fragment:fragment:1.6.2")
+    implementation("androidx.fragment:fragment:1.7.0")
     //Kotlin
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.fragment:fragment-ktx:1.7.0")
 
     //Gson dependancy
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
@@ -145,44 +151,41 @@ dependencies {
     // Used in FirebaseUIActivity.
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     // Import the BoM for the Firebase platform
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-    // Add the dependency for the Firebase Authentication library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-auth")
-    // Also add the dependency for the Google Play services library and specify its version
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
 
-    // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation("com.facebook.android:facebook-login:16.3.0")
-    implementation("com.facebook.android:facebook-android-sdk:16.3.0")
+    implementation("com.facebook.android:facebook-login:17.0.0")
+    implementation("com.facebook.android:facebook-android-sdk:17.0.0")
     implementation("androidx.browser:browser:1.8.0")
 
     // Kotlin components
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //RecyclerView dependency
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     //Glide Image dependancy
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-    implementation("com.github.bumptech.glide:okhttp3-integration:4.11.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.16.0")
 
     //Google Maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.maps.android:android-maps-utils:3.8.0")
-    implementation("com.google.android.libraries.places:places:2.5.0")
+    implementation("com.google.maps.android:android-maps-utils:3.8.2")
+    implementation("com.google.android.libraries.places:places:3.4.0")
 
     //Retrofit implementations
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    //Card View
+    implementation("androidx.cardview:cardview:1.0.0")
 }
 
 // Allow references to generated code
@@ -191,10 +194,13 @@ kapt {
 }
 
 kotlin {
-    android {
+/*    android {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "18"
         }
+    }*/
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(9))
     }
 }
 

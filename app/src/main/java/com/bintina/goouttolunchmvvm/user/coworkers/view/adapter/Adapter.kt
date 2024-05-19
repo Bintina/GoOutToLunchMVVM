@@ -15,14 +15,16 @@ import com.bumptech.glide.Glide
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     val coworkerList = MyApp.coworkerList
-    class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context): RecyclerView.ViewHolder(view.root){
 
-        fun bind(coworker: User){
+    class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context) :
+        RecyclerView.ViewHolder(view.root) {
+
+        fun bind(coworker: User) {
             val userId = coworker.userId
-            
 
-          //Load User picture
-          val userImageUrl = coworker.profilePicture
+
+            //Load User picture
+            val userImageUrl = coworker.profilePicture
             Glide.with(view.ivWorkmateAvatar.context)
                 .load(userImageUrl)
                 .placeholder(R.drawable.ic_baseline_person_outline_24)

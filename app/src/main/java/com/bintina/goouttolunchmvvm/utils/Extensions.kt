@@ -2,28 +2,28 @@ package com.bintina.goouttolunchmvvm.utils
 
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 
-fun openSearchActivity(){
+fun openSearchActivity() {
 
 }
 
-fun openCoworkerActivity(){
+fun openCoworkerActivity() {
 
 }
 
-fun openRestaurantListActivity(){
+fun openRestaurantListActivity() {
 
 }
 
-fun openRestaurantMapActivity(){
+fun openRestaurantMapActivity() {
 
 }
 
-fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): String?{
+fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): String? {
     val regex = """href\s*=\s*["'](https?://[^\s"']+)["']""".toRegex()
     val matchResult = regex.find(rawUrl)
 
     val contributorUrl = matchResult?.groups?.get(1)?.value
-    val widthString= "?maxwidth=$width"
+    val widthString = "?maxwidth=$width"
     val photoReferenceString = "&photoreference=$photoReference"
     val apiKey = "&key=${MAPS_API_KEY}"
 

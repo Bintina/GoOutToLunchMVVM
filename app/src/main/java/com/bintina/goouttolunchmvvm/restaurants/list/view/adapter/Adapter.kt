@@ -9,13 +9,13 @@ import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
-import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
-import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantList
+import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
+import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bumptech.glide.Glide
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
-    var resaurantList = MyApp.restaurantList
+    var restaurantList = MyApp.restaurantList
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
@@ -24,15 +24,24 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
         /**
          * Binds the restaurant data to the view holder.
          */
-        fun bind(restaurant: com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?, listener: OnRestaurantClickedListener) {
+        fun bind(
+            restaurant: com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?,
+            listener: OnRestaurantClickedListener
+        ) {
             val restaurantId = restaurant?.place_id.toString()
             //clickedRestaurantLink = restaurantId
 
 
-
             //Load image using Glide
-            val restaurantImageUrl = restaurant?.photos?.first()?.html_attributions
+            val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"
+            //restaurant?.photos?.first()?.html_attributions?.first()!!
+            val width = 400
+            val photoReference = restaurant?.photos?.first()?.photo_reference
 
+            val restaurantImageUrl =
+                convertRawUrlToUrl(rawImageUrl, width.toString(), photoReference!!)
+
+            Log.d("AdapterLog", "url is $restaurantImageUrl")
             Glide.with(view.ivPhotoRestaurant.context)
                 .load(restaurantImageUrl)
                 .placeholder(R.drawable.hungry_droid)
@@ -40,15 +49,21 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                 .into(view.ivPhotoRestaurant)
 
             //Set Name
-            val restaurantName = restaurant?.name
+            val restaurantName = restaurant.name
             view.tvRestaurantName.text = restaurantName
 
             //Set Location and type
-            view.tvStyleAndAddress.text = restaurantName
+            val restaurantVicinity = restaurant.vicinity
+            view.tvStyleAndAddress.text = restaurantVicinity
 
 
             //Set Caption View
-            view.tvOpeningHours.text = restaurantName
+            val restaurantOpen = if (restaurant.opening_hours.open_now == true) {
+                "Open"
+            } else {
+                "Closed"
+            }
+            view.tvOpeningHours.text = restaurantOpen
 
             //Set click listener for News link
             view.restaurantItem.setOnClickListener { listener.onRestaurantClick() }
@@ -57,17 +72,18 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ItemRestaurantBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemRestaurantBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         Log.d("RestaurantAdapterLog", "Restaurant adapter onCreateViewHolder called")
-        Log.d("RestaurantAdapterLog","result size = ${resaurantList.size}")
+        Log.d("RestaurantAdapterLog", "result size = ${restaurantList.size}")
         return ItemViewHolder(binding, parent.context)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(resaurantList[position], listener)
-        Log.d("RestListAdapterLog", "adapter restaurantList has ${restaurantList.size} items")
+        holder.bind(restaurantList[position], listener)
+        //Log.d("RestListAdapterLog", "adapter restaurantList has ${MyApp.restaurantList.size} items")
     }
 
-    override fun getItemCount(): Int = resaurantList.size
+    override fun getItemCount(): Int = restaurantList.size
 
 }

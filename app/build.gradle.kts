@@ -20,6 +20,7 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     //KSP plugin
     id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
 
@@ -49,13 +50,13 @@ android {
     }
     compileOptions {
 
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
 
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
 
     buildFeatures {
@@ -76,6 +77,9 @@ android {
         ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
         ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -84,25 +88,40 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.annotation:annotation:1.7.1")
+    implementation("androidx.annotation:annotation:1.8.0")
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("com.google.android.libraries.places:places:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
+    implementation("androidx.test:rules:1.5.0")
+    implementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    implementation("androidx.work:work-runtime:2.9.0")
 
-    debugImplementation("androidx.fragment:fragment-testing:1.7.0")
+    debugImplementation("androidx.fragment:fragment-testing:1.7.1")
 
     //Testing
+    testImplementation("androidx.test:core:1.5.0")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("androidx.test:runner:1.5.2")
+    testImplementation("androidx.test:rules:1.5.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation(dependencyNotation = "androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     // Add Mockito dependency
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation ("io.mockk:mockk:1.13.10")
-
-    // If you're using Kotlin, include the Kotlin test dependencies
-    //testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.7.7")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("org.mockito:mockito-inline:4.0.0")
+    //Coroutine testing
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    // Testing Navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
+    // Espresso for UI testing (optional, if you need it)
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    //testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.7.7")
 
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
@@ -114,26 +133,30 @@ dependencies {
     // Feature module Support
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.7.7")
 
-    // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
 
 
     //Room
     implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    // kapt("android.arch.persistence.room:compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
+    //Dagger2
+    implementation("com.google.dagger:dagger:2.49")
+    kapt("com.google.dagger:dagger-compiler:2.48.1")
 
     //ViewModel dependencies
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.0")
 
     //Fragments support
     //Java language implementation
-    implementation("androidx.fragment:fragment:1.7.0")
+    implementation("androidx.fragment:fragment:1.7.1")
     //Kotlin
-    implementation("androidx.fragment:fragment-ktx:1.7.0")
+    implementation("androidx.fragment:fragment-ktx:1.7.1")
 
     //Gson dependancy
     implementation("com.google.code.gson:gson:2.10.1")
@@ -172,7 +195,7 @@ dependencies {
 
     //Glide Image dependancy
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    ksp("com.github.bumptech.glide:ksp:4.16.0")
     implementation("com.github.bumptech.glide:okhttp3-integration:4.16.0")
 
     //Google Maps
@@ -196,17 +219,17 @@ kapt {
 kotlin {
 /*    android {
         kotlinOptions {
-            jvmTarget = "18"
+            jvmTarget = "9"
         }
     }*/
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(9))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 // Ensure the correct configuration for kapt tasks
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
 }

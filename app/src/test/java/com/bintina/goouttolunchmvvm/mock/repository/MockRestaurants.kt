@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.repository
+package com.bintina.goouttolunchmvvm.mock.repository
 
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Geometry
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Location
@@ -12,7 +12,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.V
 
 data class MockRestaurants(override val size: Int) : List<Restaurant> {
 
-    val mockRestaurantList: List<Restaurant?> by lazy {
+    val mockRestaurantList: List<Restaurant> by lazy {
         generateMockRestaurants()
     }
 
@@ -206,18 +206,17 @@ data class MockRestaurants(override val size: Int) : List<Restaurant> {
                     true
                 ),
                 listOf(
-
                     Photo(
                         4160,
                         listOf(
                             "<a href=\"https://maps.google.com/maps/contrib/108442764760890658732\">Alice Muthoni</a>"
                         ),
                         "AUGGfZkg8J-nPQqwdXMmP8VCfg5FN8lmybDRLvoseA7a_eOaK2CKe_7un9LRr3_iYL9CphyMoEBw8Tn3I4NLw7fxBaoBfSbdKfHZcFuq5SeXotBcBpJeTpJdp1K1L2Z2oBf2H9lxuFurLpgkz3C--Jw-hcoETEDGcoSUxn4-k9XKBxsklepW",
-                        3120,
+                        3120
                     )
                 ),
 
-            "ChIJh3OGZKVHQBgRZo1j68lLvM4",
+                "ChIJh3OGZKVHQBgRZo1j68lLvM4",
                 PlusCode(
                     "",
                     ""
@@ -241,42 +240,42 @@ data class MockRestaurants(override val size: Int) : List<Restaurant> {
 
 
     override fun contains(element: Restaurant): Boolean {
-        TODO("Not yet implemented")
+        return mockRestaurantList.contains(element)
     }
 
     override fun containsAll(elements: Collection<Restaurant>): Boolean {
-        TODO("Not yet implemented")
+        return mockRestaurantList.containsAll(elements)
     }
 
     override fun get(index: Int): Restaurant {
-        TODO("Not yet implemented")
+        return mockRestaurantList[index]!!
     }
 
     override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
+        return mockRestaurantList.isEmpty()
     }
 
     override fun iterator(): Iterator<Restaurant> {
-        TODO("Not yet implemented")
+        return mockRestaurantList.iterator()
     }
 
     override fun listIterator(): ListIterator<Restaurant> {
-        TODO("Not yet implemented")
+        return mockRestaurantList.listIterator()
     }
 
     override fun listIterator(index: Int): ListIterator<Restaurant> {
-        TODO("Not yet implemented")
+        return mockRestaurantList.listIterator(index)
     }
 
     override fun subList(fromIndex: Int, toIndex: Int): List<Restaurant> {
-        TODO("Not yet implemented")
+        return mockRestaurantList.subList(fromIndex, toIndex)
     }
 
     override fun lastIndexOf(element: Restaurant): Int {
-        TODO("Not yet implemented")
+        return mockRestaurantList.lastIndexOf(element)
     }
 
     override fun indexOf(element: Restaurant): Int {
-        TODO("Not yet implemented")
+        return mockRestaurantList.indexOf(element)
     }
 }

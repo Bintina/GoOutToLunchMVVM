@@ -42,7 +42,7 @@ fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): S
  */
 
 fun instantiateTodaysDate(): LocalDateTime {
-    
+
 
     currentDate = LocalDateTime.now()
 

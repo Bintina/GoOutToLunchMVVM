@@ -12,7 +12,6 @@ buildscript {
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
     // SafeArgs plugin
@@ -97,7 +96,6 @@ dependencies {
     implementation("androidx.test.espresso:espresso-contrib:3.5.1")
     implementation("androidx.work:work-runtime:2.9.0")
 
-    debugImplementation("androidx.fragment:fragment-testing:1.7.1")
 
     //Testing
     testImplementation("androidx.test:core:1.5.0")
@@ -108,8 +106,9 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(dependencyNotation = "androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    debugImplementation("androidx.fragment:fragment-testing:1.7.1")
     // Add Mockito dependency
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation ("io.mockk:mockk:1.13.10")
@@ -145,7 +144,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     //Dagger2
     implementation("com.google.dagger:dagger:2.49")
-    kapt("com.google.dagger:dagger-compiler:2.48.1")
+    ksp("com.google.dagger:dagger-compiler:2.48.1")
 
     //ViewModel dependencies
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -209,11 +208,6 @@ dependencies {
 
     //Card View
     implementation("androidx.cardview:cardview:1.0.0")
-}
-
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
 }
 
 kotlin {

@@ -1,6 +1,6 @@
 package com.bintina.goouttolunchmvvm
 
-import com.bintina.goouttolunchmvvm.repository.MockRestaurants
+import com.bintina.goouttolunchmvvm.mock.repository.MockRestaurants
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant

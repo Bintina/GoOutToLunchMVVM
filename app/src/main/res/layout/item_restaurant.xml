@@ -10,7 +10,7 @@
     android:layout_height="100dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewRestaurant"
+        android:id="@+id/card_view_restaurant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"

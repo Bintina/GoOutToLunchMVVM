@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/restaurant_map_dest"
-        android:name="com.bintina.goouttolunchmvvm.restaurants.map.view.MapFragment"
+        android:name="com.bintina.goouttolunchmvvm.restaurants.map.view.RestaurantsMapFragment"
         android:label="Restaurant Map"
         tools:layout="@layout/fragment_restaurant_map">
         <action

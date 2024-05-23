@@ -1,9 +1,10 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.restaurants
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bintina.goouttolunchmvvm.LiveDataTestUtil
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.SaveRestaurantDatabase
 import org.junit.After
@@ -52,7 +53,8 @@ class RestaurantViewModelInstrumentedTest {
         //Before: Adding a new user
         this.database?.restaurantDao()?.getRestaurant(RESTAURANT_DEMO.restaurantId)
         //Test
-        val restaurant = LiveDataTestUtil.getValue(this.database?.restaurantDao()?.getRestaurant(RESTAURANT_ID))
+        val restaurant =
+            LiveDataTestUtil.getValue(this.database?.restaurantDao()?.getRestaurant(RESTAURANT_ID))
         Assert.assertTrue(restaurant.name == RESTAURANT_DEMO.name && restaurant.restaurantId == RESTAURANT_DEMO.restaurantId)
 
     }

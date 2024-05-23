@@ -28,7 +28,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var viewModel: MapViewModel
     private lateinit var myMap: GoogleMap
 

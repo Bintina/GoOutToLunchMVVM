@@ -1,9 +1,10 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.user
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.bintina.goouttolunchmvvm.LiveDataTestUtil
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 import org.junit.After

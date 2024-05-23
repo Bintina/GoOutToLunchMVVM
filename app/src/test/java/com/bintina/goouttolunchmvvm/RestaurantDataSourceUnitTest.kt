@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.bintina.goouttolunchmvvm.mock.MainDispatcherRule
-import com.bintina.goouttolunchmvvm.mock.repository.MockRestaurants
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantList
@@ -17,7 +16,6 @@ import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule

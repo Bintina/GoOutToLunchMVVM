@@ -20,7 +20,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
         RecyclerView.ViewHolder(view.root) {
 
         fun bind(coworker: User) {
-            val userId = coworker.userId
+            //val userId = coworker.userId
 
 
             //Load User picture
@@ -33,6 +33,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
             //Fetch name
             val coworkerName = coworker.name.toString()
+            view.tvWorkmateName.text = coworkerName
 
 
             val coworkerRestaurantChoiceContent = "${coworker.name} is going to Restaurant Choice"

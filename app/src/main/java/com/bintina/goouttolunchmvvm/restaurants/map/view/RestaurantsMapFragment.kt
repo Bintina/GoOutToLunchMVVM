@@ -127,6 +127,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
                 Log.d("RestaurantResultTryCatch", "Error is $e")
                 emptyList<Restaurant>()
             }
+            Log.d("RestMapFragLog","result has ${result.size} items")
         }
     }
 }

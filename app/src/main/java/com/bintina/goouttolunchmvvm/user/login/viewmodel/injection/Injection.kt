@@ -21,18 +21,18 @@ object Injection {
     }
 
     fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val dataSourceUser = provideUserDataSource(context)
-        val executor = provideExecutor()
+        /*val dataSourceUser = provideUserDataSource(context)
+        val executor = provideExecutor()*/
         val userDao = SaveUserDatabase.getInstance(context).userDao()
-        val application = MyApp()
+        //val application = MyApp()
         return ViewModelFactory(userDao)
     }
 
     fun provideUserViewModel(context: Context): LoginViewModel {
-        val dataSourceUser = provideUserDataSource(context)
-        val executor = provideExecutor()
+        /*val dataSourceUser = provideUserDataSource(context)
+        val executor = provideExecutor()*/
         val userDao = SaveUserDatabase.getInstance(context).userDao()
-        val application = MyApp() // Assuming MyApp extends Application
+        //val application = MyApp() // Assuming MyApp extends Application
         val factory = ViewModelFactory(userDao)
         return factory.create(LoginViewModel::class.java)
     }

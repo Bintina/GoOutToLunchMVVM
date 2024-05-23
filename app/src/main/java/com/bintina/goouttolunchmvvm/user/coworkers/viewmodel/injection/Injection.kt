@@ -29,10 +29,10 @@ object Injection {
     }*/
 
     fun provideCoworkerViewModel(context: Context): CoworkersViewModel {
-        val dataSourceUser = provideUserDataSource(context)
-        val executor = provideExecutor()
+        /*val dataSourceUser = provideUserDataSource(context)
+        val executor = provideExecutor()*/
         val userDao = SaveUserDatabase.getInstance(context).userDao()
-        val application = MyApp() // Assuming MyApp extends Application
+        //val application = MyApp() // Assuming MyApp extends Application
         val factory = ViewModelFactory(userDao)
         return factory.create(CoworkersViewModel::class.java)
     }

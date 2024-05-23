@@ -248,7 +248,7 @@ data class MockRestaurants(override val size: Int) : List<Restaurant> {
     }
 
     override fun get(index: Int): Restaurant {
-        return mockRestaurantList[index]!!
+        return mockRestaurantList[index]
     }
 
     override fun isEmpty(): Boolean {

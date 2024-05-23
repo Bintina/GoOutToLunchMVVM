@@ -28,7 +28,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             restaurant: com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?,
             listener: OnRestaurantClickedListener
         ) {
-            val restaurantId = restaurant?.place_id.toString()
+            //val restaurantId = restaurant?.place_id.toString()
             //clickedRestaurantLink = restaurantId
 
 

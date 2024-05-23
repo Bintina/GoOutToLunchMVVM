@@ -6,6 +6,8 @@ import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.google.android.libraries.places.api.Places
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.Date
 
 
@@ -25,7 +27,8 @@ class MyApp : Application() {
         var coworkerList = mutableListOf<User>()
 
         //Date variable
-        var currentDate: Date = Date(2024,1,1,1,1,1)
+        var currentDate: LocalDateTime = java.time.LocalDateTime.now()
+
 
         //Testing vals
         val sleepDuration: Long = 50000

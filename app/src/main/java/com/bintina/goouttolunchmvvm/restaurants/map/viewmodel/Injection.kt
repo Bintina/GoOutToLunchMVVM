@@ -21,19 +21,19 @@ object Injection {
     }
 
     fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val dataSourceRestaurant = provideRestaurantDataSource(context)
-        val executor = provideExecutor()
+        /*val dataSourceRestaurant = provideRestaurantDataSource(context)
+        val executor = provideExecutor()*/
         val restaurantDao = SaveRestaurantDatabase.getInstance(context).restaurantDao()
-        val application = MyApp()
+        //val application = MyApp()
         val userDao = SaveUserDatabase.getInstance(context).userDao()
         return ViewModelFactory(userDao, restaurantDao)
     }
 
     fun provideRestaurantViewModel(context: Context): MapViewModel {
-        val dataSourceRestaurant = provideRestaurantDataSource(context)
-        val executor = provideExecutor()
+        /*val dataSourceRestaurant = provideRestaurantDataSource(context)
+        val executor = provideExecutor()*/
         val restaurantDao = SaveRestaurantDatabase.getInstance(context).restaurantDao()
-        val application = MyApp() // Assuming MyApp extends Application
+        //val application = MyApp() // Assuming MyApp extends Application
         val userDao = SaveUserDatabase.getInstance(context).userDao()
         val factory = ViewModelFactory(userDao, restaurantDao)
         return factory.create(MapViewModel::class.java)

@@ -20,6 +20,7 @@ class CoworkersViewModel(
 
     //For User
     fun getCoworkers(userId: Long): MutableList<User> {
+        Log.d("CoWorkerVMLog", "coworker id is $userId")
         return MyApp.coworkerList
     }
 }

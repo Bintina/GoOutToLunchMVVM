@@ -49,11 +49,12 @@ class LoginViewModel(
 
     fun setUserName(facebookLoginBtn: String) {
         _facebookLoginBtn.value = facebookLoginBtn
-    Log.d("UserViewModelLog","UserViewModel called")
+    Log.d("LoginVMLog","UserViewModel called")
     }
 
     //For User
     fun getUser(userId: Long): LiveData<User>? {
+        Log.d("LoginVMLog", "User id is $userId")
         return currentUser
     }
 }

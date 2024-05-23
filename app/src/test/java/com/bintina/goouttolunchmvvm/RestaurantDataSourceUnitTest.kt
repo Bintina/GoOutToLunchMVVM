@@ -8,20 +8,16 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.bintina.goouttolunchmvvm.mock.MainDispatcherRule
 import com.bintina.goouttolunchmvvm.mock.repository.MockRestaurants
-import com.bintina.goouttolunchmvvm.restaurants.model.api.ApiClient
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.RestaurantResult
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantList
 import com.bintina.goouttolunchmvvm.utils.instantiateTodaysDate
 import io.mockk.every
 import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -30,11 +26,10 @@ import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
-import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 class RestaurantDataSourceUnitTest {
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var lifecycle: LifecycleRegistry
 
@@ -57,15 +52,15 @@ class RestaurantDataSourceUnitTest {
         every { Log.d(any(), any()) } returns 0
     }
 
-    @Test
+/*    @Test
     fun datasource_results_filtered_for_null() = runBlocking {
         val mockRestaurants = MockRestaurants(4)
         val expectedResults = mockRestaurants.mockRestaurantList
-        /*val filteredMockRestaurants = filterRestaurantResult(expectedResults)
+        *//*val filteredMockRestaurants = filterRestaurantResult(expectedResults)
 
         // Assert
-        assertEquals(filteredMockRestaurants.size, 1)*/
-    }
+        assertEquals(filteredMockRestaurants.size, 1)*//*
+    }*/
 
 
     @Test

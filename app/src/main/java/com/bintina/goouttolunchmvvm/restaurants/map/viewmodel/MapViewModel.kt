@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.restaurants.map.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
@@ -36,6 +37,7 @@ class MapViewModel(
     }
 
     fun getRestaurant(restaurantId: Long): LiveData<Restaurant>? {
+        Log.d("RestMapInjectLog", "restaurant id is $restaurantId")
         return currentRestaurant
     }
 

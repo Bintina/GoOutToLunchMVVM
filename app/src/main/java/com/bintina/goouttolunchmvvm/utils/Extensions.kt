@@ -1,6 +1,9 @@
 package com.bintina.goouttolunchmvvm.utils
 
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
+import java.util.Calendar
+import java.util.Date
 
 fun openSearchActivity() {
 
@@ -30,4 +33,20 @@ fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): S
     val photoReference = "$rawUrl$widthString$photoReferenceString$apiKey"
 
     return photoReference
+}
+
+/**
+ * Initializes today's date.
+ *
+ * @return The current date.
+ */
+
+fun instantiateTodaysDate(): Date {
+    val currentDateWithoutTime = Calendar.getInstance().time
+
+    currentDate = currentDateWithoutTime
+
+
+    return currentDate
+
 }

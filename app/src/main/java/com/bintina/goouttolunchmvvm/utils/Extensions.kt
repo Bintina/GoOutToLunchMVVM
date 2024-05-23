@@ -2,6 +2,7 @@ package com.bintina.goouttolunchmvvm.utils
 
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
+import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
 
@@ -40,10 +41,10 @@ fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): S
  * @return The current date.
  */
 
-fun instantiateTodaysDate(): Date {
-    val currentDateWithoutTime = Calendar.getInstance().time
+fun instantiateTodaysDate(): LocalDateTime {
+    
 
-    currentDate = currentDateWithoutTime
+    currentDate = LocalDateTime.now()
 
 
     return currentDate

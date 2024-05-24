@@ -17,22 +17,17 @@ class LoginViewModel(
     private val userDao: UserDao
 ) : ViewModel() {
 
-
     private var currentUser: LiveData<User>? = null
-
-    //TODO 1. Holding an instance for fragment and views here is not advised.
-
-    val KEY_LOGIN_FRAGMENT = "KEY_USER_LOGIN_FRAGMENT"
-    //val mainContainerInt = R.id.main_fragment_container
-
-    val vmUserDao: UserDao = userDao
     private val userDataSource: UserDataRepository = UserDataRepository(userDao)
 
+    // LiveData to trigger navigation
+    private val _navigateToNextScreen = MutableLiveData<Boolean>()
+    val navigateToNextScreen: LiveData<Boolean>
+        get() = _navigateToNextScreen
 
-/*
-    init {
-        Log.d("UserViewModelLog","UserViewModel init block reached")
-    }*/
+    private var _userId: String? = null  // To store the userId
+    val userId: String?
+        get() = _userId
 
 
     fun init(userId: Long) {
@@ -42,6 +37,24 @@ class LoginViewModel(
         currentUser = userDataSource.getUser(userId)
 
     }
+
+    // For Facebook login
+    fun handleFacebookLoginSuccess(userId: String) {
+        _userId = userId   // Store the userId
+        _navigateToNextScreen.value = true
+    }
+
+    // For Google login
+    fun handleGoogleLoginSuccess(userId: String) {
+        _userId = userId   // Store the userId
+        _navigateToNextScreen.value = true
+    }
+
+    // Call this after navigation is complete to reset the LiveData
+    fun doneNavigating() {
+        _navigateToNextScreen.value = false
+    }
+
 //For Facebook login
     private val _facebookLoginBtn = MutableLiveData<String>()
     val facebookLoginBtn: LiveData<String>

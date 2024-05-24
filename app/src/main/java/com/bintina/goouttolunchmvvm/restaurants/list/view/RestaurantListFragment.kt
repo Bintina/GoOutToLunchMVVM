@@ -31,7 +31,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRestaurantListBinding.inflate(inflater, container, false)
-
+        val userId = arguments?.let { RestaurantListFragmentArgs.fromBundle(it).userId } ?: ""
         initializeViews()
 
         Log.d("RestaurantListFragLog", "RestaurantListFragment inflated")

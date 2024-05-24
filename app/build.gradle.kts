@@ -89,7 +89,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.annotation:annotation:1.8.0")
     implementation("androidx.test:core-ktx:1.5.0")
-    implementation("com.google.android.libraries.places:places:3.4.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
     implementation("androidx.test:rules:1.5.0")
@@ -178,6 +177,11 @@ dependencies {
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
 
 
+    //Login dependencies
+    //Google login dependency
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+    // Google Identity Services SDK (only required for Auth with Google)
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
     implementation("com.facebook.android:facebook-login:17.0.0")
@@ -201,6 +205,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.maps.android:android-maps-utils:3.8.2")
     implementation("com.google.android.libraries.places:places:3.4.0")
+
 
     //Retrofit implementations
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

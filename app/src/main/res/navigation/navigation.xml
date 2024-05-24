@@ -8,14 +8,17 @@
     <!-- to be replaced by login-->
     <fragment
         android:id="@+id/login_dest"
-        android:name="com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment"
+        android:name="com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <argument
             android:name="userName"
-        android:defaultValue="Annabelle" />
+            android:defaultValue="Annabelle" />
+        <argument
+            android:name="userId"
+            android:defaultValue= "null" />
         <!--app:argType="String"-->
-    <!--<deepLink app:uri="www.example.com/{myarg}" />-->
+        <!--<deepLink app:uri="www.example.com/{myarg}" />-->
         <!-- TODO add safeArgs -->
         <action
             android:id="@+id/go_to_coworkers"
@@ -30,7 +33,10 @@
 
         <action
             android:id="@+id/go_to_restaurants_list"
-            app:destination="@id/restaurant_list_dest" />
+            app:destination="@id/restaurant_list_dest">
+
+
+        </action>
 
         <!-- TODO END STEP 7.1 -->
 
@@ -90,6 +96,9 @@
         android:name="com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment"
         android:label="Restaurant List"
         tools:layout="@layout/fragment_restaurant_list">
+        <argument
+            android:name="userId"
+            app:argType="string" />
         <action
             android:id="@+id/go_to_coworkers"
             app:destination="@id/coworkers_dest" />

@@ -62,7 +62,7 @@ class LoginViewModel(
 
     fun setUserName(facebookLoginBtn: String) {
         _facebookLoginBtn.value = facebookLoginBtn
-    Log.d("LoginVMLog","UserViewModel called")
+    Log.d("LoginVMLog","setUserName called")
     }
 
     //For User

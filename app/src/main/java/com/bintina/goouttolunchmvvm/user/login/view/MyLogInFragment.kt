@@ -56,7 +56,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         viewModel = Injection.provideUserViewModel(requireContext())
-        viewModel.setUserName("Facebook Login")
+        //viewModel.setUserName("Facebook Login")
 
         initializeViews()
         //Google Sign in
@@ -81,21 +81,9 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             ).show()
         }
 
-        // Observe the LiveData for navigation
-        viewModel.navigateToNextScreen.observe(viewLifecycleOwner) { shouldNavigate ->
-            if (shouldNavigate) {
-                // User has logged in successfully - navigate to the next screen
-                val userId =
-                    viewModel.userId ?: ""
-                val action = MyLogInFragmentDirections.goToRestaurantsList(userId)
-                findNavController().navigate(action)
 
-                viewModel.doneNavigating() // Reset the LiveData
-            }
+        Log.d("LoginFragLog", "LoginFragment inflated")
 
-            Log.d("LoginFragLog", "LoginFragment inflated")
-
-        }
         return binding.root
     }
 
@@ -132,7 +120,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                 // Handle different result codes
                 when (result.resultCode) {
                     Activity.RESULT_CANCELED -> {
-                        Log.d("LoginFragLog", "Google Sign-In canceled")
+                        Log.d("LoginFragLog", "Google Sign-In canceled result code is ${result.resultCode}")
                         // Show a message to the user indicating that they canceled
                         Toast.makeText(
                             requireContext(),
@@ -207,13 +195,31 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
 
         if (user != null) {
             // Assuming you'll fetch the userId associated with the Google account
-            val userId = // ... your logic to get userId from FirebaseUser ...
 
-                viewModel.handleGoogleLoginSuccess(userId)
+            val userId = user.tenantId
+            navigate()
+
+                viewModel.handleGoogleLoginSuccess(userId!!)
         } else {
             // Handle login failure
             Toast.makeText(requireContext(), "Google Sign-In failed.", Toast.LENGTH_SHORT)
                 .show()
+        }
+    }
+
+    fun navigate() {
+
+        // Observe the LiveData for navigation
+        viewModel.navigateToNextScreen.observe(viewLifecycleOwner) { shouldNavigate ->
+            if (shouldNavigate) {
+                // User has logged in successfully - navigate to the next screen
+                val userId =
+                    viewModel.userId ?: ""
+                val action = MyLogInFragmentDirections.goToRestaurantsList(userId)
+                findNavController().navigate(action)
+
+                viewModel.doneNavigating() // Reset the LiveData
+            }
         }
     }
 

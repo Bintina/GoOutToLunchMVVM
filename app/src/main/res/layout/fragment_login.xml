@@ -5,39 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:background="@drawable/go4lunch4">
+    android:background="@drawable/go4lunch4"
+    android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/login_overlay_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/home_overlay"
-            android:orientation="vertical"
+    <LinearLayout
+        android:id="@+id/login_overlay_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_overlay"
+        android:orientation="vertical"
 
-            >
+        >
 
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/facebook_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="360dp"
-                android:layout_marginBottom="30dp" />
-            <Button
-                android:id="@+id/google_login_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:background="@color/cardview_dark_background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/facebook_btn" />
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="360dp"
+            android:layout_marginBottom="30dp" />
 
-        </LinearLayout>
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:background="@color/cardview_dark_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/facebook_btn" />
+
+    </LinearLayout>
 
 
 </FrameLayout>

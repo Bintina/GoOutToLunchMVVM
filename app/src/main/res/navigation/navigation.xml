@@ -14,6 +14,9 @@
         <argument
             android:name="userName"
         android:defaultValue="Annabelle" />
+        <argument
+            android:name="userId"
+            android:defaultValue= "null" />
         <!--app:argType="String"-->
     <!--<deepLink app:uri="www.example.com/{myarg}" />-->
         <!-- TODO add safeArgs -->
@@ -40,7 +43,9 @@
         android:name="com.bintina.goouttolunchmvvm.user.coworkers.view.CoworkerListFragment"
         android:label="Coworkers Fragment"
         tools:layout="@layout/fragment_coworkers_list">
-
+        <argument
+            android:name="userId"
+            app:argType="string" />
         <action
             android:id="@+id/go_to_restaurants_map"
             app:destination="@id/restaurant_map_dest" />
@@ -63,7 +68,9 @@
         android:name="com.bintina.goouttolunchmvvm.restaurants.view.RestaurantFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_restaurants">
-
+        <argument
+            android:name="userId"
+            app:argType="string" />
         <action
             android:id="@+id/go_to_coworkers"
             app:destination="@id/coworkers_dest" />
@@ -90,6 +97,9 @@
         android:name="com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment"
         android:label="Restaurant List"
         tools:layout="@layout/fragment_restaurant_list">
+        <argument
+            android:name="userId"
+            app:argType="string" />
         <action
             android:id="@+id/go_to_coworkers"
             app:destination="@id/coworkers_dest" />
@@ -103,14 +113,16 @@
         android:name="com.bintina.goouttolunchmvvm.restaurants.map.view.RestaurantsMapFragment"
         android:label="Restaurant Map"
         tools:layout="@layout/fragment_restaurant_map">
+        <argument
+            android:name="userId"
+            app:argType="string" />
         <action
             android:id="@+id/go_to_coworkers"
             app:destination="@id/coworkers_dest" />
         <action
             android:id="@+id/go_to_restaurants_list"
             app:destination="@id/restaurant_list_dest" />
-
-
+        
     </fragment>
 
 

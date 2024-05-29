@@ -18,6 +18,7 @@ import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 
 
@@ -47,34 +48,14 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
 
     }
 
-    /*    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-
-
-            //val argsUserName = safeArgs.userName
-            var argsUserName = safeArgs.userName
-
-            Log.d("MyLoginFragLog","safe args userName value is $argsUserName")
-            // Create a new Bundle and set the new value
-            val newArgs = Bundle().apply {
-                putString("userName", "Belladona")
-            }
-            Log.d("MyLoginFragLog","newArgs value is $newArgs")
-            val newArgValue = safeArgs.userName
-            Log.d("MyLoginFragLog","new safe args userName value is $newArgValue")
-
-
-
-            Log.d("LoginFragLog", "LoginFragment inflated")
-        }*/
 
     private fun initializeViews() {
+    Log.d(TAG, "initializeViews called")
         if (signedIn() == true) {
             navController.navigate(R.id.restaurant_list_dest)
         } else {
             initializeSignInOptions()
         }
-    Log.d(TAG, "initializeViews called")
     }
 
     private fun initializeSignInOptions() {
@@ -85,12 +66,12 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
     }
 
     private fun signedIn(): Boolean {
+        Log.d(TAG, "signedIn Boolean method called userFacebookLogin is ${currentUser?.loggedInWithFacebook.toString()}. userGoogleLogin is ${currentUser?.loggedInWithGmail.toString()}")
         return if (MyApp.currentUser?.loggedInWithFacebook == false && MyApp.currentUser?.loggedInWithGmail == false) {
             false
         } else {
             true
         }
-        Log.d(TAG, "signedIn Boolean method called")
     }
 
     override fun facebookClick() {

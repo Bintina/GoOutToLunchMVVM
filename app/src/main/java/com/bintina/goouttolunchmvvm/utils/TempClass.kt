@@ -150,3 +150,25 @@ class SaveUserRestaurantsDatabase {
         }
     }
 }*/
+
+/*    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        //val argsUserName = safeArgs.userName
+        var argsUserName = safeArgs.userName
+
+        Log.d("MyLoginFragLog","safe args userName value is $argsUserName")
+        // Create a new Bundle and set the new value
+        val newArgs = Bundle().apply {
+            putString("userName", "Belladona")
+        }
+        Log.d("MyLoginFragLog","newArgs value is $newArgs")
+        val newArgValue = safeArgs.userName
+        Log.d("MyLoginFragLog","new safe args userName value is $newArgValue")
+
+
+
+        Log.d("LoginFragLog", "LoginFragment inflated")
+    }*/
+

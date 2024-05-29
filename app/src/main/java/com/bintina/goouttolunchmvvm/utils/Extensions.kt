@@ -6,21 +6,7 @@ import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
 
-fun openSearchActivity() {
 
-}
-
-fun openCoworkerActivity() {
-
-}
-
-fun openRestaurantListActivity() {
-
-}
-
-fun openRestaurantMapActivity() {
-
-}
 
 fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): String? {
 /*    val regex = """href\s*=\s*["'](https?://[^\s"']+)["']""".toRegex()

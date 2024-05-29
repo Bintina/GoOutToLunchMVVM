@@ -122,7 +122,7 @@
         <action
             android:id="@+id/go_to_restaurants_list"
             app:destination="@id/restaurant_list_dest" />
-        
+
     </fragment>
 
 

@@ -11,7 +11,8 @@ data class User(
     @PrimaryKey(autoGenerate = true)
     val userId: Long = 1,
     val name: String? = null,
-    val loginState: Int = 0,
+    val loggedInWithGmail: Boolean = false,
+    val loggedInWithFacebook: Boolean = false,
     val profilePicture: String? = null//,
     //var restaurant: Restaurant? = null
 

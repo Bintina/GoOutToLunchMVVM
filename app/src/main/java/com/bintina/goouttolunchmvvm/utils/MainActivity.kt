@@ -78,14 +78,12 @@ open class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.coworker_btn -> {
-                // Command to navigate to flow_step_one_dest
                 navController.navigate(R.id.coworkers_dest)
-                //openNotificationsActivity()
+
                 return true
             }
 
             R.id.restaurant_list_btn -> {
-                //openHelpActivity()
                 navController.navigate(R.id.restaurants_dest)
 
                 return true
@@ -94,15 +92,20 @@ open class MainActivity : AppCompatActivity() {
             R.id.restaurant_map_btn -> {
                 navController.navigate(R.id.restaurants_dest)
 
-                //openAboutActivity()
                 return true
             }
 
+            R.id.sign_out_btn -> {
+                navController.navigate(R.id.login_dest)
+
+                return true
+            }
 
             else -> return super.onOptionsItemSelected(item)
 
         }
     }
+}
 /*
     private fun configureViewModel() {
 
@@ -111,7 +114,6 @@ open class MainActivity : AppCompatActivity() {
     }
 */
 
-}
 //From onCreate
         /*configureViewModel()
 

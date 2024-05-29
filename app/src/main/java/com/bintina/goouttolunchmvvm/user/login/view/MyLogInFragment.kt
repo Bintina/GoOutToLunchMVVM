@@ -63,7 +63,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
 
     private fun initializeViews() {
         binding.facebookBtn.text = "Login with Facebook"
-        binding.googleLoginBtn.text = "Login with Google"
+
     }
 
     override fun onDestroy() {

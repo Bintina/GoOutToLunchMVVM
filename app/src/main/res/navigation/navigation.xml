@@ -8,7 +8,7 @@
     <!-- to be replaced by login-->
     <fragment
         android:id="@+id/login_dest"
-        android:name="com.bintina.goouttolunchmvvm.restaurants.list.view.RestaurantListFragment"
+        android:name="com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <argument

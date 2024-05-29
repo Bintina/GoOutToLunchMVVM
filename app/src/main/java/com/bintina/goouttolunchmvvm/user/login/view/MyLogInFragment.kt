@@ -18,6 +18,7 @@ import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 
 
 class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
@@ -28,7 +29,6 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
     //private val safeArgs: MyLogInFragmentArgs by navArgs()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    lateinit var navController: NavController
     private val TAG = "LoginFragLog"
 
     override fun onCreateView(

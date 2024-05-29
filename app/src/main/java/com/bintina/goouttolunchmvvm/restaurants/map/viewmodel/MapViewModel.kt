@@ -9,6 +9,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.Restau
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 
 
 class MapViewModel(
@@ -16,7 +17,6 @@ class MapViewModel(
     private val restaurantDao: RestaurantDao
 ): ViewModel(){
 
-    private var currentUser: LiveData<User>? = null
     private var currentRestaurant: LiveData<Restaurant>? = null
 
     private val userDataSource: UserDataRepository = UserDataRepository(userDao)

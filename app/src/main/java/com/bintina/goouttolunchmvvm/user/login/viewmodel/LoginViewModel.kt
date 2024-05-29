@@ -9,6 +9,8 @@ import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
+import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 
 
 class LoginViewModel(
@@ -19,7 +21,7 @@ class LoginViewModel(
 ) : ViewModel() {
 
 
-    public var currentUser: LiveData<User>? = null
+    //public var currentUser: LiveData<User>? = null
 
     //TODO 1. Holding an instance for fragment and views here is not advised.
 
@@ -37,7 +39,7 @@ class LoginViewModel(
 
 
     fun init(userId: Long) {
-        if (currentUser != null) {
+        if (MyApp.currentUser != null) {
             return
         }
         currentUser = userDataSource.getUser(userId)
@@ -54,7 +56,7 @@ class LoginViewModel(
     }
 
     //For User
-    fun getUser(userId: Long): LiveData<User>? {
+    fun getUser(userId: Long): User? {
         Log.d("LoginVMLog", "User id is $userId")
         return currentUser
     }

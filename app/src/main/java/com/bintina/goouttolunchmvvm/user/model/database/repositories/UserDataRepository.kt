@@ -7,7 +7,7 @@ import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 class UserDataRepository(private val userDao: UserDao) {
 
     //Get User
-    fun getUser(userId: Long): LiveData<User> {
+    fun getUser(userId: Long): User {
         return this.userDao.getUser(userId)
     }
 }

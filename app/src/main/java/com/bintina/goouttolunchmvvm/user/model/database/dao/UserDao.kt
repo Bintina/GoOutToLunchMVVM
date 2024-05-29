@@ -13,5 +13,5 @@ interface UserDao {
     fun createUser(user: User)
 
     @Query("SELECT * FROM User WHERE userId = :userId")
-    fun getUser(userId: Long): LiveData<User>
+    fun getUser(userId: Long): User
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
@@ -18,7 +19,7 @@ class LoginViewModel(
 ) : ViewModel() {
 
 
-    private var currentUser: LiveData<User>? = null
+    public var currentUser: LiveData<User>? = null
 
     //TODO 1. Holding an instance for fragment and views here is not advised.
 

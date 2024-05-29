@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil.isGooglePlayServicesAvailable
@@ -22,7 +23,7 @@ open class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration : AppBarConfiguration
     lateinit var binding: ActivityMainBinding
-    lateinit var navController: NavController
+
     //private lateinit var viewModel: UserViewModel
 
     companion object{
@@ -55,7 +56,7 @@ open class MainActivity : AppCompatActivity() {
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
 
-        navController = host.navController
+            MyApp.navController = host.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
@@ -84,13 +85,13 @@ open class MainActivity : AppCompatActivity() {
             }
 
             R.id.restaurant_list_btn -> {
-                navController.navigate(R.id.restaurants_dest)
+                navController.navigate(R.id.restaurant_list_dest)
 
                 return true
             }
 
             R.id.restaurant_map_btn -> {
-                navController.navigate(R.id.restaurants_dest)
+                navController.navigate(R.id.restaurant_map_dest)
 
                 return true
             }

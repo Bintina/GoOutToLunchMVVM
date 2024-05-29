@@ -2,6 +2,8 @@ package com.bintina.goouttolunchmvvm.utils
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
@@ -30,9 +32,13 @@ class MyApp : Application() {
         var currentDate: LocalDateTime = java.time.LocalDateTime.now()
 
 
+        //Current User
+        var currentUser: User? = null
+
         //Testing vals
         val sleepDuration: Long = 50000
 
+        lateinit var navController: NavController
 
     }
 

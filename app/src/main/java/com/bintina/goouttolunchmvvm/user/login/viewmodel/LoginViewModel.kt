@@ -11,6 +11,7 @@ import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
+import com.google.firebase.auth.FirebaseUser
 
 
 class LoginViewModel(
@@ -25,8 +26,6 @@ class LoginViewModel(
 
     //TODO 1. Holding an instance for fragment and views here is not advised.
 
-    val KEY_LOGIN_FRAGMENT = "KEY_USER_LOGIN_FRAGMENT"
-    //val mainContainerInt = R.id.main_fragment_container
 
     val vmUserDao: UserDao = userDao
     private val userDataSource: UserDataRepository = UserDataRepository(userDao)
@@ -38,13 +37,13 @@ class LoginViewModel(
     }*/
 
 
-    fun init(userId: Long) {
+   /* fun init(userId: Long) {
         if (MyApp.currentUser != null) {
             return
         }
         currentUser = userDataSource.getUser(userId)
 
-    }
+    }*/
 //For Facebook login
     private val _facebookLoginBtn = MutableLiveData<String>()
     val facebookLoginBtn: LiveData<String>
@@ -56,7 +55,7 @@ class LoginViewModel(
     }
 
     //For User
-    fun getUser(userId: Long): User? {
+    fun getUser(userId: Long): FirebaseUser? {
         Log.d("LoginVMLog", "User id is $userId")
         return currentUser
     }

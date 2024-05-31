@@ -21,13 +21,13 @@ class MapViewModel(
 
     private val userDataSource: UserDataRepository = UserDataRepository(userDao)
     private val restaurantDataSource: RestaurantDataRepository = RestaurantDataRepository(restaurantDao)
-    fun init(userId: Long) {
+   /* fun init(userId: Long) {
         if (currentUser != null) {
             return
         }
         currentUser = userDataSource.getUser(userId)
 
-    }
+    }*/
     fun initRestaurant(restaurantId: Long) {
         if (currentRestaurant != null) {
             return

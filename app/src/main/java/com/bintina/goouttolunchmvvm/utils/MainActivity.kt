@@ -13,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesUtil.isGooglePlayServicesAvailable
@@ -97,6 +98,7 @@ open class MainActivity : AppCompatActivity() {
             }
 
             R.id.sign_out_btn -> {
+                signOut()
                 navController.navigate(R.id.login_dest)
 
                 return true
@@ -105,6 +107,14 @@ open class MainActivity : AppCompatActivity() {
             else -> return super.onOptionsItemSelected(item)
 
         }
+    }
+    private fun signOut(){
+        AuthUI.getInstance()
+            .signOut(this)
+            .addOnCompleteListener {
+                // ...
+            }
+
     }
 }
 /*

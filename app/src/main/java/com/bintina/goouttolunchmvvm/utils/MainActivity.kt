@@ -5,9 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
@@ -16,8 +14,6 @@ import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.GooglePlayServicesUtil.isGooglePlayServicesAvailable
-import java.security.Provider
 
 
 open class MainActivity : AppCompatActivity() {
@@ -116,6 +112,8 @@ open class MainActivity : AppCompatActivity() {
             }
 
     }
+
+
 }
 /*
     private fun configureViewModel() {

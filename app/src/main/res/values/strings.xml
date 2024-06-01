@@ -45,6 +45,8 @@
     <string name="facebook_app_id" translatable="false">320855947588684</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb320855947588684</string>
     <string name="facebook_client_token" translatable="false">dfd5ca83f664ec256cef64b84c623825</string>
+    //Google Cloud Identity
+    <string name="default_web_client_id">479173260988-ft01hmbh7s671c6o0aopfnik1qcjvj44.apps.googleusercontent.com</string>
 
     <!--  SharedPreferences -->
     <string name="preferences_main_file" translatable="false">preferencesMainFile</string>

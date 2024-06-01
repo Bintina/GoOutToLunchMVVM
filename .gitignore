@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ignore Google API credentials
+app/src/main/res/raw/client_secret_googleusercontent.com

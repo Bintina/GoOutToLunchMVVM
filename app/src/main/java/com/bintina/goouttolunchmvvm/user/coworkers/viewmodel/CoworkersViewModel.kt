@@ -10,7 +10,7 @@ import com.bintina.goouttolunchmvvm.utils.MyApp
 
 
 class CoworkersViewModel(
-    private val userDataSource: UserDataRepository,
+   // private val userDataSource: UserDataRepository,
     private val userDao: UserDao
 ): ViewModel(){
 

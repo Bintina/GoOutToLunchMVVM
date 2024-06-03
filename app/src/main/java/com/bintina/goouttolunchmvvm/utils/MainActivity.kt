@@ -10,13 +10,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.bintina.goouttolunchmvvm.user.login.OnLogInOnClickListener
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 
 
-open class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity(), OnLogInOnClickListener {
 
     private lateinit var appBarConfiguration : AppBarConfiguration
     lateinit var binding: ActivityMainBinding
@@ -57,6 +58,7 @@ open class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
+        instantiateTodaysDate()
         Log.d("MainActivityLog", "Fragment committed")
     }
 
@@ -111,6 +113,14 @@ open class MainActivity : AppCompatActivity() {
                 // ...
             }
 
+    }
+
+    override fun facebookClick() {
+        //startFacebookSignIn()
+    }
+
+    override fun googleClick() {
+        //startGoogleSignIn()
     }
 
 

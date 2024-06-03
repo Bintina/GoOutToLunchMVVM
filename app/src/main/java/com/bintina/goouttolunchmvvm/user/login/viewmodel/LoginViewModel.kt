@@ -1,5 +1,7 @@
 package com.bintina.goouttolunchmvvm.user.login.viewmodel
 
+import android.app.Activity.RESULT_OK
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,52 +13,34 @@ import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 
 class LoginViewModel(
-   /* private val application: Application,
-    ,*/
+    application: Application,
     //private val userId: Long,
     private val userDao: UserDao
 ) : ViewModel() {
 
+val user: MutableLiveData<FirebaseUser> = MutableLiveData()
 
-    //public var currentUser: LiveData<User>? = null
-
-    //TODO 1. Holding an instance for fragment and views here is not advised.
-
-
-    val vmUserDao: UserDao = userDao
-    private val userDataSource: UserDataRepository = UserDataRepository(userDao)
-
-
-/*
-    init {
-        Log.d("UserViewModelLog","UserViewModel init block reached")
-    }*/
-
-
-   /* fun init(userId: Long) {
-        if (MyApp.currentUser != null) {
-            return
+    fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
+        val response = result?.idpResponse
+        if (result?.resultCode == RESULT_OK) {
+            val user = FirebaseAuth.getInstance().currentUser
+            this.user.value = user
+        } else {
+            // Handle error
+            this.user.value = null
+            response?.error?.let {
+                Log.e("LoginViewModel", "Sign in error: ${it.errorCode}", it)
+            } ?: run {
+                Log.e("LoginViewModel", "Sign in canceled by user")
+            }
         }
-        currentUser = userDataSource.getUser(userId)
-
-    }*/
-//For Facebook login
-    private val _facebookLoginBtn = MutableLiveData<String>()
-    val facebookLoginBtn: LiveData<String>
-        get() = _facebookLoginBtn
-
-    fun setUserName(facebookLoginBtn: String) {
-        _facebookLoginBtn.value = facebookLoginBtn
-    Log.d("LoginVMLog","UserViewModel called")
-    }
-
-    //For User
-    fun getUser(userId: Long): FirebaseUser? {
-        Log.d("LoginVMLog", "User id is $userId")
-        return currentUser
     }
 }

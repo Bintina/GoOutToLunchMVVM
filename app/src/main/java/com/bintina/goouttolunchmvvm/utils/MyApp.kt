@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseUser
 import java.time.LocalDate
@@ -33,8 +34,11 @@ class MyApp : Application() {
         var currentDate: LocalDateTime = java.time.LocalDateTime.now()
 
 
+
+
         //Current User
         var currentUser: FirebaseUser? = null
+
 
         //Testing vals
         val sleepDuration: Long = 50000

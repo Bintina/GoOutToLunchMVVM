@@ -9,19 +9,19 @@ import java.util.concurrent.Executor
 
 
 class ViewModelFactory(
-    /*val application: Application,
-    private val userDataSource: UserDataRepository,
+    val application: Application,
+    /*private val userDataSource: UserDataRepository,
     private val executor: Executor*/
     //private val userId: Long,
     private val userDao: UserDao
 ) : ViewModelProvider.Factory {
 
-    @Suppress("UNCHECKED_CAST")
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            LoginViewModel(userDao) as T
-        } else {
-            throw IllegalArgumentException("Unknown ViewModel class")
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return LoginViewModel(application,userDao) as T
         }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

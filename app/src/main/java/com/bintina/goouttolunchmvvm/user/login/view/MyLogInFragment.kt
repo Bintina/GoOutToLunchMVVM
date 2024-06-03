@@ -28,20 +28,18 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 
 
-class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
+class MyLogInFragment : Fragment(), LifecycleOwner{
 
     private lateinit var viewModel: LoginViewModel
-    //private lateinit var context: Context
 
     //private val safeArgs: MyLogInFragmentArgs by navArgs()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val TAG = "LoginFragLog"
 
-    private val signInLauncher = registerForActivityResult(
-        FirebaseAuthUIActivityResultContract(),
-    ) { res ->
-        this.onSignInResult(res)
+
+    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) { result ->
+        viewModel.handleSignInResult(result)
     }
 
 
@@ -52,16 +50,35 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        viewModel = Injection.provideUserViewModel(requireContext())
-        viewModel.setUserName("Facebook Login")
-        if (currentUser != null){
+        viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(LoginViewModel::class.java)
 
-        navController.navigate(R.id.restaurant_list_dest)
-        }
+        viewModel.user.observe(viewLifecycleOwner, { user ->
+            if (user != null) {
+                currentUser = user
+                navController.navigate(R.id.restaurant_list_dest)
+            }
+        })
+
+
+        initializeViews()
 
         Log.d(TAG, "LoginFragment inflated")
         return binding.root
 
+    }
+
+    private fun initializeViews() {
+        if (currentUser != null) {
+
+            navController.navigate(R.id.restaurant_list_dest)
+        } else {
+            binding.facebookBtn.setOnClickListener{
+                startFacebookSignIn()
+            }
+            binding.googleLoginBtn.setOnClickListener {
+                startGoogleSignIn()
+            }
+        }
     }
 
     private fun startGoogleSignIn() {
@@ -73,7 +90,6 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()
-
         signInLauncher.launch(signInIntent)
     }
 
@@ -86,31 +102,8 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()
-
         signInLauncher.launch(signInIntent)
     }
-
-    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult?): FirebaseAuthUIAuthenticationResult? {
-        val response = result?.idpResponse
-        if (result?.resultCode == RESULT_OK) {
-            // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
-            currentUser = user
-            navController.navigate(R.id.restaurant_list_dest)
-        } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            Toast.makeText(requireContext(),"Your sign in was not successful. Please try again", Toast.LENGTH_LONG).show()
-            response?.error?.let {
-                Log.e(TAG, "Sign in error: ${it.errorCode}", it)
-            } ?: run {
-                Log.e(TAG, "Sign in canceled by user")
-            }
-        }
-        return result
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -118,11 +111,5 @@ class MyLogInFragment : Fragment(), LifecycleOwner, OnLogInOnClickListener {
         Log.d(TAG, "onDestroy called")
     }
 
-    override fun facebookClick() {
-        startFacebookSignIn()
-    }
 
-    override fun googleClick() {
-        startGoogleSignIn()
-    }
 }

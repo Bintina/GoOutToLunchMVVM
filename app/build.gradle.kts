@@ -1,11 +1,11 @@
-
 buildscript {
     repositories {
         google()
+        mavenCentral()
         // Other repositories if needed
     }
-    dependencies{
-    classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
+    dependencies {
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7")
     }
 
 }
@@ -84,7 +84,7 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.annotation:annotation:1.8.0")
@@ -110,7 +110,7 @@ dependencies {
     debugImplementation("androidx.fragment:fragment-testing:1.7.1")
     // Add Mockito dependency
     testImplementation("org.mockito:mockito-core:5.11.0")
-    testImplementation ("io.mockk:mockk:1.13.10")
+    testImplementation("io.mockk:mockk:1.13.10")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation("org.mockito:mockito-inline:4.0.0")
     //Coroutine testing
@@ -132,7 +132,6 @@ dependencies {
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.7.7")
 
 
-
     //Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
@@ -145,10 +144,12 @@ dependencies {
     implementation("com.google.dagger:dagger:2.49")
     ksp("com.google.dagger:dagger-compiler:2.48.1")
 
-    //ViewModel dependencies
+    //ViewModel and LiveData dependencies
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")
 
     //Fragments support
     //Java language implementation
@@ -160,7 +161,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
@@ -168,20 +169,25 @@ dependencies {
     // https://firebase.google.com/docs/android/setup#available-libraries
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-auth-ktx")
     // Firebase UI
     // Used in FirebaseUIActivity.
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     // Import the BoM for the Firebase platform
 
-    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
+    //credentials not supported. Recommended action: Use a different version of dependency 'androidx.credentials:credentials:1.5.0-alpha01',
+    //      or set compileSdkPreview to "VanillaIceCream" in your build.gradle
+    //      file if you intend to experiment with that preview SDK.
+    //implementation("androidx.credentials:credentials:1.5.0-alpha01")
 
 
     //Login dependencies
     //Google login dependency
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
     implementation("com.facebook.android:facebook-login:17.0.0")

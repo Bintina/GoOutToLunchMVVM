@@ -10,12 +10,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\delly\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
+                  <value value="C:\Users\delly\.android\avd\Nexus_5_API_31.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-03T02:20:02.177754300Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-06-07T21:40:28.407053500Z" />
         </State>
       </entry>
       <entry key="insertRestaurant()">

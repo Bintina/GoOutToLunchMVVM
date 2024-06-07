@@ -33,6 +33,7 @@ val user: MutableLiveData<FirebaseUser> = MutableLiveData()
         if (result?.resultCode == RESULT_OK) {
             val user = FirebaseAuth.getInstance().currentUser
             this.user.value = user
+            currentUser = user
         } else {
             // Handle error
             this.user.value = null

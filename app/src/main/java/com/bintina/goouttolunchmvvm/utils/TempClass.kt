@@ -40,14 +40,22 @@ class TempClass {
             }
         }
     }*/
-    /* @RequiresApi(Build.VERSION_CODES.P)
+    /*     @RequiresApi(Build.VERSION_CODES.P)
     fun getSha() {
-        val packageName = "com.bintina.myfirebaseapplication"
+        val packageName = "com.bintina.goouttolunchmvvm"
 
         try {
             val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
 
             for (signature in info.signingInfo.signingCertificateHistory) {
+
+                // Compute SHA-1 fingerprint
+                val sha1 = MessageDigest.getInstance("SHA-1")
+                sha1.update(signature.toByteArray())
+                val sha1Hex = bytesToHex(sha1.digest())
+                Log.d("SHA-1", sha1Hex)
+
+                //SHA-256
                 val md: MessageDigest = MessageDigest.getInstance("SHA-256")
                 md.update(signature.toByteArray())
 

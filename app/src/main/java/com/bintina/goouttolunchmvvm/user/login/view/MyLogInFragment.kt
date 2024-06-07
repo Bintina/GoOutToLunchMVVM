@@ -73,7 +73,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
             navController.navigate(R.id.restaurant_list_dest)
         } else {
             binding.facebookBtn.setOnClickListener{
-                startFacebookSignIn()
+                //startFacebookSignIn()
             }
             binding.googleLoginBtn.setOnClickListener {
                 startGoogleSignIn()
@@ -93,7 +93,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
         signInLauncher.launch(signInIntent)
     }
 
-    private fun startFacebookSignIn() {
+   /* private fun startFacebookSignIn() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build()
         )
@@ -104,7 +104,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
             .build()
         signInLauncher.launch(signInIntent)
     }
-
+*/
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

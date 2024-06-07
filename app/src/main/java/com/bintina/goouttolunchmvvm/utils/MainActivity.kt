@@ -42,6 +42,7 @@ open class MainActivity : AppCompatActivity(), OnLogInOnClickListener {
             // For example, you can show an error message or prompt the user to update Google Play Services.
         }
 
+
         val toolbar = binding.myToolbar
         setSupportActionBar(toolbar)
         //Customize the toolbar color
@@ -115,9 +116,9 @@ open class MainActivity : AppCompatActivity(), OnLogInOnClickListener {
 
     }
 
-    override fun facebookClick() {
+    //override fun facebookClick() {
         //startFacebookSignIn()
-    }
+    //}
 
     override fun googleClick() {
         //startGoogleSignIn()

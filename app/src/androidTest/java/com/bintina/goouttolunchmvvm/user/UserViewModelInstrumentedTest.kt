@@ -32,7 +32,7 @@ class UserViewModelInstrumentedTest {
         val executors = Executors.newSingleThreadExecutor() // Example executor
         val userDao: UserDao = mock(UserDao::class.java)
         val mockUserDataSource = UserDataRepository(userDao)
-        viewModel = LoginViewModel(userDao)
+        viewModel = LoginViewModel(application, userDao)
     }
 
 

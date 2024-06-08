@@ -57,13 +57,13 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             view.tvStyleAndAddress.text = restaurantVicinity
 
 
-            //Set Caption View
+           /* //Set Caption View
             val restaurantOpen = if (restaurant.opening_hours.open_now == true) {
                 "Open"
             } else {
                 "Closed"
             }
-            view.tvOpeningHours.text = restaurantOpen
+            view.tvOpeningHours.text = restaurantOpen*/
 
             //Set click listener for News link
             view.restaurantItem.setOnClickListener { listener.onRestaurantClick() }

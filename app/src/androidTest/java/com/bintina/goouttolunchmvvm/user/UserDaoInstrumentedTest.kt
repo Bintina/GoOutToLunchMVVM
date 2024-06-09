@@ -58,4 +58,33 @@ class UserDaoInstrumentedTest {
         assertTrue(user.name == USER_DEMO.name && user.userId == USER_DEMO.userId)
 
     }*/
+
+    /*
+    {
+  "kind": "identitytoolkit#GetAccountInfoResponse",
+  "users": [
+    {
+      "localId": "aIQFBIfL2KhyZgqPFhUqhLUvaSO2",
+      "email": "dellyemaya@gmail.com",
+      "displayName": "BintinaTamar",
+      "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocLRH_5BWPTVps3HeCyJzzu1mWrRWsiU8_DXlGanOjt0FQ02NDE=s96-c",
+      "emailVerified": true,
+      "providerUserInfo": [
+        {
+          "providerId": "google.com",
+          "displayName": "BintinaTamar",
+          "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocLRH_5BWPTVps3HeCyJzzu1mWrRWsiU8_DXlGanOjt0FQ02NDE=s96-c",
+          "federatedId": "108790554882732525755",
+          "email": "dellyemaya@gmail.com",
+          "rawId": "108790554882732525755"
+        }
+      ],
+      "validSince": "1717810698",
+      "lastLoginAt": "1717810698404",
+      "createdAt": "1717810698403",
+      "lastRefreshAt": "2024-06-08T01:38:18.404Z"
+    }
+  ]
+}
+     */
 }

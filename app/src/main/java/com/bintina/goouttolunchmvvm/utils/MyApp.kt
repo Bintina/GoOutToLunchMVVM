@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.bintina.goouttolunchmvvm.user.model.UserX
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseUser
@@ -28,7 +29,7 @@ class MyApp : Application() {
 
         //val restaurantAdapter = Adapter()
         var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> = emptyList()
-        var coworkerList = mutableListOf<User>()
+        var coworkerList = mutableListOf<UserX>()
 
         //Date variable
         var currentDate: LocalDateTime = java.time.LocalDateTime.now()

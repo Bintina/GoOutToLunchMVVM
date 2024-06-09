@@ -7,11 +7,15 @@ import androidx.room.Database
 import androidx.room.OnConflictStrategy
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.bintina.goouttolunchmvvm.user.model.Converters
 import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.UserX
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [UserX::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class SaveUserDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

@@ -5,10 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.UserX
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bumptech.glide.Glide
 
 
@@ -19,12 +19,12 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
     class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context) :
         RecyclerView.ViewHolder(view.root) {
 
-        fun bind(coworker: User) {
+        fun bind(coworker: UserX) {
             //val userId = coworker.userId
 
 
             //Load User picture
-            val userImageUrl = coworker.profilePicture
+            val userImageUrl = coworker.photoUrl
             Glide.with(view.ivWorkmateAvatar.context)
                 .load(userImageUrl)
                 .placeholder(R.drawable.ic_baseline_person_outline_24)
@@ -32,11 +32,11 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                 .into(view.ivWorkmateAvatar)
 
             //Fetch name
-            val coworkerName = coworker.name.toString()
+            val coworkerName = coworker.displayName.toString()
             view.tvWorkmateName.text = coworkerName
 
 
-            val coworkerRestaurantChoiceContent = "${coworker.name} is going to Restaurant Choice"
+            val coworkerRestaurantChoiceContent = "${coworker.displayName} is going to Restaurant Choice"
             view.tvWorkmateRestaurantChoice.text = coworkerRestaurantChoiceContent
 
         }

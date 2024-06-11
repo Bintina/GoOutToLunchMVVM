@@ -10,14 +10,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
-import com.bintina.goouttolunchmvvm.user.login.OnLogInOnClickListener
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 
 
-open class MainActivity : AppCompatActivity(), OnLogInOnClickListener {
+open class MainActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration : AppBarConfiguration
     lateinit var binding: ActivityMainBinding
@@ -120,9 +119,7 @@ open class MainActivity : AppCompatActivity(), OnLogInOnClickListener {
         //startFacebookSignIn()
     //}
 
-    override fun googleClick() {
-        //startGoogleSignIn()
-    }
+
 
 
 }

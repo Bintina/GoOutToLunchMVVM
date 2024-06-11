@@ -42,12 +42,10 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
 
         viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(LoginViewModel::class.java)
 
-        viewModel.user.observe(viewLifecycleOwner, { user ->
-                currentUser = user
-            if (user != null) {
-                navController.navigate(R.id.restaurant_list_dest)
-            }
-        })
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            currentUser = user
+            Log.d(TAG, "onCreateView currentUser name is ${currentUser?.displayName}")
+        }
 
 
         initializeViews()
@@ -63,9 +61,11 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
             navController.navigate(R.id.restaurant_list_dest)
         } else {
             binding.facebookBtn.setOnClickListener{
+                Log.d(TAG, "facebook btn clicked")
                 startFacebookSignIn()
             }
             binding.googleLoginBtn.setOnClickListener {
+                Log.d(TAG, "google btn clicked")
                 startGoogleSignIn()
             }
         }
@@ -75,7 +75,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
         val providers = arrayListOf(
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
-
+Log.d(TAG, "startGoogleSignIn called")
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
@@ -87,6 +87,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build()
         )
+Log.d(TAG, "startFacebookSignIn called")
 
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()

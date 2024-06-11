@@ -26,9 +26,11 @@ class LoginViewModel(
     private val userDao: UserDao
 ) : ViewModel() {
 
+    val TAG = "LoginViewModel"
 val user: MutableLiveData<FirebaseUser> = MutableLiveData()
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
+        Log.d(TAG, "handleSignInResult called")
         val response = result?.idpResponse
         if (result?.resultCode == RESULT_OK) {
             val user = FirebaseAuth.getInstance().currentUser
@@ -38,9 +40,9 @@ val user: MutableLiveData<FirebaseUser> = MutableLiveData()
             // Handle error
             this.user.value = null
             response?.error?.let {
-                Log.e("LoginViewModel", "Sign in error: ${it.errorCode}", it)
+                Log.e(TAG, "Sign in error: ${it.errorCode}", it)
             } ?: run {
-                Log.e("LoginViewModel", "Sign in canceled by user")
+                Log.e(TAG, "Sign in canceled by user")
             }
         }
     }

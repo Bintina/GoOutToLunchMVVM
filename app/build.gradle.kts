@@ -190,7 +190,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation("com.facebook.android:facebook-login:17.0.0")
     implementation("com.facebook.android:facebook-android-sdk:17.0.0")
     implementation("androidx.browser:browser:1.8.0")
 

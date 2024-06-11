@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
@@ -36,6 +37,7 @@ val user: MutableLiveData<FirebaseUser> = MutableLiveData()
             val user = FirebaseAuth.getInstance().currentUser
             this.user.value = user
             currentUser = user
+            MyApp.navController.navigate(R.id.restaurant_list_dest)
         } else {
             // Handle error
             this.user.value = null

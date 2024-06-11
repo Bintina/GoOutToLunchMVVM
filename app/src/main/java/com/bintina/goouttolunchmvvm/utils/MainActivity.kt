@@ -107,7 +107,7 @@ open class MainActivity : AppCompatActivity(){
         }
     }
     private fun signOut(){
-        AuthUI.getInstance()
+        com.firebase.ui.auth.AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener {
                 // ...

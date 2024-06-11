@@ -15,10 +15,11 @@ import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.AuthUI.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
 
-class MyLogInFragment : Fragment(), LifecycleOwner{
+class MyLogInFragment : Fragment(), LifecycleOwner {
 
     private lateinit var viewModel: LoginViewModel
 
@@ -28,9 +29,10 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
     private val TAG = "LoginFragLog"
 
 
-    private val signInLauncher = registerForActivityResult(FirebaseAuthUIActivityResultContract()) { result ->
-        viewModel.handleSignInResult(result)
-    }
+    private val signInLauncher =
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()) { result ->
+            viewModel.handleSignInResult(result)
+        }
 
 
     override fun onCreateView(
@@ -40,7 +42,10 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(LoginViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
+                LoginViewModel::class.java
+            )
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             currentUser = user
@@ -56,27 +61,24 @@ class MyLogInFragment : Fragment(), LifecycleOwner{
     }
 
     private fun initializeViews() {
-        if (currentUser != null) {
 
-            navController.navigate(R.id.restaurant_list_dest)
-        } else {
-            binding.facebookBtn.setOnClickListener{
+            binding.facebookBtn.setOnClickListener {
                 Log.d(TAG, "facebook btn clicked")
                 startFacebookSignIn()
+                Log.d(TAG, "startFacebookSignIn called by onClick")
             }
             binding.googleLoginBtn.setOnClickListener {
                 Log.d(TAG, "google btn clicked")
                 startGoogleSignIn()
             }
-        }
     }
 
     private fun startGoogleSignIn() {
         val providers = arrayListOf(
-            AuthUI.IdpConfig.GoogleBuilder().build()
+            IdpConfig.GoogleBuilder().build()
         )
-Log.d(TAG, "startGoogleSignIn called")
-        val signInIntent = AuthUI.getInstance()
+        Log.d(TAG, "startGoogleSignIn called")
+        val signInIntent = getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()
@@ -85,11 +87,11 @@ Log.d(TAG, "startGoogleSignIn called")
 
     private fun startFacebookSignIn() {
         val providers = arrayListOf(
-            AuthUI.IdpConfig.FacebookBuilder().build()
+            com.firebase.ui.auth.AuthUI.IdpConfig.FacebookBuilder().build()
         )
-Log.d(TAG, "startFacebookSignIn called")
+        Log.d(TAG, "startFacebookSignIn called")
 
-        val signInIntent = AuthUI.getInstance()
+        val signInIntent = getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()

@@ -20,7 +20,7 @@ open class MainActivity : AppCompatActivity(){
 
     private lateinit var appBarConfiguration : AppBarConfiguration
     lateinit var binding: ActivityMainBinding
-
+private val TAG = "MainActivityLog"
     //private lateinit var viewModel: UserViewModel
 
     companion object{
@@ -107,6 +107,7 @@ open class MainActivity : AppCompatActivity(){
         }
     }
     private fun signOut(){
+        Log.d(TAG, "signOut called")
         com.firebase.ui.auth.AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener {

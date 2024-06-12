@@ -192,6 +192,7 @@ dependencies {
     // Used in FacebookLoginActivity.
     implementation("com.facebook.android:facebook-android-sdk:17.0.0")
     implementation("androidx.browser:browser:1.8.0")
+    implementation("com.facebook.android:facebook-login:17.0.0")
 
     // Kotlin components
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24")

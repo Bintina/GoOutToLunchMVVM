@@ -14,9 +14,16 @@ import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -28,7 +35,8 @@ class LoginViewModel(
 ) : ViewModel() {
 
     val TAG = "LoginViewModel"
-val user: MutableLiveData<FirebaseUser> = MutableLiveData()
+    val user: MutableLiveData<FirebaseUser> = MutableLiveData()
+    val callbackManager = CallbackManager.Factory.create()
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
         Log.d(TAG, "handleSignInResult called")
@@ -47,5 +55,37 @@ val user: MutableLiveData<FirebaseUser> = MutableLiveData()
                 Log.e(TAG, "Sign in canceled by user")
             }
         }
+    }
+
+    init {
+        LoginManager.getInstance().registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+                    handleFacebookAccessToken(loginResult.accessToken)
+                }
+
+                override fun onCancel() {
+                    Log.d(TAG, "Facebook login canceled.")
+                }
+
+                override fun onError(error: FacebookException) {
+                    Log.d(TAG, "Facebook login failed: ${error.message}")
+                }
+            })
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = FirebaseAuth.getInstance().currentUser
+                    this.user.value = user
+                    currentUser = user
+                    MyApp.navController.navigate(R.id.restaurant_list_dest)
+                } else {
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                }
+            }
     }
 }

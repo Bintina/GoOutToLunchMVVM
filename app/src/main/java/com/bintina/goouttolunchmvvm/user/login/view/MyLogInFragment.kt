@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.user.login.view//
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.bintina.goouttolunchmvvm.user.login.viewmodel.LoginViewModel
 import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
+import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -53,24 +55,23 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         }
 
 
-        initializeViews()
-
-        Log.d(TAG, "LoginFragment inflated")
-        return binding.root
-
-    }
-
-    private fun initializeViews() {
-
             binding.facebookBtn.setOnClickListener {
                 Log.d(TAG, "facebook btn clicked")
-                startFacebookSignIn()
+                LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
                 Log.d(TAG, "startFacebookSignIn called by onClick")
             }
             binding.googleLoginBtn.setOnClickListener {
                 Log.d(TAG, "google btn clicked")
                 startGoogleSignIn()
             }
+
+        Log.d(TAG, "LoginFragment inflated")
+        return binding.root
+
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        viewModel.callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun startGoogleSignIn() {

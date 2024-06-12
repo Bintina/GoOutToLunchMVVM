@@ -8,6 +8,7 @@ import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bintina.goouttolunchmvvm.user.model.UserX
+import com.facebook.FacebookSdk
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseUser
@@ -53,6 +54,7 @@ class MyApp : Application() {
         instance = this
         myContext = applicationContext
 
+        FacebookSdk.sdkInitialize(applicationContext)
         // Initialize the Places SDK
         Places.initialize(applicationContext, "MAP_API_KEY")
     }

@@ -8,12 +8,11 @@ import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 
 @Entity()
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    val userId: Long = 1,
-    val name: String? = null,
-    val loggedInWithGmail: Boolean = false,
-    val loggedInWithFacebook: Boolean = false,
-    val profilePicture: String? = null//,
+    @PrimaryKey(autoGenerate = false)
+    val uid: String,
+    val displayName: String,
+    val email: String,
+    val profilePictureUrl: String? = null//,
     //var restaurant: Restaurant? = null
 
 )

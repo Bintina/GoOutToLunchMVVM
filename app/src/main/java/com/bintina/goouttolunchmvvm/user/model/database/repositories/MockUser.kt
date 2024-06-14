@@ -11,10 +11,10 @@ data class MockUser(override val size: Int): List<User>{
     private fun generateMockUsers(): List<User?> {
         //Create a list of mock User objects
         return listOf(
-            User(10, "Albert", false, false, "https://picsum.photos/seed/picsum/200/200"),
-            User(11, "Bernard",false, false, "https://picsum.photos/seed/picsum/200/200"),
-            User(12, "Charles", false, false,"https://picsum.photos/seed/picsum/200/200"),
-            User(13, "Derrick", false, false, "https://picsum.photos/seed/picsum/200/200")
+            User("10", "Albert", "albert@example.com",  "https://picsum.photos/seed/picsum/200/200"),
+            User("11", "Bernard","bernard@example.com",  "https://picsum.photos/seed/picsum/200/200"),
+            User("12", "Charles", "charles@example.com", "https://picsum.photos/seed/picsum/200/200"),
+            User("13", "Derrick", "derrick@example.com",  "https://picsum.photos/seed/picsum/200/200")
         )
     }
 

@@ -7,25 +7,26 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.UserX
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
     // Insert a single UserX object
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: UserX)
+    suspend fun insert(user: User)
 
     // Insert multiple UserX objects
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(users: List<UserX>)
+    suspend fun insertAll(users: List<User>)
 
     // Get all UserX objects
-    @Query("SELECT * FROM UserX")
-    fun getAllUsers(): Flow<List<UserX>>
+    @Query("SELECT * FROM User")
+    fun getAllUsers(): MutableList<User>
 
     // Get a specific UserX object by its localId
-    @Query("SELECT * FROM UserX WHERE localId = :localId")
-    fun getUser(localId: String): Flow<UserX>
+    @Query("SELECT * FROM User WHERE uid = :localId")
+    fun getUser(localId: String): Flow<User>
 
     // ... any other methods you need
 }

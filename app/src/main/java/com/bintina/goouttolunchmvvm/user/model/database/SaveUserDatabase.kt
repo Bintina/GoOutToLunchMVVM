@@ -14,7 +14,7 @@ import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.UserX
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
-@Database(entities = [UserX::class], version = 1, exportSchema = false)
+@Database(entities = [User::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class SaveUserDatabase : RoomDatabase() {
 
@@ -46,10 +46,11 @@ abstract class SaveUserDatabase : RoomDatabase() {
                     super.onCreate(db)
 
                     val contentValues = ContentValues()
-                    contentValues.put("id", 1)
-                    contentValues.put("userName", "Philippe")
+                    contentValues.put("uid", 1)
+                    contentValues.put("displayName", "Philippe")
+                    contentValues.put("email", "philippe@example.com")
                     contentValues.put(
-                        "profilePicture",
+                        "profilePictureUrl",
                         "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2"
                     )
                     db.insert("User", OnConflictStrategy.IGNORE, contentValues)

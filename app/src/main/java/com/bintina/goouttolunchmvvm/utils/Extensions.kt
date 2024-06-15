@@ -1,21 +1,10 @@
 package com.bintina.goouttolunchmvvm.utils
 
-import android.app.Activity
-import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
-import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.LoginViewModel
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.time.LocalDateTime
-import java.util.Calendar
-import java.util.Date
-
 
 
 fun convertRawUrlToUrl(rawUrl: String, width: String, photoReference: String): String? {
@@ -45,4 +34,12 @@ fun instantiateTodaysDate(): LocalDateTime {
 
     return currentDate
 
+}
+fun mapFirebaseUserToUser(firebaseUser: FirebaseUser): User {
+    return User(
+        displayName = firebaseUser.displayName.toString(),
+        uid = firebaseUser.uid.toString(),
+        email = firebaseUser.email.toString(),
+        profilePictureUrl = firebaseUser.photoUrl.toString()
+    )
 }

@@ -41,13 +41,13 @@ class UserDaoInstrumentedTest {
 
     //Data Set for Test
 
-    private val USER_ID: Long = 1
+    private val USER_ID: String = "1"
     private val USER_DEMO =
         User(USER_ID,
             "Philippe",
-            false,
-            false,
-            "https://picsum.photos/seed/picsum/200/200")
+            "philippe@example.com",
+            "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2")
+            //"https://picsum.photos/seed/picsum/200/200")
    /* @Test
     @Throws(InterruptedException::class)
     fun insertUser() {

@@ -3,6 +3,7 @@ package com.bintina.goouttolunchmvvm.utils
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
@@ -30,7 +31,7 @@ class MyApp : Application() {
 
         //val restaurantAdapter = Adapter()
         var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> = emptyList()
-        var coworkerList = mutableListOf<UserX>()
+
 
         //Date variable
         var currentDate: LocalDateTime = java.time.LocalDateTime.now()

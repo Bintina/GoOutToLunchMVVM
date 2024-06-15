@@ -1,39 +1,38 @@
-package com.bintina.goouttolunchmvvm.user.login.viewmodel
+package com.bintina.goouttolunchmvvm.user.viewmodel
 
 import android.app.Activity.RESULT_OK
 import android.app.Application
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.R
+import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.model.User
-import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
-import com.bintina.goouttolunchmvvm.user.model.UserX
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
-import com.bintina.goouttolunchmvvm.utils.mapFirebaseUserToUser
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-class LoginViewModel(
+class UserViewModel(
     application: Application,
     //private val userId: Long,
     val userDao: UserDao
@@ -42,6 +41,7 @@ class LoginViewModel(
     val TAG = "LoginViewModel"
     val user: MutableLiveData<FirebaseUser> = MutableLiveData()
     var coworker : User? = null
+    var coworkerList: MutableList<User?> = mutableListOf()
     val callbackManager = CallbackManager.Factory.create()
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
@@ -106,11 +106,45 @@ class LoginViewModel(
                 email = it.email ?: "",
                 profilePictureUrl = it.photoUrl?.toString() ?: ""
             )
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 userDao.insert(user)
-
             }
         }
+    }
+
+    fun getCoworkers(context: Context): MutableList<User?> {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val result: MutableList<User?> = try {
+                userDao.getAllUsers()
+            } catch (e: Exception) {
+                Log.d("CoworkerFragmentLog", "Error is $e. Cause is ${e.cause}")
+                mutableListOf()
+            }
+
+            withContext(Dispatchers.Main) {
+                if (result.isEmpty()) {
+                    Log.d("CoworkerFragmentLog", "CoworkerListFragment result is empty")
+                    Toast.makeText(
+                        context,
+                        "Sorry we don't have your coworkers",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    coworkerList = result
+                    Log.d(
+                        "CoworkerFragmentLog",
+                        "CoworkerListFragment result has ${result.size} items"
+                    )
+                }
+            }
+        }
+        return coworkerList
+        /*var list: MutableList<User?> = mutableListOf()
+        viewModelScope.launch(Dispatchers.IO) {
+            list = userDao.getAllUsers()
+        }
+        return list*/
     }
 
 }

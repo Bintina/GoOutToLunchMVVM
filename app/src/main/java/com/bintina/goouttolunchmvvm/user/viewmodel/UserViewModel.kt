@@ -6,14 +6,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.login.view.MyLogInFragment
+import com.bintina.goouttolunchmvvm.user.model.UserX
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
+import com.bintina.goouttolunchmvvm.utils.mapFirebaseUserToUser
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -26,16 +29,19 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class LoginViewModel(
     application: Application,
     //private val userId: Long,
-    private val userDao: UserDao
+    val userDao: UserDao
 ) : ViewModel() {
 
     val TAG = "LoginViewModel"
     val user: MutableLiveData<FirebaseUser> = MutableLiveData()
+    var coworker : User? = null
     val callbackManager = CallbackManager.Factory.create()
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
@@ -44,7 +50,9 @@ class LoginViewModel(
         if (result?.resultCode == RESULT_OK) {
             val user = FirebaseAuth.getInstance().currentUser
             this.user.value = user
+            saveUserToDatabase(user)
             currentUser = user
+
             MyApp.navController.navigate(R.id.restaurant_list_dest)
         } else {
             // Handle error
@@ -82,10 +90,27 @@ class LoginViewModel(
                     val user = FirebaseAuth.getInstance().currentUser
                     this.user.value = user
                     currentUser = user
+                    saveUserToDatabase(user)
                     MyApp.navController.navigate(R.id.restaurant_list_dest)
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                 }
             }
     }
+
+    private fun saveUserToDatabase(firebaseUser: FirebaseUser?) {
+        firebaseUser?.let {
+            val user = User(
+                uid = it.uid,
+                displayName = it.displayName ?: "",
+                email = it.email ?: "",
+                profilePictureUrl = it.photoUrl?.toString() ?: ""
+            )
+            viewModelScope.launch {
+                userDao.insert(user)
+
+            }
+        }
+    }
+
 }

@@ -94,6 +94,7 @@ dependencies {
     implementation("androidx.test:rules:1.5.0")
     implementation("androidx.test.espresso:espresso-contrib:3.5.1")
     implementation("androidx.work:work-runtime:2.9.0")
+    implementation("com.google.firebase:firebase-database:21.0.0")
 
 
     //Testing

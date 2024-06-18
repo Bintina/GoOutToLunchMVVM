@@ -15,4 +15,7 @@ data class User(
     val profilePictureUrl: String? = null//,
     //var restaurant: Restaurant? = null
 
-)
+){
+
+
+}

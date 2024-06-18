@@ -10,10 +10,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.Firebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 
 
 open class MainActivity : AppCompatActivity(){
@@ -21,7 +29,8 @@ open class MainActivity : AppCompatActivity(){
     private lateinit var appBarConfiguration : AppBarConfiguration
     lateinit var binding: ActivityMainBinding
 private val TAG = "MainActivityLog"
-    //private lateinit var viewModel: UserViewModel
+        private lateinit var databaseReference: DatabaseReference
+    lateinit var myRef: DatabaseReference
 
     companion object{
         //KEYS
@@ -59,9 +68,44 @@ private val TAG = "MainActivityLog"
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         instantiateTodaysDate()
+
+        // Write a message to the database
+        val database = Firebase.database
+        myRef = database.getReference("message")
+
+        myRef.setValue("Hello, World!")
+
+        readFromDatabase()
+
+// ...
+        databaseReference = Firebase.database.reference
+        writeToDatabase()
+
         Log.d("MainActivityLog", "Fragment committed")
     }
 
+    private fun readFromDatabase() {
+        // Read from the database
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue()
+                Log.d(TAG, "Value is: $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })
+    }
+
+    private fun writeToDatabase() {
+        // Example of writing data to Firebase Realtime Database
+        val user = User("123","John Doe", "johndoe@example.com")
+        databaseReference.child("users").child("userId").setValue(user)
+    }
     private fun isGooglePlayServicesAvailable(): Boolean {
         val apiAvailability = GoogleApiAvailability.getInstance()
         val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)

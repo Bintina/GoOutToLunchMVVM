@@ -95,6 +95,7 @@ dependencies {
     implementation("androidx.test.espresso:espresso-contrib:3.5.1")
     implementation("androidx.work:work-runtime:2.9.0")
     implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
 
 
     //Testing
@@ -175,6 +176,10 @@ dependencies {
     // Used in FirebaseUIActivity.
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     // Import the BoM for the Firebase platform
+
+    // Add the dependencies for the App Check libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")

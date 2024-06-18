@@ -9,21 +9,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import com.bintina.goouttolunchmvvm.R
+import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.LoginViewModel
-import com.bintina.goouttolunchmvvm.user.login.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
-import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.facebook.login.LoginManager
-import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MyLogInFragment : Fragment(), LifecycleOwner {
 
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: UserViewModel
 
     //private val safeArgs: MyLogInFragmentArgs by navArgs()
     private var _binding: FragmentLoginBinding? = null
@@ -46,7 +47,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
 
         viewModel =
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
-                LoginViewModel::class.java
+                UserViewModel::class.java
             )
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
@@ -65,10 +66,12 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                 startGoogleSignIn()
             }
 
+        addCoworker(viewModel.coworker)
         Log.d(TAG, "LoginFragment inflated")
         return binding.root
 
     }
+    @Deprecated("This method is deprecated")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.callbackManager.onActivityResult(requestCode, resultCode, data)
@@ -105,5 +108,13 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         Log.d(TAG, "onDestroy called")
     }
 
+    fun addCoworker(user: User?) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (user != null) {
+                Log.d(TAG, "addCoworker called with user ${user.displayName}")
+            viewModel.userDao.insert(user)
+            }
+        }
+    }
 
 }

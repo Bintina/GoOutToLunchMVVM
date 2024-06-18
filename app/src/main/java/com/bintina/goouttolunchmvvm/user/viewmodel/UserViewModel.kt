@@ -38,10 +38,10 @@ class UserViewModel(
     val userDao: UserDao
 ) : ViewModel() {
 
-    val TAG = "LoginViewModel"
+    val TAG = "UserVMLog"
     val user: MutableLiveData<FirebaseUser> = MutableLiveData()
-    var coworker : User? = null
-    var coworkerList: MutableList<User?> = mutableListOf()
+    var coworker: User? = null
+    var coworkerList: MutableLiveData<List<User?>> = MutableLiveData()
     val callbackManager = CallbackManager.Factory.create()
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
@@ -112,32 +112,27 @@ class UserViewModel(
         }
     }
 
-    fun getCoworkers(context: Context): MutableList<User?> {
+    fun getCoworkers(context: Context): MutableLiveData<List<User?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
             val result: MutableList<User?> = try {
                 userDao.getAllUsers()
             } catch (e: Exception) {
-                Log.d("CoworkerFragmentLog", "Error is $e. Cause is ${e.cause}")
+                Log.d(TAG, "Error is $e. Cause is ${e.cause}")
                 mutableListOf()
             }
-
-            withContext(Dispatchers.Main) {
-                if (result.isEmpty()) {
-                    Log.d("CoworkerFragmentLog", "CoworkerListFragment result is empty")
-                    Toast.makeText(
-                        context,
-                        "Sorry we don't have your coworkers",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    coworkerList = result
+            if (result.isEmpty()) {
+                Log.d(TAG, "CoworkerListFragment result is empty")
+            } else {
+                withContext(Dispatchers.Main) {
+                    coworkerList.postValue(result)
                     Log.d(
-                        "CoworkerFragmentLog",
+                        TAG,
                         "CoworkerListFragment result has ${result.size} items"
                     )
                 }
             }
+
         }
         return coworkerList
         /*var list: MutableList<User?> = mutableListOf()

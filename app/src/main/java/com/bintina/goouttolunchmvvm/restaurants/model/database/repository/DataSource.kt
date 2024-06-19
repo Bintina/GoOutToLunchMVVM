@@ -2,7 +2,6 @@ package com.bintina.goouttolunchmvvm.restaurants.model.database.repository
 
 import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.api.ApiService
 import com.bintina.goouttolunchmvvm.utils.MyApp
 

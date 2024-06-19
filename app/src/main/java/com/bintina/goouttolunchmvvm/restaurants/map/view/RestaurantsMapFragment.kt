@@ -13,7 +13,7 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantMapBinding
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.Injection
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
-import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.model.RealtimeRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -125,7 +125,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
                 DataSource.loadRestaurantList(lifecycleScope)
             } catch (e: Exception){
                 Log.d("RestaurantResultTryCatch", "Error is $e")
-                emptyList<Restaurant>()
+                emptyList<RealtimeRestaurant>()
             }
             Log.d("RestMapFragLog","result has ${result.size} items")
         }

@@ -5,12 +5,12 @@ import androidx.room.PrimaryKey
 
 
 @Entity
-data class Restaurant(
+data class RealtimeRestaurant(
     @PrimaryKey(autoGenerate = true)
     val restaurantId: Long,
     val name: String,
     //val location: Location,
-    val photoUrl: String?,
-    val numberOfInterestedUsers: Int?,
-    val visited: Boolean
+    val photoUrl: String?
+//    val numberOfInterestedUsers: Int?
+    //val visited: Boolean
 )

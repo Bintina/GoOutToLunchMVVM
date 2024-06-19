@@ -13,7 +13,6 @@ import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

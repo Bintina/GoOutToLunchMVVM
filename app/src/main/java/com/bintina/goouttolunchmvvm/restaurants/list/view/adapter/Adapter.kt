@@ -9,7 +9,6 @@ import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
-import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bumptech.glide.Glide
 

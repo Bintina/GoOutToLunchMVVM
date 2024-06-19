@@ -7,11 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.model.RealtimeRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
-import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 
-@Database(entities = [Restaurant::class], version = 1, exportSchema = false)
+@Database(entities = [RealtimeRestaurant::class], version = 1, exportSchema = false)
 abstract class SaveRestaurantDatabase: RoomDatabase() {
 
     abstract fun restaurantDao(): RestaurantDao

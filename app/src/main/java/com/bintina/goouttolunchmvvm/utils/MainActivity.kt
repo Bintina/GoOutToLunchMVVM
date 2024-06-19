@@ -30,7 +30,7 @@ open class MainActivity : AppCompatActivity(){
     lateinit var binding: ActivityMainBinding
 private val TAG = "MainActivityLog"
         private lateinit var databaseReference: DatabaseReference
-    lateinit var myRef: DatabaseReference
+
 
     companion object{
         //KEYS
@@ -70,23 +70,17 @@ private val TAG = "MainActivityLog"
         instantiateTodaysDate()
 
         // Write a message to the database
-        val database = Firebase.database
-        myRef = database.getReference("message")
-
-        myRef.setValue("Hello, World!")
-
+        databaseReference = Firebase.database.reference
         readFromDatabase()
 
-// ...
-        databaseReference = Firebase.database.reference
-        writeToDatabase()
+
 
         Log.d("MainActivityLog", "Fragment committed")
     }
 
     private fun readFromDatabase() {
         // Read from the database
-        myRef.addValueEventListener(object : ValueEventListener {
+        databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
@@ -101,9 +95,8 @@ private val TAG = "MainActivityLog"
         })
     }
 
-    private fun writeToDatabase() {
-        // Example of writing data to Firebase Realtime Database
-        val user = User("123","John Doe", "johndoe@example.com")
+    private fun writeToDatabase(user: User) {
+        //Writing data to Firebase Realtime Database
         databaseReference.child("users").child("userId").setValue(user)
     }
     private fun isGooglePlayServicesAvailable(): Boolean {

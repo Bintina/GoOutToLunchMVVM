@@ -27,6 +27,9 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,6 +46,7 @@ class UserViewModel(
     var coworker: User? = null
     var coworkerList: MutableLiveData<List<User?>> = MutableLiveData()
     val callbackManager = CallbackManager.Factory.create()
+    lateinit var databaseReference: DatabaseReference
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
         Log.d(TAG, "handleSignInResult called")
@@ -108,6 +112,7 @@ class UserViewModel(
             )
             viewModelScope.launch(Dispatchers.IO) {
                 userDao.insert(user)
+                writeToDatabase(user)
             }
         }
     }
@@ -141,5 +146,9 @@ class UserViewModel(
         }
         return list*/
     }
-
+    private fun writeToDatabase(user: User) {
+        databaseReference = Firebase.database.reference
+        //Writing data to Firebase Realtime Database
+        databaseReference.child("users").child("userId").setValue(user)
+    }
 }

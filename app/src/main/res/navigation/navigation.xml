@@ -63,34 +63,7 @@
         <!-- TODO END STEP 7.1 -->
 
     </fragment>
-    <fragment
-        android:id="@+id/restaurants_dest"
-        android:name="com.bintina.goouttolunchmvvm.restaurants.view.RestaurantFragment"
-        android:label="@string/home"
-        tools:layout="@layout/fragment_restaurants">
-        <argument
-            android:name="userId"
-            app:argType="string" />
-        <action
-            android:id="@+id/go_to_coworkers"
-            app:destination="@id/coworkers_dest" />
 
-        <action
-            android:id="@+id/go_to_restaurants_map"
-            app:destination="@id/restaurant_map_dest" />
-
-        <!-- TODO STEP 7.1 - Add action with transitions -->
-        <!--<action-->
-        <!--android:id="@+id/next_action"-->
-        <!--app:destination="@+id/flow_step_one_dest"-->
-        <!--app:enterAnim="@anim/slide_in_right"-->
-        <!--
-        app:exitAnim="@anim/slide_out_left"-->
-        <!--app:popEnterAnim="@anim/slide_in_left"-->
-        <!--app:popExitAnim="@anim/slide_out_right" />-->
-        <!-- TODO END STEP 7.1 -->
-
-    </fragment>
 
     <fragment
         android:id="@+id/restaurant_list_dest"

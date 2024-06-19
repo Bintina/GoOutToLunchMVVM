@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.map.viewmodel
+package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.content.Context
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.SaveRestaurantDatabase

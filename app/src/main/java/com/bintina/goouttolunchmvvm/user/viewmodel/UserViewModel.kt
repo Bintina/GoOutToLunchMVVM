@@ -110,6 +110,7 @@ class UserViewModel(
                 email = it.email ?: "",
                 profilePictureUrl = it.photoUrl?.toString() ?: ""
             )
+            TODO("create check for users already in database.")
             viewModelScope.launch(Dispatchers.IO) {
                 userDao.insert(user)
                 writeToDatabase(user)
@@ -149,6 +150,15 @@ class UserViewModel(
     private fun writeToDatabase(user: User) {
         databaseReference = Firebase.database.reference
         //Writing data to Firebase Realtime Database
-        databaseReference.child("users").child("userId").setValue(user)
+        val firebaseUserId = databaseReference.push().key!!
+
+        databaseReference.child("users").child(firebaseUserId).setValue(user)
+            .addOnCanceledListener {
+                Log.d(TAG, "Write to database canceled")
+            }
+            .addOnFailureListener{
+                Log.d(TAG, "Write to database failed")
+            }
+
     }
 }

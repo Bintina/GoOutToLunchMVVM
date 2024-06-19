@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class RealtimeRestaurant(
     @PrimaryKey(autoGenerate = true)
-    val restaurantId: Long,
+    val restaurantId: String,
     val name: String,
     //val location: Location,
     val photoUrl: String?

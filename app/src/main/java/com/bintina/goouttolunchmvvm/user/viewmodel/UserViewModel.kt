@@ -111,6 +111,7 @@ class UserViewModel(
                 profilePictureUrl = it.photoUrl?.toString() ?: ""
             )
             TODO("create check for users already in database.")
+
             viewModelScope.launch(Dispatchers.IO) {
                 userDao.insert(user)
                 writeToDatabase(user)

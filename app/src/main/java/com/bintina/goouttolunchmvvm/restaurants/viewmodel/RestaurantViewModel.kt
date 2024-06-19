@@ -6,13 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
-import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
-import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 
 
-class MapViewModel(
+class RestaurantViewModel(
     private val userDao: UserDao,
     private val restaurantDao: RestaurantDao
 ): ViewModel(){

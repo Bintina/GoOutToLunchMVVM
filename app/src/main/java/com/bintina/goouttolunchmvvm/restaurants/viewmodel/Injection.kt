@@ -4,7 +4,6 @@ import android.content.Context
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.SaveRestaurantDatabase
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -29,13 +28,13 @@ object Injection {
         return ViewModelFactory(userDao, restaurantDao)
     }
 
-    fun provideRestaurantViewModel(context: Context): MapViewModel {
+    fun provideRestaurantViewModel(context: Context): RestaurantViewModel {
         /*val dataSourceRestaurant = provideRestaurantDataSource(context)
         val executor = provideExecutor()*/
         val restaurantDao = SaveRestaurantDatabase.getInstance(context).restaurantDao()
         //val application = MyApp() // Assuming MyApp extends Application
         val userDao = SaveUserDatabase.getInstance(context).userDao()
         val factory = ViewModelFactory(userDao, restaurantDao)
-        return factory.create(MapViewModel::class.java)
+        return factory.create(RestaurantViewModel::class.java)
     }
 }

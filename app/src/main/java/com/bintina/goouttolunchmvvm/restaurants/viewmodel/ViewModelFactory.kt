@@ -12,8 +12,8 @@ class ViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(MapViewModel::class.java)) {
-            MapViewModel(userDao, restaurantDao) as T
+        return if (modelClass.isAssignableFrom(RestaurantViewModel::class.java)) {
+            RestaurantViewModel(userDao, restaurantDao) as T
         } else {
             throw IllegalArgumentException("Unknown ViewModel class")
         }

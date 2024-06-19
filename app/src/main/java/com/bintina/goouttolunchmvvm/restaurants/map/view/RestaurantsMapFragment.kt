@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantMapBinding
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.Injection
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.MapViewModel
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.model.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.google.android.gms.common.api.Status
@@ -29,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
-    private lateinit var viewModel: MapViewModel
+    private lateinit var viewModel: RestaurantViewModel
     private lateinit var myMap: GoogleMap
 
     private var _binding: FragmentRestaurantMapBinding? = null

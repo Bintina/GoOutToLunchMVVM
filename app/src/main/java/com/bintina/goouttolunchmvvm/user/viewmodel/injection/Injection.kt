@@ -1,18 +1,24 @@
 package com.bintina.goouttolunchmvvm.user.viewmodel.injection
 
 import android.content.Context
-import com.bintina.goouttolunchmvvm.utils.MyApp
-import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
+import androidx.room.Room
+import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.ViewModelFactory
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.utils.AppDatabase
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 object Injection {
 
-    private fun provideUserDataSource(context: Context): UserDao {
-        val database = SaveUserDatabase.getInstance(context)
+    private fun provideDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "database-name")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    private fun provideUserDao(database: AppDatabase): UserDao {
         return database.userDao()
     }
 
@@ -21,21 +27,15 @@ object Injection {
     }
 
     fun provideViewModelFactory(context: Context): ViewModelFactory {
-        /*val dataSourceUser = provideUserDataSource(context)
-        val executor = provideExecutor()*/
-        val userDao = provideUserDataSource(context)
+        val userDao = provideUserDao(provideDatabase(context))
         val application = MyApp()
         return ViewModelFactory(application, userDao)
     }
 
     fun provideUserViewModel(context: Context): UserViewModel {
-        /*val dataSourceUser = provideUserDataSource(context)
-        val executor = provideExecutor()*/
-        val userDao = SaveUserDatabase.getInstance(context).userDao()
+        val userDao = provideUserDao(provideDatabase(context))
         val application = MyApp() // Assuming MyApp extends Application
         val factory = ViewModelFactory(application,userDao)
         return factory.create(UserViewModel::class.java)
     }
-
-
 }

@@ -26,7 +26,7 @@ class RestaurantViewModel(
 ): ViewModel(){
 
 
-    private val TAG = "RestaurantViewModelLog"
+    private val TAG = "RestaurantVMLog"
     private var currentRestaurant: LiveData<RealtimeRestaurant>? = null
 
     private val userDataSource: UserDataRepository = UserDataRepository(userDao)
@@ -63,11 +63,11 @@ class RestaurantViewModel(
                 name = it.name,
                 photoUrl = convertRawUrlToUrl(rawImageUrl, photoWidth.toString(), photoReference)
             )
-            TODO("create check for users already in database.")
             viewModelScope.launch(Dispatchers.IO) {
                 //restaurantDao.insert(realtimeRestaurant)
                 writeToDatabase(realtimeRestaurant)
             }
+
         }
     }
     private fun writeToDatabase(restaurant: RealtimeRestaurant) {

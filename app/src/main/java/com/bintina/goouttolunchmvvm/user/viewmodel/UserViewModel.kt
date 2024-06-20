@@ -110,12 +110,12 @@ class UserViewModel(
                 email = it.email ?: "",
                 profilePictureUrl = it.photoUrl?.toString() ?: ""
             )
-            TODO("create check for users already in database.")
 
             viewModelScope.launch(Dispatchers.IO) {
                 userDao.insert(user)
                 writeToDatabase(user)
             }
+            //TODO("create check for users already in database.")
         }
     }
 

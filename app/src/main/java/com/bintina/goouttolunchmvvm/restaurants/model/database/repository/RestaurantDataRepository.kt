@@ -6,7 +6,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 
 class RestaurantDataRepository(private val restaurantDao: RestaurantDao) {
 
-    fun getRestaurant(restaurantId: Long): LiveData<LocalRestaurant> {
+    fun getRestaurant(restaurantId: String): LiveData<LocalRestaurant> {
         return this.restaurantDao.getRestaurant(restaurantId)
     }
 }

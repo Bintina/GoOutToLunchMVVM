@@ -38,7 +38,7 @@ class RestaurantViewModel(
         currentUser = userDataSource.getUser(userId)
 
     }*/
-    fun initRestaurant(restaurantId: Long) {
+    fun initRestaurant(restaurantId: String) {
         if (currentRestaurant != null) {
             return
         }

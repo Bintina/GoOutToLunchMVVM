@@ -10,9 +10,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
-import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.Firebase
@@ -21,7 +20,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import com.google.firebase.database.getValue
 
 
 open class MainActivity : AppCompatActivity(){
@@ -95,9 +93,9 @@ private val TAG = "MainActivityLog"
         })
     }
 
-    private fun writeToDatabase(user: User) {
+    private fun writeToDatabase(localUser: LocalUser) {
         //Writing data to Firebase Realtime Database
-        databaseReference.child("users").child("userId").setValue(user)
+        databaseReference.child("users").child("userId").setValue(localUser)
     }
     private fun isGooglePlayServicesAvailable(): Boolean {
         val apiAvailability = GoogleApiAvailability.getInstance()

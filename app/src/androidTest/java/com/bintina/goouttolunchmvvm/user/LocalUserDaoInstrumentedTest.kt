@@ -4,18 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bintina.goouttolunchmvvm.LiveDataTestUtil
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.SaveUserDatabase
 import org.junit.After
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class UserDaoInstrumentedTest {
+class LocalUserDaoInstrumentedTest {
     private var database: SaveUserDatabase? = null
 
     @Rule
@@ -42,8 +39,8 @@ class UserDaoInstrumentedTest {
     //Data Set for Test
 
     private val USER_ID: String = "1"
-    private val USER_DEMO =
-        User(USER_ID,
+    private val LocalUSER_DEMO =
+        LocalUser(USER_ID,
             "Philippe",
             "philippe@example.com",
             "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2")

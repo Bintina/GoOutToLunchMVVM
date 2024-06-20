@@ -4,16 +4,11 @@ import android.app.Activity.RESULT_OK
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
@@ -43,8 +38,8 @@ class UserViewModel(
 
     val TAG = "UserVMLog"
     val user: MutableLiveData<FirebaseUser> = MutableLiveData()
-    var coworker: User? = null
-    var coworkerList: MutableLiveData<List<User?>> = MutableLiveData()
+    var coworker: LocalUser? = null
+    var coworkerList: MutableLiveData<List<LocalUser?>> = MutableLiveData()
     val callbackManager = CallbackManager.Factory.create()
     lateinit var databaseReference: DatabaseReference
 
@@ -104,7 +99,7 @@ class UserViewModel(
 
     private fun saveUserToDatabase(firebaseUser: FirebaseUser?) {
         firebaseUser?.let {
-            val user = User(
+            val localUser = LocalUser(
                 uid = it.uid,
                 displayName = it.displayName ?: "",
                 email = it.email ?: "",
@@ -112,17 +107,17 @@ class UserViewModel(
             )
 
             viewModelScope.launch(Dispatchers.IO) {
-                userDao.insert(user)
-                writeToDatabase(user)
+                userDao.insert(localUser)
+                writeToDatabase(localUser)
             }
             //TODO("create check for users already in database.")
         }
     }
 
-    fun getCoworkers(context: Context): MutableLiveData<List<User?>> {
+    fun getCoworkers(context: Context): MutableLiveData<List<LocalUser?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result: MutableList<User?> = try {
+            val result: MutableList<LocalUser?> = try {
                 userDao.getAllUsers()
             } catch (e: Exception) {
                 Log.d(TAG, "Error is $e. Cause is ${e.cause}")
@@ -148,12 +143,12 @@ class UserViewModel(
         }
         return list*/
     }
-    private fun writeToDatabase(user: User) {
+    private fun writeToDatabase(localUser: LocalUser) {
         databaseReference = Firebase.database.reference
         //Writing data to Firebase Realtime Database
         val firebaseUserId = databaseReference.push().key!!
 
-        databaseReference.child("users").child(firebaseUserId).setValue(user)
+        databaseReference.child("users").child(firebaseUserId).setValue(localUser)
             .addOnCanceledListener {
                 Log.d(TAG, "Write to database canceled")
             }

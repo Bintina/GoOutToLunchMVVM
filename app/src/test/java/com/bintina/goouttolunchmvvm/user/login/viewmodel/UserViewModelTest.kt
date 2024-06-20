@@ -1,15 +1,10 @@
 package com.bintina.goouttolunchmvvm.user.login.viewmodel
 
 import android.content.Context
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.test.core.app.ApplicationProvider
-import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable
-import org.junit.Test
 import org.mockito.Mockito.mock
-import java.lang.reflect.TypeVariable
 
 
 class UserViewModelTest{

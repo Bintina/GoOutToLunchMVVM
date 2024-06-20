@@ -4,15 +4,14 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bumptech.glide.Glide
 
 
-class Adapter(var coworkerList: MutableList<User?>) :
+class Adapter(var coworkerList: MutableList<LocalUser?>) :
     RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
 
@@ -23,7 +22,7 @@ class Adapter(var coworkerList: MutableList<User?>) :
     class ItemViewHolder(private val view: ItemCoworkersBinding, private val context: Context) :
         RecyclerView.ViewHolder(view.root) {
 
-        fun bind(coworker: User) {
+        fun bind(coworker: LocalUser) {
             Log.d("CoworkerAdapterLog", "Coworker adapter bind called")
             //val userId = coworker.userId
 
@@ -69,7 +68,7 @@ class Adapter(var coworkerList: MutableList<User?>) :
         coworkerList[position]?.let { holder.bind(it) }
     }
 
-    fun updateData(newCoworkerList: List<User?>) {
+    fun updateData(newCoworkerList: List<LocalUser?>) {
         coworkerList.clear()
         coworkerList.addAll(newCoworkerList)
         notifyDataSetChanged()

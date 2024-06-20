@@ -4,15 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bintina.goouttolunchmvvm.restaurants.model.RealtimeRestaurant
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.user.model.User
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -27,7 +25,7 @@ class RestaurantViewModel(
 
 
     private val TAG = "RestaurantVMLog"
-    private var currentRestaurant: LiveData<RealtimeRestaurant>? = null
+    private var currentRestaurant: LiveData<LocalRestaurant>? = null
 
     private val userDataSource: UserDataRepository = UserDataRepository(userDao)
     private val restaurantDataSource: RestaurantDataRepository = RestaurantDataRepository(restaurantDao)
@@ -48,7 +46,7 @@ class RestaurantViewModel(
 
     }
 
-    fun getRestaurant(restaurantId: Long): LiveData<RealtimeRestaurant>? {
+    fun getRestaurant(restaurantId: Long): LiveData<LocalRestaurant>? {
         Log.d("RestMapInjectLog", "restaurant id is $restaurantId")
         return currentRestaurant
     }
@@ -58,19 +56,19 @@ class RestaurantViewModel(
             val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"
             val photoReference = it.photos.first().photo_reference
             val photoWidth = 400
-            val realtimeRestaurant = RealtimeRestaurant(
+            val localRestaurant = LocalRestaurant(
                 restaurantId = it.place_id,
                 name = it.name,
                 photoUrl = convertRawUrlToUrl(rawImageUrl, photoWidth.toString(), photoReference)
             )
             viewModelScope.launch(Dispatchers.IO) {
                 //restaurantDao.insert(realtimeRestaurant)
-                writeToDatabase(realtimeRestaurant)
+                writeToDatabase(localRestaurant)
             }
 
         }
     }
-    private fun writeToDatabase(restaurant: RealtimeRestaurant) {
+    private fun writeToDatabase(restaurant: LocalRestaurant) {
         databaseReference = Firebase.database.reference
         //Writing data to Firebase Realtime Database
         val firebaseRestaurantId = databaseReference.push().key!!

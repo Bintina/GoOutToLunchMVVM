@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI.*
@@ -108,11 +108,11 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         Log.d(TAG, "onDestroy called")
     }
 
-    fun addCoworker(user: User?) {
+    fun addCoworker(localUser: LocalUser?) {
         lifecycleScope.launch(Dispatchers.IO) {
-            if (user != null) {
-                Log.d(TAG, "addCoworker called with user ${user.displayName}")
-            viewModel.userDao.insert(user)
+            if (localUser != null) {
+                Log.d(TAG, "addCoworker called with user ${localUser.displayName}")
+            viewModel.userDao.insert(localUser)
             }
         }
     }

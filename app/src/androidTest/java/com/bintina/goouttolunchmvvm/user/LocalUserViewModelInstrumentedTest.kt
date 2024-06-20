@@ -19,7 +19,7 @@ import org.junit.runners.JUnit4
 
 //TODO 2. This test needs to change to match VM
 @RunWith(JUnit4::class)
-class UserViewModelInstrumentedTest {
+class LocalUserViewModelInstrumentedTest {
     private lateinit var scenario: FragmentScenario<MyLogInFragment>
     private lateinit var context: Context
     private lateinit var viewModel: UserViewModel

@@ -1,7 +1,7 @@
 package com.bintina.goouttolunchmvvm.utils
 
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
-import com.bintina.goouttolunchmvvm.user.model.User
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
 import com.google.firebase.auth.FirebaseUser
 import java.time.LocalDateTime
@@ -35,8 +35,8 @@ fun instantiateTodaysDate(): LocalDateTime {
     return currentDate
 
 }
-fun mapFirebaseUserToUser(firebaseUser: FirebaseUser): User {
-    return User(
+fun mapFirebaseUserToUser(firebaseUser: FirebaseUser): LocalUser {
+    return LocalUser(
         displayName = firebaseUser.displayName.toString(),
         uid = firebaseUser.uid.toString(),
         email = firebaseUser.email.toString(),

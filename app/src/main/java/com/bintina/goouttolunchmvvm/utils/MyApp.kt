@@ -3,6 +3,8 @@ package com.bintina.goouttolunchmvvm.utils
 import android.app.Application
 import android.content.Context
 import androidx.navigation.NavController
+import androidx.room.Room
+import androidx.room.Room.databaseBuilder
 import com.facebook.FacebookSdk
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseUser
@@ -19,6 +21,11 @@ class MyApp : Application() {
 
         lateinit var myContext: Context
 
+//Database instance
+val db = databaseBuilder(
+    myContext,
+    AppDatabase::class.java, "database-name"
+).build()
 
         //val restaurantAdapter = Adapter()
         var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> = emptyList()

@@ -1,3 +1,4 @@
+/*
 package com.bintina.goouttolunchmvvm.restaurants.model.database.repository
 
 import android.content.ContentValues
@@ -48,4 +49,4 @@ abstract class SaveRestaurantDatabase: RoomDatabase() {
             }
         }
     }
-}
+}*/

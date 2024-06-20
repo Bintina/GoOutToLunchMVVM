@@ -1,3 +1,4 @@
+/*
 package com.bintina.goouttolunchmvvm.user.model.database
 
 
@@ -58,3 +59,4 @@ abstract class SaveUserDatabase : RoomDatabase() {
         }
     }
 }
+*/

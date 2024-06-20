@@ -22,10 +22,8 @@ class MyApp : Application() {
         lateinit var myContext: Context
 
 //Database instance
-val db = databaseBuilder(
-    myContext,
-    AppDatabase::class.java, "database-name"
-).build()
+
+lateinit var db: AppDatabase
 
         //val restaurantAdapter = Adapter()
         var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> = emptyList()
@@ -46,12 +44,22 @@ val db = databaseBuilder(
 
         lateinit var navController: NavController
 
+        fun initializeDatabase() {
+            db = Room.databaseBuilder(
+                myContext,
+                AppDatabase::class.java, "database-name"
+            ).build()
+        }
+
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
         myContext = applicationContext
+
+        // Initialize the database
+        Companion.initializeDatabase()
 
         FacebookSdk.sdkInitialize(applicationContext)
         // Initialize the Places SDK

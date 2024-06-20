@@ -3,8 +3,10 @@ package com.bintina.goouttolunchmvvm.utils
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalUserList
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.user.model.database.LocalRestaurantsList
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
 @Database(entities = [LocalUser::class,LocalRestaurant::class], version = 1)

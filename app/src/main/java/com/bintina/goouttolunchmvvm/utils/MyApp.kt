@@ -26,7 +26,7 @@ class MyApp : Application() {
 lateinit var db: AppDatabase
 
         //val restaurantAdapter = Adapter()
-        var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> = emptyList()
+        var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> = emptyList()
 
 
         //Date variable

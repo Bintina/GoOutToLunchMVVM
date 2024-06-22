@@ -105,6 +105,7 @@ class RestaurantViewModel(
         val convertedList = placesRestaurantList.map { restaurant ->
             convertRestaurantToLocalRestaurant(restaurant)
         }
+        Log.d(TAG, "converted list has ${convertedList.size} items. List is $convertedList.")
         return convertedList
     }
 
@@ -129,7 +130,7 @@ class RestaurantViewModel(
         // Convert each Restaurant object to a LocalRestaurant object
         localRestaurantList =
             convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
-
+Log.d(TAG, "localRestaurantList is $localRestaurantList")
         //restaurantList = localRestaurantList.toMutableLiveDataList()
         viewModelScope.launch(Dispatchers.IO) {
             // Get the AppDatabase instance
@@ -159,7 +160,7 @@ class RestaurantViewModel(
                     restaurantList.postValue(result)
                     Log.d(
                         TAG,
-                        "CoworkerListFragment result has ${result.size} items"
+                        "Restaurant getRestaurants method result has ${result.size} items. Result is $result"
                     )
                 }
             }

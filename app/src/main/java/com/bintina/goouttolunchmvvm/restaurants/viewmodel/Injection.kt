@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.user.viewmodel.ViewModelFactory
+import com.bintina.goouttolunchmvvm.utils.ViewModelFactory
 import com.bintina.goouttolunchmvvm.utils.AppDatabase
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import java.util.concurrent.Executor
@@ -38,7 +38,7 @@ object Injection {
         return Executors.newSingleThreadExecutor()
     }
 
-    fun provideViewModelFactory(context: Context): com.bintina.goouttolunchmvvm.user.viewmodel.ViewModelFactory {
+    fun provideViewModelFactory(context: Context): com.bintina.goouttolunchmvvm.utils.ViewModelFactory {
         val database = provideDatabase(context)
         val application = MyApp()
         val restaurantDao = provideRestaurantDao(database)

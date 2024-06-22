@@ -6,7 +6,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.user.viewmodel.ViewModelFactory
+import com.bintina.goouttolunchmvvm.utils.ViewModelFactory
 import com.bintina.goouttolunchmvvm.utils.AppDatabase
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import java.util.concurrent.Executor

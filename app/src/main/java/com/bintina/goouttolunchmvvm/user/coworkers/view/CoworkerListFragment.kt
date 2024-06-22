@@ -57,7 +57,6 @@ class CoworkerListFragment : Fragment(), LifecycleOwner {
             adapter.notifyDataSetChanged()*/
         })
 
-
         viewModel.getCoworkers(requireContext())
     }
 

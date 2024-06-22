@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
-    var restaurantList:List<LocalRestaurant?> = mutableListOf()
+    var restaurantList: List<LocalRestaurant?> = mutableListOf()
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
@@ -37,20 +37,31 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"
             //restaurant?.photos?.first()?.html_attributions?.first()!!
             val width = 400
-           /* val photoReference = restaurant?.photos?.first()?.photo_reference
+            /* val photoReference = restaurant?.photos?.first()?.photo_reference
 
-            val restaurantImageUrl =
-                convertRawUrlToUrl(rawImageUrl, width.toString(), photoReference!!)
-*/
-            val restaurantImageUrl = restaurant?.photoUrl
-            Log.d("AdapterLog", "url is $restaurantImageUrl")
-            if (restaurantImageUrl != null) {
+             val restaurantImageUrl =
+                 convertRawUrlToUrl(rawImageUrl, width.toString(), photoReference!!)
+ */
+            try {
+                val restaurantImageUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=3000&photoreference=AUc7tXV51WmKMwIl_cbWyq0aenDXiJCUc4qEcUM3JRc9aWdlhS9Z8gv2lmSR0Ai9zWgpuwIbGRq7xRvOkahqN15dU2o1ab5t_RTo5cQ98AjmzgdYybe_5ZO50vyxKhTqHYxQ_5BukZumFT-AMu_bTnLNgoTzzmOrYwsoUsTmCmive90iwdRZ&key=AIzaSyD4bquPv-dcCGf-P22iInx7dXaxgCxkpbA"
+                    //restaurant?.photoUrl
+                if (restaurantImageUrl != null && restaurantImageUrl.isNotEmpty()) {
+                    Log.d("AdapterLog", "Photo URL: $restaurantImageUrl")
 
-            Glide.with(view.ivPhotoRestaurant.context)
-                .load(restaurantImageUrl)
-                .placeholder(R.drawable.hungry_droid)
-                .centerCrop()
-                .into(view.ivPhotoRestaurant)
+                }
+                Log.d("AdapterLog", "url is $restaurantImageUrl")
+                if (restaurantImageUrl != null) {
+
+                    Glide.with(view.ivPhotoRestaurant.context)
+                        .load(restaurantImageUrl)
+                        .placeholder(R.drawable.hungry_droid)
+                        .centerCrop()
+                        .into(view.ivPhotoRestaurant)
+                } else {
+                    Log.d("AdapterLog", "No photo URL generated.")
+                }
+            } catch (e: Exception) {
+                Log.e("AdapterLog", "Error converting restaurant to local restaurant", e)
             }
 
             //Set Name
@@ -58,18 +69,18 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             view.tvRestaurantName.text = restaurantName
 
             //Set Location and type
-/*            val restaurantVicinity = restaurant.vicinity*/
+            /*            val restaurantVicinity = restaurant.vicinity*/
             val restaurantVicinity = "Some address"
             view.tvStyleAndAddress.text = restaurantVicinity
 
 
-           /* //Set Caption View
-            val restaurantOpen = if (restaurant.opening_hours.open_now == true) {
-                "Open"
-            } else {
-                "Closed"
-            }
-            view.tvOpeningHours.text = restaurantOpen*/
+            /* //Set Caption View
+             val restaurantOpen = if (restaurant.opening_hours.open_now == true) {
+                 "Open"
+             } else {
+                 "Closed"
+             }
+             view.tvOpeningHours.text = restaurantOpen*/
 
             //Set click listener for News link
             view.restaurantItem.setOnClickListener { listener.onRestaurantClick() }

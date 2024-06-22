@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.user.viewmodel
+package com.bintina.goouttolunchmvvm.utils
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 
 
 class ViewModelFactory(

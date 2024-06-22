@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.bintina.goouttolunchmvvm.restaurants.model.api.ApiService
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import kotlinx.coroutines.CoroutineScope
 
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +12,7 @@ import kotlinx.coroutines.async
 
 object DataSource {
 
-    suspend fun loadRestaurantList(lifecycleScope: LifecycleCoroutineScope): List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> {
+    suspend fun loadRestaurantList(lifecycleScope: CoroutineScope): List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?> {
         val restaurantsDeferred = loadRestaurants(lifecycleScope)
 
         val restaurantResult = restaurantsDeferred.await()
@@ -19,7 +20,7 @@ object DataSource {
         return restaurantResult.toMutableList()
     }
 
-    suspend fun loadRestaurants(lifecycleScope: LifecycleCoroutineScope): Deferred<List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?>> =
+    suspend fun loadRestaurants(lifecycleScope: CoroutineScope): Deferred<List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?>> =
         lifecycleScope.async(Dispatchers.IO) {
             val apiCall = ApiService.create()
 
@@ -27,7 +28,7 @@ object DataSource {
 
             val result = response.results
 
-            MyApp.restaurantList = result
+            //MyApp.restaurantList = result
             Log.d("DataSourceRestaurantsLog", "loaded ${result.size}")
             return@async result
         }

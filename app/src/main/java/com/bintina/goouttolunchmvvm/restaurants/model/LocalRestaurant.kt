@@ -9,6 +9,7 @@ data class LocalRestaurant(
     @PrimaryKey(autoGenerate = false)
     val restaurantId: String,
     val name: String,
+    //add address
     //val location: Location,
     val photoUrl: String?
 //    val numberOfInterestedUsers: Int?

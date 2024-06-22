@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.model
+package com.bintina.goouttolunchmvvm.user.model.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

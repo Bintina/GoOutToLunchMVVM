@@ -4,17 +4,19 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bumptech.glide.Glide
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
-    var restaurantList = MyApp.restaurantList
+    var restaurantList:List<LocalRestaurant?> = mutableListOf()
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
@@ -24,7 +26,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
          * Binds the restaurant data to the view holder.
          */
         fun bind(
-            restaurant: com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?,
+            restaurant: com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?,
             listener: OnRestaurantClickedListener
         ) {
             //val restaurantId = restaurant?.place_id.toString()
@@ -35,24 +37,29 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"
             //restaurant?.photos?.first()?.html_attributions?.first()!!
             val width = 400
-            val photoReference = restaurant?.photos?.first()?.photo_reference
+           /* val photoReference = restaurant?.photos?.first()?.photo_reference
 
             val restaurantImageUrl =
                 convertRawUrlToUrl(rawImageUrl, width.toString(), photoReference!!)
-
+*/
+            val restaurantImageUrl = restaurant?.photoUrl
             Log.d("AdapterLog", "url is $restaurantImageUrl")
+            if (restaurantImageUrl != null) {
+
             Glide.with(view.ivPhotoRestaurant.context)
                 .load(restaurantImageUrl)
                 .placeholder(R.drawable.hungry_droid)
                 .centerCrop()
                 .into(view.ivPhotoRestaurant)
+            }
 
             //Set Name
-            val restaurantName = restaurant.name
+            val restaurantName = restaurant?.name
             view.tvRestaurantName.text = restaurantName
 
             //Set Location and type
-            val restaurantVicinity = restaurant.vicinity
+/*            val restaurantVicinity = restaurant.vicinity*/
+            val restaurantVicinity = "Some address"
             view.tvStyleAndAddress.text = restaurantVicinity
 
 

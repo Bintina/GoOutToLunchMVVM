@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1f64a677747314c27f1317f4e6660b1b",
+    "identityHash": "167cd30139af511b3736e275d78c27e7",
     "entities": [
       {
         "tableName": "LocalUser",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "LocalRestaurant",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`restaurantId` TEXT NOT NULL, `name` TEXT NOT NULL, `photoUrl` TEXT, PRIMARY KEY(`restaurantId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`restaurantId` TEXT NOT NULL, `name` TEXT NOT NULL, `address` TEXT NOT NULL, `location` TEXT NOT NULL, `photoUrl` TEXT, `attending` INTEGER NOT NULL, PRIMARY KEY(`restaurantId`))",
         "fields": [
           {
             "fieldPath": "restaurantId",
@@ -59,10 +59,28 @@
             "notNull": true
           },
           {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "location",
+            "columnName": "location",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "photoUrl",
             "columnName": "photoUrl",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "attending",
+            "columnName": "attending",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -78,7 +96,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f64a677747314c27f1317f4e6660b1b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '167cd30139af511b3736e275d78c27e7')"
     ]
   }
 }

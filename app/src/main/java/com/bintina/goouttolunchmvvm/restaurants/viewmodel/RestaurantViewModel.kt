@@ -1,9 +1,7 @@
 package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,9 +14,8 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.Restau
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -93,7 +90,11 @@ class RestaurantViewModel(
             localRestaurant = LocalRestaurant(
                 restaurantId = it.place_id,
                 name = it.name,
-                photoUrl = photoUrl
+                address = it.vicinity,
+                location = LatLng(it.geometry.location.lat, it.geometry.location.lng),
+                photoUrl = photoUrl,
+                attending = 0
+
             )
             Log.d(TAG, "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}")
 

@@ -11,10 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantMapBinding
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.Injection
+
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap

@@ -91,7 +91,8 @@ class RestaurantViewModel(
                 restaurantId = it.place_id,
                 name = it.name,
                 address = it.vicinity,
-                location = LatLng(it.geometry.location.lat, it.geometry.location.lng),
+                latitude = it.geometry.location.lat,
+                longitude = it.geometry.location.lng,
                 photoUrl = photoUrl,
                 attending = 0
 

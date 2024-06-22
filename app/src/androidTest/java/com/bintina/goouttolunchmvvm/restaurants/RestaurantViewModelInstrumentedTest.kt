@@ -36,20 +36,25 @@ class RestaurantViewModelInstrumentedTest {
 
     @After
     @Throws(Exception::class)
-    fun closeDb(){
+    fun closeDb() {
         database?.close()
     }
 
     private val RESTAURANT_ID: String = "10"
     private val RESTAURANT_DEMO =
-        LocalRestaurant(RESTAURANT_ID,
+        LocalRestaurant(
+            RESTAURANT_ID,
             "YummyPalace",
+            "Airstrip Road One",
+            -4.3015359,
+            39.5744260,
             "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2",
+            0
+        )
 
-            )
     @Test
     @Throws(InterruptedException::class)
-    fun insertRestaurant(){
+    fun insertRestaurant() {
         //Before: Adding a new user
         this.database?.restaurantDao()?.getRestaurant(RESTAURANT_DEMO.restaurantId)
         //Test

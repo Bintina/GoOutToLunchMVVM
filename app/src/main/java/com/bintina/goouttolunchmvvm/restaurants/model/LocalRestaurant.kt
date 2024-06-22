@@ -14,8 +14,10 @@ data class LocalRestaurant(
     val name: String,
     @ColumnInfo(name = "address")
     val address: String,
-    @ColumnInfo(name = "location")
-    val location: LatLng,
+    @ColumnInfo(name = "latitude")
+    val latitude: Double,
+    @ColumnInfo(name = "longitude")
+    val longitude: Double,
     @ColumnInfo(name = "photoUrl")
     val photoUrl: String?,
     @ColumnInfo(name = "attending")

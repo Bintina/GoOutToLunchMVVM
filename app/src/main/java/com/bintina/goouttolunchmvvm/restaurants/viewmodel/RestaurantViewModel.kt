@@ -88,13 +88,14 @@ class RestaurantViewModel(
 
             val photoUrl =
                 convertRawUrlToUrl(restaurant)
-            Log.d(TAG, "photo url is $photoUrl")
+            Log.d(TAG, "convertRestaurantToLocalRestaurant photo url is $photoUrl")
 
             localRestaurant = LocalRestaurant(
                 restaurantId = it.place_id,
                 name = it.name,
                 photoUrl = photoUrl
             )
+            Log.d(TAG, "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}")
 
         }
         return localRestaurant
@@ -130,7 +131,7 @@ class RestaurantViewModel(
         // Convert each Restaurant object to a LocalRestaurant object
         localRestaurantList =
             convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
-Log.d(TAG, "localRestaurantList is $localRestaurantList")
+        Log.d(TAG, "localRestaurantList is $localRestaurantList")
         //restaurantList = localRestaurantList.toMutableLiveDataList()
         viewModelScope.launch(Dispatchers.IO) {
             // Get the AppDatabase instance
@@ -138,6 +139,7 @@ Log.d(TAG, "localRestaurantList is $localRestaurantList")
 
             // Save each LocalRestaurant object to the database
             localRestaurantList.forEach { localRestaurant ->
+                Log.d(TAG, "Inserting: $localRestaurant")
                 db.restaurantDao().insertRestaurant(localRestaurant!!)
             }
         }
@@ -156,11 +158,13 @@ Log.d(TAG, "localRestaurantList is $localRestaurantList")
             if (result.isEmpty()) {
                 Log.d(TAG, "CoworkerListFragment result is empty")
             } else {
+                Log.d(TAG, "Restaurant result is $result")
                 withContext(Dispatchers.Main) {
                     restaurantList.postValue(result)
                     Log.d(
                         TAG,
-                        "Restaurant getRestaurants method result has ${result.size} items. Result is $result"
+                        "Restaurant getRestaurants method result has ${result.size} items. " +
+                                "Result is $result"
                     )
                 }
             }

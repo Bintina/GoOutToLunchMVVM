@@ -43,8 +43,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                  convertRawUrlToUrl(rawImageUrl, width.toString(), photoReference!!)
  */
             try {
-                val restaurantImageUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=3000&photoreference=AUc7tXV51WmKMwIl_cbWyq0aenDXiJCUc4qEcUM3JRc9aWdlhS9Z8gv2lmSR0Ai9zWgpuwIbGRq7xRvOkahqN15dU2o1ab5t_RTo5cQ98AjmzgdYybe_5ZO50vyxKhTqHYxQ_5BukZumFT-AMu_bTnLNgoTzzmOrYwsoUsTmCmive90iwdRZ&key=AIzaSyD4bquPv-dcCGf-P22iInx7dXaxgCxkpbA"
-                    //restaurant?.photoUrl
+                val restaurantImageUrl = restaurant?.photoUrl
                 if (restaurantImageUrl != null && restaurantImageUrl.isNotEmpty()) {
                     Log.d("AdapterLog", "Photo URL: $restaurantImageUrl")
 

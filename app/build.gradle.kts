@@ -225,6 +225,24 @@ dependencies {
 
     //Card View
     implementation("androidx.cardview:cardview:1.0.0")
+
+    //Json Conversion
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    //WorkManager Dependencies......................................................................
+    // (Java only)
+    implementation("androidx.work:work-runtime:2.9.0")
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    // optional - RxJava2 support
+    implementation("androidx.work:work-rxjava2:2.9.0")
+    // optional - GCMNetworkManager support
+    implementation("androidx.work:work-gcm:2.9.0")
+    // optional - Test helpers
+    androidTestImplementation("androidx.work:work-testing:2.9.0")
+
+    // optional - Multiprocess support
+    implementation("androidx.work:work-multiprocess:2.9.0")
 }
 
 kotlin {

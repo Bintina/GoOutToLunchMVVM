@@ -2,16 +2,19 @@ package com.bintina.goouttolunchmvvm.utils
 
 import android.app.Application
 import android.content.Context
+
 import androidx.navigation.NavController
 import androidx.room.Room
-import androidx.room.Room.databaseBuilder
+
+import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
 import com.facebook.FacebookSdk
 import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseUser
 import java.time.LocalDateTime
+import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 
+class MyApp : Application(), androidx.work.Configuration.Provider {
 
-class MyApp : Application() {
 
     companion object {
 
@@ -22,8 +25,8 @@ class MyApp : Application() {
         lateinit var myContext: Context
 
 //Database instance
-
 lateinit var db: AppDatabase
+
 
         //val restaurantAdapter = Adapter()
         var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> = emptyList()
@@ -65,4 +68,15 @@ lateinit var db: AppDatabase
         // Initialize the Places SDK
         Places.initialize(applicationContext, "MAP_API_KEY")
     }
+
+    override val workManagerConfiguration: androidx.work.Configuration
+        get()  {
+            // Initialize the DataSource here
+            val dataSource =
+                com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+
+            return androidx.work.Configuration.Builder()
+                .setWorkerFactory(CustomWorkerFactory(dataSource))
+                .build()
+        }
 }

@@ -53,12 +53,12 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = Injection.provideRestaurantViewModel(requireContext())
-        val restaurant = viewModel.getRestaurant(restaurantId = 10)
+        /*val restaurant = viewModel.getRestaurant(restaurantId = 10)
 
         // Log the restaurant name
         restaurant?.let {
             Toast.makeText(requireContext(), "Restaurant name is $restaurant", Toast.LENGTH_SHORT).show()
-        }
+        }*/
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?

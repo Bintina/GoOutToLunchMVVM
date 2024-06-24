@@ -2,19 +2,26 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
-import com.google.android.gms.maps.model.LatLng
+import com.bintina.goouttolunchmvvm.utils.objectToJson
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,20 +31,43 @@ import kotlinx.coroutines.withContext
 class RestaurantViewModel(
     application: Application,
     private val restaurantDao: RestaurantDao
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
 
     private val TAG = "RestaurantVMLog"
     private var placesRestaurantList = mutableListOf<Restaurant?>()
-    private var currentRestaurant: MutableLiveData<LocalRestaurant>? = null
-    private lateinit var localRestaurantList: List<LocalRestaurant?>
+    var currentRestaurant: LocalRestaurant? = null
+    var localRestaurantList: List<LocalRestaurant?> = listOf()
     var restaurantList: MutableLiveData<List<LocalRestaurant?>> = MutableLiveData()
     val adapter: Adapter = Adapter()
+    var currentRestaurantAttendingList: List<LocalUser?> = listOf()
+
+    //WorkManager variables
+    internal val outPutWorkInfoItems: LiveData<List<WorkInfo>>
+    private val workManager: WorkManager = WorkManager.getInstance(application)
+
+    //WorkManager initialization
+    init{
+        outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
+    }
+
+    //Create WorkRequest to manage downloads
+    internal fun downloadRestaurants(){
+     val downloadRequest = OneTimeWorkRequestBuilder<DownloadWork>()
+         .setInputData(workDataOf("key" to "value"))
+         .addTag("restaurant")
+         .build()
+
+         workManager.beginWith(downloadRequest).enqueue()
+
+    }
+
 
 
     private val restaurantDataSource: RestaurantDataRepository =
         RestaurantDataRepository(restaurantDao)
     lateinit var databaseReference: DatabaseReference
+
 
 
     //.......................Call.............................................
@@ -61,7 +91,7 @@ class RestaurantViewModel(
                 )
                 withContext(Dispatchers.Main) {
                     placesRestaurantList = result.toMutableList()
-                    saveListToDatabase(result)
+                    saveListToRoomDatabase(result)
                     /*
                                         val convertedList = result.map { restaurant ->
                                             convertRestaurantToLocalRestaurant(restaurant)
@@ -79,55 +109,8 @@ class RestaurantViewModel(
 
     //.......................Response.............................................
 
-    fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant? {
-        var localRestaurant: LocalRestaurant? = null
-        restaurant?.let {
 
-            val photoUrl =
-                convertRawUrlToUrl(restaurant)
-            Log.d(TAG, "convertRestaurantToLocalRestaurant photo url is $photoUrl")
-
-            localRestaurant = LocalRestaurant(
-                restaurantId = it.place_id,
-                name = it.name,
-                address = it.vicinity,
-                latitude = it.geometry.location.lat,
-                longitude = it.geometry.location.lng,
-                photoUrl = photoUrl,
-                attending = 0
-
-            )
-            Log.d(TAG, "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}")
-
-        }
-        return localRestaurant
-    }
-
-    fun convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList: List<Restaurant?>): List<LocalRestaurant?> {
-
-        val convertedList = placesRestaurantList.map { restaurant ->
-            convertRestaurantToLocalRestaurant(restaurant)
-        }
-        Log.d(TAG, "converted list has ${convertedList.size} items. List is $convertedList.")
-        return convertedList
-    }
-
-    //.......................Database.............................................
-    /*    private fun writeToDatabase(restaurant: LocalRestaurant) {
-            databaseReference = Firebase.database.reference
-            //Writing data to Firebase Realtime Database
-            val firebaseRestaurantId = databaseReference.push().key!!
-
-            databaseReference.child("restaurants").child(firebaseRestaurantId).setValue(restaurant)
-                .addOnCanceledListener {
-                    Log.d(TAG, "Write to database canceled")
-                }
-                .addOnFailureListener {
-                    Log.d(TAG, "Write to database failed")
-                }
-
-        }*/
-    fun saveListToDatabase(result: List<Restaurant?>) {
+    fun saveListToRoomDatabase(result: List<Restaurant?>) {
 
         placesRestaurantList = result.toMutableList()
         // Convert each Restaurant object to a LocalRestaurant object
@@ -148,7 +131,7 @@ class RestaurantViewModel(
     }
 
 
-    fun getRestaurants(): MutableLiveData<List<LocalRestaurant?>> {
+    fun getLocalRestaurants(): MutableLiveData<List<LocalRestaurant?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
             val result: MutableList<LocalRestaurant?> = try {
@@ -208,11 +191,15 @@ class RestaurantViewModel(
         }*/
 
 
+    /*fun getAttendingUsers(restaurant: LocalRestaurant?): List<LocalUser?>{
+        currentRestaurantAttendingList = restaurant!!.attending
+        return currentRestaurantAttendingList
+    }*/
     //.......................Logic.......................................................
-    fun getRestaurant(restaurantId: Long): LiveData<LocalRestaurant>? {
+    /*fun getRestaurant(restaurantId: Long): LiveData<LocalRestaurant>? {
         Log.d("TAG", "restaurant id is $restaurantId")
         return currentRestaurant
-    }
+    }*/
     /*
     fun addRestaurantAttendanceMethods
      */

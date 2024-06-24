@@ -97,6 +97,13 @@
             app:destination="@id/restaurant_list_dest" />
 
     </fragment>
+    <fragment
+        android:id="@+id/restaurant_screen_dest"
+        android:name="com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.RestaurantScreenFragment"
+        android:label="Restaurant Screen"
+        tools:layout="@layout/fragment_restaurant_screen">
+    </fragment>
+
 
 
 </navigation>

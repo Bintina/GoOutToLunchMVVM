@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.restaurant
 
 import com.bintina.goouttolunchmvvm.mock.repository.MockRestaurants
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener

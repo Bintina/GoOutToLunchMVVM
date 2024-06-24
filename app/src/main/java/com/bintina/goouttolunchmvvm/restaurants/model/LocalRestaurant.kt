@@ -3,6 +3,7 @@ package com.bintina.goouttolunchmvvm.restaurants.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.google.android.gms.maps.model.LatLng
 
 
@@ -21,6 +22,6 @@ data class LocalRestaurant(
     @ColumnInfo(name = "photoUrl")
     val photoUrl: String?,
     @ColumnInfo(name = "attending")
-    val attending: Int = 0
+    var attending: Int = 0
     //val visited: Boolean
 )

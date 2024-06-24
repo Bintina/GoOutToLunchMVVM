@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm
+package com.bintina.goouttolunchmvvm.restaurant
 
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule

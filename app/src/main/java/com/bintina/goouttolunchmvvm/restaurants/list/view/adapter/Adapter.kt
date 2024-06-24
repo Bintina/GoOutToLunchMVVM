@@ -12,6 +12,7 @@ import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
+import com.bintina.goouttolunchmvvm.utils.loadImage
 import com.bumptech.glide.Glide
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
@@ -51,11 +52,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                 Log.d("AdapterLog", "url is $restaurantImageUrl")
                 if (restaurantImageUrl != null) {
 
-                    Glide.with(view.ivPhotoRestaurant.context)
-                        .load(restaurantImageUrl)
-                        .placeholder(R.drawable.hungry_droid)
-                        .centerCrop()
-                        .into(view.ivPhotoRestaurant)
+                    loadImage(restaurantImageUrl, view.ivPhotoRestaurant)
                 } else {
                     Log.d("AdapterLog", "No photo URL generated.")
                 }
@@ -82,7 +79,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
              view.tvOpeningHours.text = restaurantOpen*/
 
             //Set click listener for News link
-            view.restaurantItem.setOnClickListener { listener.onRestaurantClick() }
+            view.restaurantItem.setOnClickListener { listener.onRestaurantClick(restaurant!!) }
 
         }
     }

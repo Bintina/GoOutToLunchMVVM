@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.utils.MyApp
 
 class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
 
@@ -32,7 +35,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
                 RestaurantViewModel::class.java
             )
         viewModel.getPlacesRestaurantList()
-        viewModel.getRestaurants()
+        viewModel.getLocalRestaurants()
         initializeViews()
 
         Log.d("RestaurantListFragLog", "RestaurantListFragment inflated")
@@ -65,8 +68,10 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
         adapter.listener = this
     }
 
-    override fun onRestaurantClick() {
-        TODO("Not yet implemented")
+    override fun onRestaurantClick(restaurant: LocalRestaurant) {
+        viewModel.currentRestaurant = restaurant
+        Log.d("RestListFragLog", "onRestaurantClick called.")
+        MyApp.navController.navigate(R.id.restaurant_screen_dest)
     }
 
 }

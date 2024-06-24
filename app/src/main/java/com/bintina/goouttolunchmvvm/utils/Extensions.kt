@@ -1,11 +1,16 @@
 package com.bintina.goouttolunchmvvm.utils
 
 import android.util.Log
+import android.widget.ImageView
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
+import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseUser
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.time.LocalDateTime
 
 
@@ -83,4 +88,23 @@ fun mapFirebaseUserToUser(firebaseUser: FirebaseUser): LocalUser {
         email = firebaseUser.email.toString(),
         profilePictureUrl = firebaseUser.photoUrl.toString()
     )
+}
+
+//Image Loading
+fun loadImage(url: String, imageView: ImageView) {
+    Glide.with(imageView.context)
+        .load(url)
+        .placeholder(R.drawable.hungry_droid)
+        .centerCrop()
+        .into(imageView)
+}
+
+fun objectToJson(attendingList: List<LocalUser>): String {
+    val attendingJsonString = Gson().toJson(attendingList)
+
+    return attendingJsonString
+}
+fun <T> jsonToObject(attendingJsonString: String, clazz: Class<T>): List<T> {
+    val typeToken = TypeToken.getParameterized(List::class.java, clazz).type
+    return Gson().fromJson(attendingJsonString, typeToken)
 }

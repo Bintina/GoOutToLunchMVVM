@@ -239,8 +239,10 @@ dependencies {
     // optional - GCMNetworkManager support
     implementation("androidx.work:work-gcm:2.9.0")
     // optional - Test helpers
+    implementation("androidx.work:work-testing:2.9.0")
     androidTestImplementation("androidx.work:work-testing:2.9.0")
-
+    // Test helpers for LiveData
+    androidTestImplementation("android.arch.core:core-testing:1.1.1")
     // optional - Multiprocess support
     implementation("androidx.work:work-multiprocess:2.9.0")
 }

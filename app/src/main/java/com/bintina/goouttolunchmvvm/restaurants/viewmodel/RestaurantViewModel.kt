@@ -42,26 +42,6 @@ class RestaurantViewModel(
     val adapter: Adapter = Adapter()
     var currentRestaurantAttendingList: List<LocalUser?> = listOf()
 
-    //WorkManager variables
-    internal val outPutWorkInfoItems: LiveData<List<WorkInfo>>
-    private val workManager: WorkManager = WorkManager.getInstance(application)
-
-    //WorkManager initialization
-    init{
-        outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
-    }
-
-    //Create WorkRequest to manage downloads
-    internal fun downloadRestaurants(){
-     val downloadRequest = OneTimeWorkRequestBuilder<DownloadWork>()
-         .setInputData(workDataOf("key" to "value"))
-         .addTag("restaurant")
-         .build()
-
-         workManager.beginWith(downloadRequest).enqueue()
-
-    }
-
 
 
     private val restaurantDataSource: RestaurantDataRepository =
@@ -70,65 +50,6 @@ class RestaurantViewModel(
 
 
 
-    //.......................Call.............................................
-    fun getPlacesRestaurantList() {
-        //coroutine for Restaurant list results
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = try {
-                DataSource.loadRestaurantList(viewModelScope)
-            } catch (e: Exception) {
-                Log.d("RestListFragLog", "Error is $e. Cause is ${e.cause}")
-                emptyList<Restaurant?>()
-            }
-
-            //Update UI
-            if (result.isEmpty()) {
-                Log.d(TAG, "result list is empty")
-            } else {
-                Log.d(
-                    "TAG",
-                    "result list has ${result.size} items. Adapter list has ${adapter.restaurantList.size}"
-                )
-                withContext(Dispatchers.Main) {
-                    placesRestaurantList = result.toMutableList()
-                    saveListToRoomDatabase(result)
-                    /*
-                                        val convertedList = result.map { restaurant ->
-                                            convertRestaurantToLocalRestaurant(restaurant)
-                                        }.toMutableList()
-                                        restaurantList = MutableLiveData(convertedList)
-                                        adapter.restaurantList = convertedList
-                                        adapter.notifyDataSetChanged()
-
-                                        saveListToDatabase(result)
-                    */
-                }
-            }
-        }
-    }
-
-    //.......................Response.............................................
-
-
-    fun saveListToRoomDatabase(result: List<Restaurant?>) {
-
-        placesRestaurantList = result.toMutableList()
-        // Convert each Restaurant object to a LocalRestaurant object
-        localRestaurantList =
-            convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
-        Log.d(TAG, "localRestaurantList is $localRestaurantList")
-        //restaurantList = localRestaurantList.toMutableLiveDataList()
-        viewModelScope.launch(Dispatchers.IO) {
-            // Get the AppDatabase instance
-            val db = MyApp.db
-
-            // Save each LocalRestaurant object to the database
-            localRestaurantList.forEach { localRestaurant ->
-                Log.d(TAG, "Inserting: $localRestaurant")
-                db.restaurantDao().insertRestaurant(localRestaurant!!)
-            }
-        }
-    }
 
 
     fun getLocalRestaurants(): MutableLiveData<List<LocalRestaurant?>> {

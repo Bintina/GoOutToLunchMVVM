@@ -6,10 +6,16 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.android.gms.common.ConnectionResult
@@ -22,18 +28,24 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 
 
-open class MainActivity : AppCompatActivity(){
+open class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
-private val TAG = "MainActivityLog"
-        private lateinit var databaseReference: DatabaseReference
+    private val TAG = "MainActivityLog"
+    private lateinit var databaseReference: DatabaseReference
 
+    // WorkManager variables
+    private val workManager: WorkManager by lazy {
+        WorkManager.getInstance(applicationContext)
+    }
+    private lateinit var outPutWorkInfoItems: LiveData<List<WorkInfo>>
 
-    companion object{
+    companion object {
         //KEYS
         const val KEY_LOGIN_FRAGMENT = "KEY_LOGIN_FRAGMENT"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,10 +53,10 @@ private val TAG = "MainActivityLog"
 
         // Check if Google Play Services are available
         if (isGooglePlayServicesAvailable()) {
-            Log.d("MainActLog","Google Play Services are available")
+            Log.d("MainActLog", "Google Play Services are available")
         } else {
             // Handle the case where Google Play Services are not available
-            Log.d("MainActLog","Google Play Services are not available")
+            Log.d("MainActLog", "Google Play Services are not available")
             // For example, you can show an error message or prompt the user to update Google Play Services.
         }
 
@@ -61,7 +73,7 @@ private val TAG = "MainActivityLog"
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
 
-            MyApp.navController = host.navController
+        MyApp.navController = host.navController
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
@@ -71,6 +83,10 @@ private val TAG = "MainActivityLog"
         databaseReference = Firebase.database.reference
         readFromDatabase()
 
+        // Initialize WorkManager and LiveData
+        outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
+        observeWorkStatus()
+        downloadRestaurants()
 
 
         Log.d("MainActivityLog", "Fragment committed")
@@ -97,6 +113,7 @@ private val TAG = "MainActivityLog"
         //Writing data to Firebase Realtime Database
         databaseReference.child("users").child("userId").setValue(localUser)
     }
+
     private fun isGooglePlayServicesAvailable(): Boolean {
         val apiAvailability = GoogleApiAvailability.getInstance()
         val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)
@@ -141,7 +158,8 @@ private val TAG = "MainActivityLog"
 
         }
     }
-    private fun signOut(){
+
+    private fun signOut() {
         Log.d(TAG, "signOut called")
         com.firebase.ui.auth.AuthUI.getInstance()
             .signOut(this)
@@ -152,11 +170,35 @@ private val TAG = "MainActivityLog"
     }
 
     //override fun facebookClick() {
-        //startFacebookSignIn()
+    //startFacebookSignIn()
     //}
 
+    private fun downloadRestaurants() {
+        val downloadRequest = OneTimeWorkRequest.Builder(DownloadWork::class.java)
+            .setInputData(workDataOf("key" to "value"))
+            .addTag("restaurant")
+            .build()
 
+        WorkManager.getInstance(this).enqueue(downloadRequest)
+    }
 
+    private fun observeWorkStatus() {
+        outPutWorkInfoItems.observe(this) { workInfos ->
+            if (workInfos.isNullOrEmpty()) {
+                return@observe
+            }
+
+            // Check the status of the work
+            val workInfo = workInfos[0]
+            if (workInfo.state.isFinished) {
+                Log.d("MainActivity", "Work finished with state: ${workInfo.state}")
+                // Do something when the work is finished
+            } else {
+                Log.d("MainActivity", "Work in progress")
+                // Do something when the work is in progress
+            }
+        }
+    }
 
 }
 /*
@@ -168,17 +210,17 @@ private val TAG = "MainActivityLog"
 */
 
 //From onCreate
-        /*configureViewModel()
+/*configureViewModel()
 
 
-        Log.d("MainActivityLog", "Activity Main created")
+Log.d("MainActivityLog", "Activity Main created")
 
-        val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.add(
-            viewModel.mainContainerInt,
-            viewModel.vmLogInFragment,
-            viewModel.KEY_LOGIN_FRAGMENT
-        )
-        Log.d("MainActLog", "viewModel value is ${viewModel.vmLogInFragment}")
-        transaction.commit()*/
+val fragmentManager = supportFragmentManager
+val transaction = fragmentManager.beginTransaction()
+transaction.add(
+    viewModel.mainContainerInt,
+    viewModel.vmLogInFragment,
+    viewModel.KEY_LOGIN_FRAGMENT
+)
+Log.d("MainActLog", "viewModel value is ${viewModel.vmLogInFragment}")
+transaction.commit()*/

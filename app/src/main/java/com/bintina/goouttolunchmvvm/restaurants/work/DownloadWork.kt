@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.viewModelScope
+import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -29,9 +30,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class DownloadWork(appContext: Context, workerParams: WorkerParameters,
-                   private val dataSource: DataSource) :
-    Worker(appContext, workerParams) {
+class DownloadWork(
+    appContext: Context, workerParams: WorkerParameters,
+    private val dataSource: DataSource
+) : CoroutineWorker(appContext, workerParams) {
 
     val TAG = "DownloadWorkLog"
     val CHANNEL_ID = "DOWNLOAD_CHANNEL"
@@ -48,28 +50,24 @@ class DownloadWork(appContext: Context, workerParams: WorkerParameters,
     /**
      * Executes the background work for the download.
      */
-    override fun doWork(): Result {
-
-
-        // Create Download channel
+    override suspend fun doWork(): Result {
+// Create Download channel
         createDownloadChannel()
 
         // Set notification channel and ID
         val downloadChannelId = CHANNEL_ID
         val downloadId = DOWNLOAD_ID
 
+        // Call getPlacesRestaurantList
+        val result = getPlacesRestaurantList()
 
-        //call loadNotifictionResults
-        getPlacesRestaurantList()
-
-
-        //Handle notification Click
-        val mainIntent = Intent(applicationContext, MainActivity::class.java)
-        mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        // Handle notification Click
+        val mainIntent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         val mainPendingIntent = PendingIntent.getActivity(
             applicationContext, 1, mainIntent,
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-
         )
 
         // Set up second button intent
@@ -79,23 +77,20 @@ class DownloadWork(appContext: Context, workerParams: WorkerParameters,
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
-
         // Build the notification
         val downloadBuilder =
-            NotificationCompat.Builder(applicationContext, downloadChannelId)
-        downloadBuilder.setSmallIcon(R.drawable.ic_baseline_check_circle_24)
-        downloadBuilder.setContentTitle(DOWNLOAD_TITLE)
-        downloadBuilder.priority = NotificationCompat.PRIORITY_DEFAULT
-        //Set cancel
-        downloadBuilder.setAutoCancel(true)
-        //add click intent
-        downloadBuilder.setContentIntent(mainPendingIntent)
-        //add second button
-        downloadBuilder.addAction(
-            com.google.android.material.R.drawable.mtrl_ic_cancel,
-            "Dismiss",
-            secondBtPendingIntent
-        )
+            NotificationCompat.Builder(applicationContext, downloadChannelId).apply {
+                setSmallIcon(R.drawable.ic_baseline_check_circle_24)
+                setContentTitle(DOWNLOAD_TITLE)
+                priority = NotificationCompat.PRIORITY_DEFAULT
+                setAutoCancel(true)
+                setContentIntent(mainPendingIntent)
+                addAction(
+                    com.google.android.material.R.drawable.mtrl_ic_cancel,
+                    "Dismiss",
+                    secondBtPendingIntent
+                )
+            }
 
         // Notify using NotificationManagerCompat
         val downloadManagerCompat = NotificationManagerCompat.from(applicationContext)
@@ -109,8 +104,8 @@ class DownloadWork(appContext: Context, workerParams: WorkerParameters,
         downloadManagerCompat.notify(downloadId, downloadBuilder.build())
 
         // Indicate whether the work finished successfully with the Result
-        Log.d("WorkerSuccessLog", "Worker reached success() return")
-        return Result.success()
+        Log.d(TAG, "Worker reached success() return")
+        return result
     }
 
 
@@ -134,41 +129,47 @@ class DownloadWork(appContext: Context, workerParams: WorkerParameters,
         }
     }
 
-    private fun getPlacesRestaurantList(): Result {
-/*
-getPlacesRestaurantList() method catches exceptions but does not rethrow or return an error result. This may lead to silent failures.
- */
-        //coroutine for Restaurant list results
-        try {
-            //consider switching to withContext(Dispatchers.IO) for better performance
-            runBlocking {
-                val result = try {
-                    dataSource.loadRestaurantList(this)
-                } catch (e: Exception) {
-                    Log.d("RestListFragLog", "Error is $e. Cause is ${e.cause}")
-                    emptyList<Restaurant?>()
-                }
-
-                //Update UI
-                if (result.isEmpty()) {
-                    Log.d(TAG, "result list is empty")
-                } else {
-                    Log.d(
-                        TAG,
-                        "result list has ${result.size} items"
-                    )
-                    saveListToRoomDatabase(result)
-                }
-
-                //.......................Response.............................................
+    //.......................Call.............................................
+    private suspend fun getPlacesRestaurantList(): Result {
 
 
+        return withContext(Dispatchers.IO) {
+            val result = try {
+                dataSource.loadRestaurantList(this)
+            } catch (e: Exception) {
+                Log.d(TAG, "Error is $e. Cause is ${e.cause}")
+                emptyList<Restaurant?>()
             }
 
-        } catch (e: Exception) {
-            Log.d("DownloadWorkLog", "Error is $e. Cause is ${e.cause}")
+            if (result.isEmpty()) {
+                Log.d(TAG, "result list is empty")
+                return@withContext Result.failure()
+            } else {
+                Log.d(TAG, "result list has ${result.size} items.")
+                saveListToRoomDatabase(result)
+                return@withContext Result.success()
+            }
         }
-
-    return Result.success()
     }
+
+//.......................Response.............................................
+
+
+    suspend fun saveListToRoomDatabase(result: List<Restaurant?>) {
+
+        val placesRestaurantList = result.toMutableList()
+        val localRestaurantList =
+            convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
+        Log.d(TAG, "localRestaurantList is $localRestaurantList")
+
+        val db = MyApp.db
+
+        withContext(Dispatchers.IO) {
+            localRestaurantList.forEach { localRestaurant ->
+                Log.d(TAG, "Inserting: $localRestaurant")
+                db.restaurantDao().insertRestaurant(localRestaurant!!)
+            }
+        }
+    }
+
 }

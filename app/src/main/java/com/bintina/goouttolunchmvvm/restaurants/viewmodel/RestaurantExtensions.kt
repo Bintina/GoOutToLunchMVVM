@@ -1,13 +1,16 @@
 package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bintina.goouttolunchmvvm.utils.objectToJson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant? {

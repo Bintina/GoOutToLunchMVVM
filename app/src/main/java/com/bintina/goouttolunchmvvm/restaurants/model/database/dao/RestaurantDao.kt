@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
@@ -23,4 +24,7 @@ interface RestaurantDao {
 
     @Delete
     fun deleteRestaurant(restaurant: LocalRestaurant)
+
+    @Update
+    suspend fun updateRestaurant(restaurant: LocalRestaurant)
 }

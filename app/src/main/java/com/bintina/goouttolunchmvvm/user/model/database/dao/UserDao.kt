@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import kotlinx.coroutines.flow.Flow
 
@@ -25,5 +26,7 @@ interface UserDao {
     @Query("SELECT * FROM LocalUser WHERE uid = :localId")
     fun getUser(localId: String): Flow<LocalUser>
 
-    // ... any other methods you need
+    @Update
+    suspend fun updateUser(localUser: LocalUser)
+
 }

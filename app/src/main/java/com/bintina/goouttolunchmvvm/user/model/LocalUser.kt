@@ -14,7 +14,9 @@ data class LocalUser(
     @ColumnInfo(name = "email")
     val email: String,
     @ColumnInfo(name = "profile_picture_url")
-    val profilePictureUrl: String? = null//,
+    val profilePictureUrl: String? = null,
+    val createdAt: Long,
+    val updatedAt: Long
     //var restaurant: Restaurant? = null
 
 ){

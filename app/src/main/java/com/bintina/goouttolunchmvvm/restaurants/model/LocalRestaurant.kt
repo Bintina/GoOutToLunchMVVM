@@ -22,6 +22,8 @@ data class LocalRestaurant(
     @ColumnInfo(name = "photoUrl")
     val photoUrl: String?,
     @ColumnInfo(name = "attending")
-    var attending: Int = 0
+    var attending: Int = 0,
+    val createdAt: Long,
+    val updatedAt: Long
     //val visited: Boolean
 )

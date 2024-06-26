@@ -18,6 +18,7 @@ import com.bintina.goouttolunchmvvm.utils.MyApp
 
 class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
 
+    val TAG = "RestaurantListFragLog"
     lateinit var adapter: Adapter
 
     private var _binding: FragmentRestaurantListBinding? = null
@@ -34,11 +35,11 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
                 RestaurantViewModel::class.java
             )
-        viewModel.getPlacesRestaurantList()
+
         viewModel.getLocalRestaurants()
         initializeViews()
 
-        Log.d("RestaurantListFragLog", "RestaurantListFragment inflated")
+        Log.d(TAG, "RestaurantListFragment inflated")
 
         return binding.root
     }
@@ -62,15 +63,15 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
             adapter.restaurantList = restaurantList
             adapter.notifyDataSetChanged()
         })
-        Log.d("RestListFragLog", "adapterlist has ${adapter.restaurantList.size}")
+        Log.d(TAG, "adapterlist has ${adapter.restaurantList.size}")
         binding.restaurantRecyclerView.adapter = adapter
-        Log.d("RestListFragLog", "initializeViews called.")
+        Log.d(TAG, "initializeViews called.")
         adapter.listener = this
     }
 
     override fun onRestaurantClick(restaurant: LocalRestaurant) {
         viewModel.currentRestaurant = restaurant
-        Log.d("RestListFragLog", "onRestaurantClick called.")
+        Log.d(TAG, "onRestaurantClick called.")
         MyApp.navController.navigate(R.id.restaurant_screen_dest)
     }
 

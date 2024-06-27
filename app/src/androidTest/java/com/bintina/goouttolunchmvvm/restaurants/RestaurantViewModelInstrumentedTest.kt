@@ -14,6 +14,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @RunWith(AndroidJUnit4::class)
 class RestaurantViewModelInstrumentedTest {
@@ -40,6 +42,12 @@ class RestaurantViewModelInstrumentedTest {
         database?.close()
     }
 
+    // Dummy date and time: December 31, 2022, 23:59:59
+    val dummyUpdateDate = LocalDateTime.of(2022, 12, 31, 23, 59, 59)
+    val updatedAt = dummyUpdateDate.toEpochSecond(ZoneOffset.UTC)
+    // Dummy date and time: December 31, 2023, 23:59:59
+    val dummyCreatedDate = LocalDateTime.of(2023, 12, 31, 23, 59, 59)
+    val createdAt = dummyCreatedDate.toEpochSecond(ZoneOffset.UTC)
     private val RESTAURANT_ID: String = "10"
     private val RESTAURANT_DEMO =
         LocalRestaurant(
@@ -49,7 +57,9 @@ class RestaurantViewModelInstrumentedTest {
             -4.3015359,
             39.5744260,
             "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2",
-            0
+            0,
+            createdAt = createdAt,
+            updatedAt = updatedAt
         )
 
     @Test

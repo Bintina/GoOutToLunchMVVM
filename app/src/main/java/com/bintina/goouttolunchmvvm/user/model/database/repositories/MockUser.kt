@@ -1,6 +1,8 @@
 package com.bintina.goouttolunchmvvm.user.model.database.repositories
 
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 data class MockUser(override val size: Int): List<LocalUser>{
 
@@ -9,12 +11,18 @@ data class MockUser(override val size: Int): List<LocalUser>{
     }
 
     private fun generateMockUsers(): List<LocalUser?> {
+        // Dummy date and time: December 31, 2022, 23:59:59
+        val dummyUpdateDate = LocalDateTime.of(2020, 12, 31, 23, 59, 59)
+        val updatedAt = dummyUpdateDate.toEpochSecond(ZoneOffset.UTC).toLong()
+        // Dummy date and time: December 31, 2023, 23:59:59
+        val dummyCreatedDate = LocalDateTime.of(2021, 12, 31, 23, 59, 59)
+        val createdAt = dummyCreatedDate.toEpochSecond(ZoneOffset.UTC).toLong()
         //Create a list of mock User objects
         return listOf(
-            LocalUser("10", "Albert", "albert@example.com",  "https://picsum.photos/seed/picsum/200/200"),
-            LocalUser("11", "Bernard","bernard@example.com",  "https://picsum.photos/seed/picsum/200/200"),
-            LocalUser("12", "Charles", "charles@example.com", "https://picsum.photos/seed/picsum/200/200"),
-            LocalUser("13", "Derrick", "derrick@example.com",  "https://picsum.photos/seed/picsum/200/200")
+            LocalUser("10", "Albert", "albert@example.com",  "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt),
+            LocalUser("11", "Bernard","bernard@example.com",  "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt),
+            LocalUser("12", "Charles", "charles@example.com", "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt),
+            LocalUser("13", "Derrick", "derrick@example.com",  "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt)
         )
     }
 

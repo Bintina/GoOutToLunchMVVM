@@ -12,6 +12,9 @@ import com.bintina.goouttolunchmvvm.utils.objectToJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
+import java.time.LocalDateTime.*
+import java.time.ZoneOffset
 
 fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant? {
     var localRestaurant: LocalRestaurant? = null
@@ -26,6 +29,14 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
 
         val attending = listOf<LocalUser>()
         val attendingString = objectToJson(attending)
+        Log.d("RestaurantExtensionsLog", "attendingString is $attendingString")
+        // Use the current date and time for updatedAt
+        val currentDateTime = LocalDateTime.now()
+        val updatedAt = currentDateTime.toEpochSecond(ZoneOffset.UTC)
+
+        // Use the current date and time minus a year for createdAt (example logic)
+        val createdAt = currentDateTime.minusYears(1).toEpochSecond(ZoneOffset.UTC)
+
 
         localRestaurant = LocalRestaurant(
             restaurantId = it.place_id,
@@ -34,10 +45,12 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
             latitude = it.geometry.location.lat,
             longitude = it.geometry.location.lng,
             photoUrl = photoUrl,
-            attending = 0
+            attending = 0,
+            createdAt = createdAt,
+            updatedAt = updatedAt
 
         )
-        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}")
+        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
 
     }
     return localRestaurant

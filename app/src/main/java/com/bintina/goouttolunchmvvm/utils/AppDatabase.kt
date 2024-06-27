@@ -7,7 +7,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
-@Database(entities = [LocalUser::class,LocalRestaurant::class], version = 3)
+@Database(entities = [LocalUser::class,LocalRestaurant::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun restaurantDao(): RestaurantDao

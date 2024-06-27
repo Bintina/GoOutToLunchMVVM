@@ -31,8 +31,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class DownloadWork(
-    appContext: Context, workerParams: WorkerParameters,
-    private val dataSource: DataSource
+    appContext: Context, workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
 
     val TAG = "DownloadWorkLog"
@@ -51,59 +50,23 @@ class DownloadWork(
      * Executes the background work for the download.
      */
     override suspend fun doWork(): Result {
-// Create Download channel
         createDownloadChannel()
 
-        // Set notification channel and ID
-        val downloadChannelId = CHANNEL_ID
-        val downloadId = DOWNLOAD_ID
-
-        // Call getPlacesRestaurantList
         val result = getPlacesRestaurantList()
 
-        // Handle notification Click
-        val mainIntent = Intent(applicationContext, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID).apply {
+            setSmallIcon(R.drawable.ic_baseline_check_circle_24)
+            setContentTitle(DOWNLOAD_TITLE)
+            priority = NotificationCompat.PRIORITY_DEFAULT
+            setAutoCancel(true)
         }
-        val mainPendingIntent = PendingIntent.getActivity(
-            applicationContext, 1, mainIntent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
 
-        // Set up second button intent
-        val secondBtnIntent = Intent(applicationContext, MainActivity::class.java)
-        val secondBtPendingIntent = PendingIntent.getActivity(
-            applicationContext, 2, secondBtnIntent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        // Build the notification
-        val downloadBuilder =
-            NotificationCompat.Builder(applicationContext, downloadChannelId).apply {
-                setSmallIcon(R.drawable.ic_baseline_check_circle_24)
-                setContentTitle(DOWNLOAD_TITLE)
-                priority = NotificationCompat.PRIORITY_DEFAULT
-                setAutoCancel(true)
-                setContentIntent(mainPendingIntent)
-                addAction(
-                    com.google.android.material.R.drawable.mtrl_ic_cancel,
-                    "Dismiss",
-                    secondBtPendingIntent
-                )
-            }
-
-        // Notify using NotificationManagerCompat
-        val downloadManagerCompat = NotificationManagerCompat.from(applicationContext)
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext,
-                android.Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        val notificationManager = NotificationManagerCompat.from(applicationContext)
+        if (ActivityCompat.checkSelfPermission(applicationContext, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return Result.failure()
         }
-        downloadManagerCompat.notify(downloadId, downloadBuilder.build())
+        notificationManager.notify(DOWNLOAD_ID, notificationBuilder.build())
 
-        // Indicate whether the work finished successfully with the Result
         Log.d(TAG, "Worker reached success() return")
         return result
     }
@@ -114,17 +77,14 @@ class DownloadWork(
      */
     private fun createDownloadChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = DOWNLOAD_CHANNEL_NAME
-            val description = DOWNLOAD_CHANNEL_DESCRIPTION
             val importance = NotificationManager.IMPORTANCE_DEFAULT
 
-            val notificationChannel = NotificationChannel(CHANNEL_ID, name, importance)
-            notificationChannel.description = description
+            val channel = NotificationChannel(CHANNEL_ID, DOWNLOAD_CHANNEL_NAME, importance).apply {
+                description = DOWNLOAD_CHANNEL_DESCRIPTION
+            }
 
-            val notificationManager =
-                applicationContext.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(notificationChannel)
-
+            val notificationManager = applicationContext.getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
 
         }
     }
@@ -132,23 +92,25 @@ class DownloadWork(
     //.......................Call.............................................
     private suspend fun getPlacesRestaurantList(): Result {
 
+            val dataSource =
+                com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 
         return withContext(Dispatchers.IO) {
-            val result = try {
-                dataSource.loadRestaurantList(this)
+            try {
+                val result = dataSource.loadRestaurantList(this)
+                if (result.isEmpty()) {
+                    Log.d(TAG, "result list is empty")
+                    Result.failure()
+                } else {
+                    Log.d(TAG, "result list has ${result.size} items.")
+                    saveListToRoomDatabase(result)
+                    Result.success()
+                }
             } catch (e: Exception) {
-                Log.d(TAG, "Error is $e. Cause is ${e.cause}")
-                emptyList<Restaurant?>()
+                Log.e(TAG, "Error fetching restaurant list", e)
+                Result.failure()
             }
 
-            if (result.isEmpty()) {
-                Log.d(TAG, "result list is empty")
-                return@withContext Result.failure()
-            } else {
-                Log.d(TAG, "result list has ${result.size} items.")
-                saveListToRoomDatabase(result)
-                return@withContext Result.success()
-            }
         }
     }
 
@@ -157,9 +119,8 @@ class DownloadWork(
 
     suspend fun saveListToRoomDatabase(result: List<Restaurant?>) {
 
-        val placesRestaurantList = result.toMutableList()
         val localRestaurantList =
-            convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
+            convertPlacesRestaurantListToLocalRestaurantList(result)
         Log.d(TAG, "localRestaurantList is $localRestaurantList")
 
         val db = MyApp.db

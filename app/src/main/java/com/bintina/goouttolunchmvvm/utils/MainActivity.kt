@@ -10,11 +10,14 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getWorkManagerStartDelay
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.setPeriodicWorker
 import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
@@ -26,6 +29,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 
 open class MainActivity : AppCompatActivity() {
@@ -34,17 +39,13 @@ open class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val TAG = "MainActivityLog"
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var outPutWorkInfoItems: LiveData<List<WorkInfo>>
 
     // WorkManager variables
     private val workManager: WorkManager by lazy {
         WorkManager.getInstance(applicationContext)
     }
-    private lateinit var outPutWorkInfoItems: LiveData<List<WorkInfo>>
 
-    companion object {
-        //KEYS
-        const val KEY_LOGIN_FRAGMENT = "KEY_LOGIN_FRAGMENT"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +90,7 @@ open class MainActivity : AppCompatActivity() {
         downloadRestaurants()
 
 
-        Log.d("MainActivityLog", "Fragment committed")
+        Log.d(TAG, "Fragment committed")
     }
 
     private fun readFromDatabase() {
@@ -174,12 +175,8 @@ open class MainActivity : AppCompatActivity() {
     //}
 
     private fun downloadRestaurants() {
-        val downloadRequest = OneTimeWorkRequest.Builder(DownloadWork::class.java)
-            .setInputData(workDataOf("key" to "value"))
-            .addTag("restaurant")
-            .build()
-
-        WorkManager.getInstance(this).enqueue(downloadRequest)
+        val initialDelay = getWorkManagerStartDelay()
+        setPeriodicWorker(initialDelay, this)
     }
 
     private fun observeWorkStatus() {
@@ -191,10 +188,10 @@ open class MainActivity : AppCompatActivity() {
             // Check the status of the work
             val workInfo = workInfos[0]
             if (workInfo.state.isFinished) {
-                Log.d("MainActivity", "Work finished with state: ${workInfo.state}")
+                Log.d(TAG, "Work finished with state: ${workInfo.state}")
                 // Do something when the work is finished
             } else {
-                Log.d("MainActivity", "Work in progress")
+                Log.d(TAG, "Work in progress")
                 // Do something when the work is in progress
             }
         }

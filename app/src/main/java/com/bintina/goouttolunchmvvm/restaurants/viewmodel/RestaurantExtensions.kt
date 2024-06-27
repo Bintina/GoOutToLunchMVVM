@@ -1,10 +1,15 @@
 package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
@@ -15,6 +20,8 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.LocalDateTime.*
 import java.time.ZoneOffset
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant? {
     var localRestaurant: LocalRestaurant? = null
@@ -85,4 +92,29 @@ fun saveListToRoomDatabase(result: List<Restaurant?>) {
         Log.d("RestaurantExtensionsLog", "Inserting: $localRestaurant")
         db.restaurantDao().insertRestaurant(localRestaurant!!)
     }
+}
+
+fun getWorkManagerStartDelay(): Long{
+// Calculate the initial delay to midnight
+    val currentTime = Calendar.getInstance()
+    val midnightTime = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+        add(Calendar.DAY_OF_YEAR, 1)
+    }
+    val initialDelay = midnightTime.timeInMillis - currentTime.timeInMillis
+
+    return initialDelay
+}
+
+fun setPeriodicWorker(initialDelay: Long, context: Context){
+    val downloadRequest = PeriodicWorkRequestBuilder<DownloadWork>(24, TimeUnit.HOURS)
+        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+        .setInputData(workDataOf("key" to "value"))
+        .addTag("restaurant")
+        .build()
+
+    WorkManager.getInstance(context).enqueue(downloadRequest)
 }

@@ -12,6 +12,7 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
+import com.bintina.goouttolunchmvvm.utils.mapFirebaseUserToUser
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -98,13 +99,11 @@ class UserViewModel(
     }
 
     private fun saveUserToDatabase(firebaseUser: FirebaseUser?) {
+
+
         firebaseUser?.let {
-            val localUser = LocalUser(
-                uid = it.uid,
-                displayName = it.displayName ?: "",
-                email = it.email ?: "",
-                profilePictureUrl = it.photoUrl?.toString() ?: ""
-            )
+            val localUser = mapFirebaseUserToUser(it)
+
 
             viewModelScope.launch(Dispatchers.IO) {
                 userDao.insert(localUser)

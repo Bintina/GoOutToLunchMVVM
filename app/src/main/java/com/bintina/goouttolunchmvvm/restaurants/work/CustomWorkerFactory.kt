@@ -14,7 +14,7 @@ class CustomWorkerFactory(private val dataSource: DataSource) : WorkerFactory() 
     ): ListenableWorker? {
         return when (workerClassName) {
             DownloadWork::class.java.name ->
-                DownloadWork(appContext, workerParameters, dataSource)
+                DownloadWork(appContext, workerParameters)
             else -> null // Return null to delegate to the default WorkerFactory
         }
     }

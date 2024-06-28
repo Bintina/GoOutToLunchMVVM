@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
     // Insert a single UserX object
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(localUser: LocalUser)
+    fun insert(localUser: LocalUser)
 
     // Insert multiple UserX objects
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(localUsers: List<LocalUser>)
+     fun insertAll(localUsers: List<LocalUser>)
 
     // Get all UserX objects
     @Query("SELECT * FROM LocalUser")

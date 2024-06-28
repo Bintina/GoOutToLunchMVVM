@@ -12,7 +12,6 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
-import com.bintina.goouttolunchmvvm.utils.mapFirebaseUserToUser
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -33,7 +32,6 @@ import kotlinx.coroutines.withContext
 
 class UserViewModel(
     application: Application,
-    //private val userId: Long,
     val userDao: UserDao
 ) : ViewModel() {
 
@@ -50,8 +48,11 @@ class UserViewModel(
         if (result?.resultCode == RESULT_OK) {
             val user = FirebaseAuth.getInstance().currentUser
             this.user.value = user
-            saveUserToDatabase(user)
+            Log.d(TAG, "Sign in successful: ${user?.displayName}")
+            saveLocalUserToRoomDatabase(user)
+            Log.d(TAG, "saveUserToLocalDatabase called")
             currentUser = user
+            Log.d(TAG, "currentUser is $currentUser")
 
             MyApp.navController.navigate(R.id.restaurant_list_dest)
         } else {
@@ -70,6 +71,7 @@ class UserViewModel(
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
                     handleFacebookAccessToken(loginResult.accessToken)
+                    Log.d(TAG, "onSuccess() handleFacebookAccessToken() called.")
                 }
 
                 override fun onCancel() {
@@ -89,8 +91,10 @@ class UserViewModel(
                 if (task.isSuccessful) {
                     val user = FirebaseAuth.getInstance().currentUser
                     this.user.value = user
+                    Log.d(TAG, "handleFacebookAccessToken credential successful, user is $user")
                     currentUser = user
-                    saveUserToDatabase(user)
+                    saveLocalUserToRoomDatabase(user!!)
+                    Log.d(TAG, "saveLocalUserToRoomDatabase called")
                     MyApp.navController.navigate(R.id.restaurant_list_dest)
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -98,19 +102,18 @@ class UserViewModel(
             }
     }
 
-    private fun saveUserToDatabase(firebaseUser: FirebaseUser?) {
-
-
-        firebaseUser?.let {
-            val localUser = mapFirebaseUserToUser(it)
-
+    private fun saveUserRealtimeToDatabase(localUserList: List<LocalUser>) {
+        //This will take in a list.
+        Log.d(TAG, "saveUserRealtimeToDatabase called")
 
             viewModelScope.launch(Dispatchers.IO) {
-                userDao.insert(localUser)
-                writeToDatabase(localUser)
+                databaseReference = Firebase.database.reference
+
+                userDao.insertAll(localUserList)
+                writeToRealtimeDatabaseExtension(localUserList, databaseReference)
+                Log.d(TAG, "writeToRealtimeDatabaseExtension called")
+
             }
-            //TODO("create check for users already in database.")
-        }
     }
 
     fun getCoworkers(context: Context): MutableLiveData<List<LocalUser?>> {
@@ -136,24 +139,7 @@ class UserViewModel(
 
         }
         return coworkerList
-        /*var list: MutableList<User?> = mutableListOf()
-        viewModelScope.launch(Dispatchers.IO) {
-            list = userDao.getAllUsers()
-        }
-        return list*/
-    }
-    private fun writeToDatabase(localUser: LocalUser) {
-        databaseReference = Firebase.database.reference
-        //Writing data to Firebase Realtime Database
-        val firebaseUserId = databaseReference.push().key!!
-
-        databaseReference.child("users").child(firebaseUserId).setValue(localUser)
-            .addOnCanceledListener {
-                Log.d(TAG, "Write to database canceled")
-            }
-            .addOnFailureListener{
-                Log.d(TAG, "Write to database failed")
-            }
 
     }
+
 }

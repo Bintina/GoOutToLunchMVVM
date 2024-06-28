@@ -30,7 +30,7 @@ fun convertRawUrlToUrl(restaurant: Restaurant): String {
 
         // Concatenate the URL parts
         val concatenatedPhotoReference = "$rawUrl$widthString$photoReferenceString$apiKey"
-        Log.d(TAG, "concatenatedPhotoReference is $concatenatedPhotoReference")
+        //Log.d(TAG, "concatenatedPhotoReference is $concatenatedPhotoReference")
 
         return concatenatedPhotoReference
     } else {
@@ -73,26 +73,10 @@ fun getRaw(restaurant: com.bintina.goouttolunchmvvm.restaurants.model.database.r
  */
 
 fun instantiateTodaysDate(): LocalDateTime {
-
-
     currentDate = LocalDateTime.now()
-
 
     return currentDate
 
-}
-
-fun mapFirebaseUserToUser(firebaseUser: FirebaseUser): LocalUser {
-    val downloadDate = System.currentTimeMillis().toLong()
-    var refreshedDate = System.currentTimeMillis().toLong()
-    return LocalUser(
-        displayName = firebaseUser.displayName.toString(),
-        uid = firebaseUser.uid.toString(),
-        email = firebaseUser.email.toString(),
-        profilePictureUrl = firebaseUser.photoUrl.toString(),
-        createdAt = downloadDate,
-        updatedAt = refreshedDate
-    )
 }
 
 //Image Loading

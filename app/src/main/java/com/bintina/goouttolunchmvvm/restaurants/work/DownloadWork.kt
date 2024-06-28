@@ -121,13 +121,13 @@ class DownloadWork(
 
         val localRestaurantList =
             convertPlacesRestaurantListToLocalRestaurantList(result)
-        Log.d(TAG, "localRestaurantList is $localRestaurantList")
+        //Log.d(TAG, "localRestaurantList is $localRestaurantList")
 
         val db = MyApp.db
 
         withContext(Dispatchers.IO) {
             localRestaurantList.forEach { localRestaurant ->
-                Log.d(TAG, "Inserting: $localRestaurant")
+                //Log.d(TAG, "Inserting: $localRestaurant")
                 db.restaurantDao().insertRestaurant(localRestaurant!!)
             }
         }

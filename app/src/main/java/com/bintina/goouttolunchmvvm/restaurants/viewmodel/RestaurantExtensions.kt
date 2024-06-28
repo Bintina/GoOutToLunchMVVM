@@ -29,14 +29,14 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
 
         val photoUrl =
             convertRawUrlToUrl(restaurant)
-        Log.d(
+  /*      Log.d(
             "RestaurantExtensionsLog",
             "convertRestaurantToLocalRestaurant photo url is $photoUrl"
-        )
+        )*/
 
         val attending = listOf<LocalUser>()
         val attendingString = objectToJson(attending)
-        Log.d("RestaurantExtensionsLog", "attendingString is $attendingString")
+        //Log.d("RestaurantExtensionsLog", "attendingString is $attendingString")
         // Use the current date and time for updatedAt
         val currentDateTime = LocalDateTime.now()
         val updatedAt = currentDateTime.toEpochSecond(ZoneOffset.UTC)
@@ -57,7 +57,7 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
             updatedAt = updatedAt
 
         )
-        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
+//        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
 
     }
     return localRestaurant
@@ -68,10 +68,12 @@ fun convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList: List<
     val convertedList = placesRestaurantList.map { restaurant ->
         convertRestaurantToLocalRestaurant(restaurant)
     }
+/*
     Log.d(
         "RestaurantExtensionsLog",
         "converted list has ${convertedList.size} items. List is $convertedList."
     )
+*/
     return convertedList
 }
 
@@ -81,7 +83,7 @@ fun saveListToRoomDatabase(result: List<Restaurant?>) {
     // Convert each Restaurant object to a LocalRestaurant object
     val localRestaurantList =
         convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
-    Log.d("RestaurantExtensionsLog", "localRestaurantList is $localRestaurantList")
+    //Log.d("RestaurantExtensionsLog", "localRestaurantList is $localRestaurantList")
     //restaurantList = localRestaurantList.toMutableLiveDataList()
 
     // Get the AppDatabase instance

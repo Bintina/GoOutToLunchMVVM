@@ -35,14 +35,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
 
             //Load image using Glide
-            val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"
-            //restaurant?.photos?.first()?.html_attributions?.first()!!
-            val width = 400
-            /* val photoReference = restaurant?.photos?.first()?.photo_reference
-
-             val restaurantImageUrl =
-                 convertRawUrlToUrl(rawImageUrl, width.toString(), photoReference!!)
- */
+            
             try {
                 val restaurantImageUrl = restaurant?.photoUrl
                 if (restaurantImageUrl != null && restaurantImageUrl.isNotEmpty()) {
@@ -87,8 +80,8 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding =
             ItemRestaurantBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        Log.d("RestaurantAdapterLog", "Restaurant adapter onCreateViewHolder called")
-        Log.d("RestaurantAdapterLog", "result size = ${restaurantList.size}")
+        //Log.d("RestaurantAdapterLog", "Restaurant adapter onCreateViewHolder called")
+        //Log.d("RestaurantAdapterLog", "result size = ${restaurantList.size}")
         return ItemViewHolder(binding, parent.context)
     }
 

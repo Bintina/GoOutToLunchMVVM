@@ -9,16 +9,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.work.OneTimeWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getWorkManagerStartDelay
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.setPeriodicWorker
-import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.android.gms.common.ConnectionResult
@@ -29,8 +25,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 
 open class MainActivity : AppCompatActivity() {
@@ -53,12 +47,11 @@ open class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Check if Google Play Services are available
-        if (isGooglePlayServicesAvailable()) {
-            Log.d("MainActLog", "Google Play Services are available")
+        if (isGooglePlayServicesAvailable(this)) {
+            Log.d(TAG, "Google Play Services are available")
         } else {
             // Handle the case where Google Play Services are not available
-            Log.d("MainActLog", "Google Play Services are not available")
-            // For example, you can show an error message or prompt the user to update Google Play Services.
+            Log.d(TAG, "Google Play Services are not available")
         }
 
 
@@ -82,43 +75,31 @@ open class MainActivity : AppCompatActivity() {
 
         // Write a message to the database
         databaseReference = Firebase.database.reference
-        readFromDatabase()
+        readFromRealtimeDatabase()
 
         // Initialize WorkManager and LiveData
         outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
         observeWorkStatus()
         downloadRestaurants()
 
-
         Log.d(TAG, "Fragment committed")
     }
 
-    private fun readFromDatabase() {
+    private fun readFromRealtimeDatabase() {
         // Read from the database
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 val value = dataSnapshot.getValue()
-                Log.d(TAG, "Value is: $value")
+                Log.d(TAG, "Realtime Value is: $value")
             }
 
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException())
+                Log.w(TAG, "Failed to read Realtime value.", error.toException())
             }
         })
-    }
-
-    private fun writeToDatabase(localUser: LocalUser) {
-        //Writing data to Firebase Realtime Database
-        databaseReference.child("users").child("userId").setValue(localUser)
-    }
-
-    private fun isGooglePlayServicesAvailable(): Boolean {
-        val apiAvailability = GoogleApiAvailability.getInstance()
-        val resultCode = apiAvailability.isGooglePlayServicesAvailable(this)
-        return resultCode == ConnectionResult.SUCCESS
     }
 
     //Initialize the contents of the Activity's standard options menu
@@ -170,10 +151,6 @@ open class MainActivity : AppCompatActivity() {
 
     }
 
-    //override fun facebookClick() {
-    //startFacebookSignIn()
-    //}
-
     private fun downloadRestaurants() {
         val initialDelay = getWorkManagerStartDelay()
         setPeriodicWorker(initialDelay, this)
@@ -191,33 +168,10 @@ open class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "Work finished with state: ${workInfo.state}")
                 // Do something when the work is finished
             } else {
-                Log.d(TAG, "Work in progress")
+                Log.d(TAG, "Work in progress with state: ${workInfo.state}")
                 // Do something when the work is in progress
             }
         }
     }
 
 }
-/*
-    private fun configureViewModel() {
-
-        viewModel = Injection.provideUserViewModel(MyApp.myContext)
-
-    }
-*/
-
-//From onCreate
-/*configureViewModel()
-
-
-Log.d("MainActivityLog", "Activity Main created")
-
-val fragmentManager = supportFragmentManager
-val transaction = fragmentManager.beginTransaction()
-transaction.add(
-    viewModel.mainContainerInt,
-    viewModel.vmLogInFragment,
-    viewModel.KEY_LOGIN_FRAGMENT
-)
-Log.d("MainActLog", "viewModel value is ${viewModel.vmLogInFragment}")
-transaction.commit()*/

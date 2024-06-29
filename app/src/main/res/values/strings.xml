@@ -167,6 +167,7 @@
     <string name="fetching_coworker_list">Finding your coworkers</string>
     <string name="home">Home</string>
     <string name="sign_out_btn_title">Sign Out</string>
+    <string name="no_one_is_attending_yet">No one is attending yet.</string>
 
 
 </resources>

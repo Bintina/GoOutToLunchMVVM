@@ -21,6 +21,11 @@
         android:scaleType="centerCrop"
 
         />
+    <Button
+        android:id="@+id/attending_button"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        />
     <TextView
         android:id="@+id/restaurant_name"
         android:layout_width="match_parent"

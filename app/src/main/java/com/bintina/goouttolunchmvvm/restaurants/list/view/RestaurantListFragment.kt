@@ -39,6 +39,9 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
         viewModel.getLocalRestaurants()
         initializeViews()
 
+
+//            MyApp.navController.navigate(R.id.restaurant_screen_dest)
+
         Log.d(TAG, "RestaurantListFragment inflated")
 
         return binding.root

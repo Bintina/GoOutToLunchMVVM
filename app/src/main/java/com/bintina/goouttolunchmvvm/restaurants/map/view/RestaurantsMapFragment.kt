@@ -43,9 +43,8 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     ): View {
         _binding = FragmentRestaurantMapBinding.inflate(inflater, container, false)
 
-
         initializeViews()
-        Log.d("MapFragLog","Map Frag onCreateView called")
+        Log.d("MapFragLog", "Map Frag onCreateView called")
         return binding.root
     }
 
@@ -97,7 +96,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun initializeViews() {
-        Toast.makeText(requireContext(),"Map Fragment views initialized", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Map Fragment views initialized", Toast.LENGTH_LONG).show()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -121,14 +120,15 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             val result = try {
                 DataSource.loadRestaurantList(lifecycleScope)
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 Log.d("RestaurantResultTryCatch", "Error is $e")
                 emptyList<LocalRestaurant>()
             }
-            Log.d("RestMapFragLog","result has ${result.size} items")
+            Log.d("RestMapFragLog", "result has ${result.size} items")
         }
+        TODO("This class will need to change to use the ViewModel To fetch restaurant list")
     }
 }

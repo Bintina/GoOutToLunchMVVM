@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
+
     var restaurantList: List<LocalRestaurant?> = mutableListOf()
     lateinit var listener: OnRestaurantClickedListener
 
@@ -35,19 +36,19 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
 
             //Load image using Glide
-            
+
             try {
                 val restaurantImageUrl = restaurant?.photoUrl
                 if (restaurantImageUrl != null && restaurantImageUrl.isNotEmpty()) {
-                    Log.d("AdapterLog", "Photo URL: $restaurantImageUrl")
+                    //Log.d("AdapterLog", "Photo URL: $restaurantImageUrl")
 
                 }
-                Log.d("AdapterLog", "url is $restaurantImageUrl")
+                //Log.d("AdapterLog", "url is $restaurantImageUrl")
                 if (restaurantImageUrl != null) {
 
                     loadImage(restaurantImageUrl, view.ivPhotoRestaurant)
                 } else {
-                    Log.d("AdapterLog", "No photo URL generated.")
+                    //Log.d("AdapterLog", "No photo URL generated.")
                 }
             } catch (e: Exception) {
                 Log.e("AdapterLog", "Error converting restaurant to local restaurant", e)

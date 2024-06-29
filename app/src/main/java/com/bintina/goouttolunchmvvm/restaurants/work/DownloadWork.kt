@@ -22,7 +22,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSo
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.convertPlacesRestaurantListToLocalRestaurantList
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveListToRoomDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveListToRoomDatabaseExtension
 import com.bintina.goouttolunchmvvm.utils.MainActivity
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import kotlinx.coroutines.Dispatchers
@@ -123,14 +123,6 @@ class DownloadWork(
             convertPlacesRestaurantListToLocalRestaurantList(result)
         //Log.d(TAG, "localRestaurantList is $localRestaurantList")
 
-        val db = MyApp.db
-
-        withContext(Dispatchers.IO) {
-            localRestaurantList.forEach { localRestaurant ->
-                //Log.d(TAG, "Inserting: $localRestaurant")
-                db.restaurantDao().insertRestaurant(localRestaurant!!)
-            }
-        }
+        saveListToRoomDatabaseExtension(localRestaurantList)
     }
-
 }

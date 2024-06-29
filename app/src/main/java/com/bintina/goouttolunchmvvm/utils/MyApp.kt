@@ -12,6 +12,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.FirebaseUser
 import java.time.LocalDateTime
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
 class MyApp : Application(), androidx.work.Configuration.Provider {
 
@@ -39,7 +40,7 @@ lateinit var db: AppDatabase
 
 
         //Current User
-        var currentUser: FirebaseUser? = null
+        var currentUser: LocalUser? = null
 
 
         //Testing vals

@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.utils
 
+import android.content.Context
 import android.util.Log
 import android.widget.ImageView
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
@@ -8,6 +9,8 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.R
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
 import com.bumptech.glide.Glide
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -98,3 +101,10 @@ fun <T> jsonToObject(attendingJsonString: String, clazz: Class<T>): List<T> {
     val typeToken = TypeToken.getParameterized(List::class.java, clazz).type
     return Gson().fromJson(attendingJsonString, typeToken)
 }
+
+fun isGooglePlayServicesAvailable(context: Context): Boolean {
+    val apiAvailability = GoogleApiAvailability.getInstance()
+    val resultCode = apiAvailability.isGooglePlayServicesAvailable(context)
+    return resultCode == ConnectionResult.SUCCESS
+}
+

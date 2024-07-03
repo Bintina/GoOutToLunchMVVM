@@ -19,10 +19,10 @@ data class MockUser(override val size: Int): List<LocalUser>{
         val createdAt = dummyCreatedDate.toEpochSecond(ZoneOffset.UTC).toLong()
         //Create a list of mock User objects
         return listOf(
-            LocalUser("10", "Albert", "albert@example.com",  "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt),
-            LocalUser("11", "Bernard","bernard@example.com",  "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt),
-            LocalUser("12", "Charles", "charles@example.com", "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt),
-            LocalUser("13", "Derrick", "derrick@example.com",  "https://picsum.photos/seed/picsum/200/200", createdAt, updatedAt)
+            LocalUser("10", "Albert", "albert@example.com",  "https://picsum.photos/seed/picsum/200/200","Alfredos", createdAt, updatedAt),
+            LocalUser("11", "Bernard","bernard@example.com",  "https://picsum.photos/seed/picsum/200/200", "Bernardos", createdAt, updatedAt),
+            LocalUser("12", "Charles", "charles@example.com", "https://picsum.photos/seed/picsum/200/200", "Carnivor", createdAt, updatedAt),
+            LocalUser("13", "Derrick", "derrick@example.com",  "https://picsum.photos/seed/picsum/200/200", "Dinos", createdAt, updatedAt)
         )
     }
 

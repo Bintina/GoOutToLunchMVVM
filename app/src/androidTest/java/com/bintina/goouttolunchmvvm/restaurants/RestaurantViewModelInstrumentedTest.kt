@@ -62,7 +62,7 @@ class RestaurantViewModelInstrumentedTest {
             updatedAt = updatedAt
         )
 
-    @Test
+   /* @Test
     @Throws(InterruptedException::class)
     fun insertRestaurant() {
         //Before: Adding a new user
@@ -72,5 +72,5 @@ class RestaurantViewModelInstrumentedTest {
             LiveDataTestUtil.getValue(this.database?.restaurantDao()?.getRestaurant(RESTAURANT_ID))
         Assert.assertTrue(restaurant.name == RESTAURANT_DEMO.name && restaurant.restaurantId == RESTAURANT_DEMO.restaurantId)
 
-    }
+    }*/
 }

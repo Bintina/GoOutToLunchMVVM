@@ -129,6 +129,6 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
             }
             Log.d("RestMapFragLog", "result has ${result.size} items")
         }
-        TODO("This class will need to change to use the ViewModel To fetch restaurant list")
+        //TODO("This class will need to change to use the ViewModel To fetch restaurant list")
     }
 }

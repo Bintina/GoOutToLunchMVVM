@@ -11,6 +11,7 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bintina.goouttolunchmvvm.utils.loadImage
 import com.bumptech.glide.Glide
@@ -31,6 +32,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             restaurant: com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?,
             listener: OnRestaurantClickedListener
         ) {
+
             //val restaurantId = restaurant?.place_id.toString()
             //clickedRestaurantLink = restaurantId
 
@@ -51,7 +53,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                     //Log.d("AdapterLog", "No photo URL generated.")
                 }
             } catch (e: Exception) {
-                Log.e("AdapterLog", "Error converting restaurant to local restaurant", e)
+                Log.e("RestScreenAdapterLog", "Error converting restaurant to local restaurant", e)
             }
 
             //Set Name
@@ -73,6 +75,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
              view.tvOpeningHours.text = restaurantOpen*/
 
             //Set click listener for News link
+            Log.d("RestScreenAdapterLog", "Restaurant is $restaurant")
             view.restaurantItem.setOnClickListener { listener.onRestaurantClick(restaurant!!) }
 
         }
@@ -81,6 +84,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding =
             ItemRestaurantBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
         //Log.d("RestaurantAdapterLog", "Restaurant adapter onCreateViewHolder called")
         //Log.d("RestaurantAdapterLog", "result size = ${restaurantList.size}")
         return ItemViewHolder(binding, parent.context)

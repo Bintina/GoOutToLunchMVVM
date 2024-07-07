@@ -11,10 +11,10 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bumptech.glide.Glide
 
 
-class Adapter(var coworkerList: MutableList<LocalUser?>) :
+class Adapter() :
     RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
-
+    var coworkerList: List<LocalUser?> = listOf()
 
 
     val TAG = "CoworkerAdapterLog"
@@ -68,9 +68,9 @@ class Adapter(var coworkerList: MutableList<LocalUser?>) :
         coworkerList[position]?.let { holder.bind(it) }
     }
 
-    fun updateData(newCoworkerList: List<LocalUser?>) {
+   /* fun updateData(newCoworkerList: List<LocalUser?>) {
         coworkerList.clear()
         coworkerList.addAll(newCoworkerList)
         notifyDataSetChanged()
-    }
+    }*/
 }

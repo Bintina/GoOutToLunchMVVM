@@ -2,7 +2,6 @@ package com.bintina.goouttolunchmvvm.user.viewmodel
 
 import android.app.Activity.RESULT_OK
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -51,7 +50,6 @@ class UserViewModel(
             Log.d(TAG, "Sign in successful: ${user?.displayName}")
             saveLocalUserToRoomDatabase(user)
             Log.d(TAG, "saveUserToLocalDatabase called")
-            currentUser = user
             Log.d(TAG, "currentUser is $currentUser")
 
             MyApp.navController.navigate(R.id.restaurant_list_dest)
@@ -92,7 +90,7 @@ class UserViewModel(
                     val user = FirebaseAuth.getInstance().currentUser
                     this.user.value = user
                     Log.d(TAG, "handleFacebookAccessToken credential successful, user is $user")
-                    currentUser = user
+
                     saveLocalUserToRoomDatabase(user!!)
                     Log.d(TAG, "saveLocalUserToRoomDatabase called")
                     MyApp.navController.navigate(R.id.restaurant_list_dest)
@@ -106,17 +104,17 @@ class UserViewModel(
         //This will take in a list.
         Log.d(TAG, "saveUserRealtimeToDatabase called")
 
-            viewModelScope.launch(Dispatchers.IO) {
-                databaseReference = Firebase.database.reference
+        viewModelScope.launch(Dispatchers.IO) {
+            databaseReference = Firebase.database.reference
 
-                userDao.insertAll(localUserList)
-                writeToRealtimeDatabaseExtension(localUserList, databaseReference)
-                Log.d(TAG, "writeToRealtimeDatabaseExtension called")
+            userDao.insertAll(localUserList)
+            writeUsersToRealtimeDatabaseExtension(localUserList, databaseReference)
+            Log.d(TAG, "writeToRealtimeDatabaseExtension called")
 
-            }
+        }
     }
 
-    fun getCoworkers(context: Context): MutableLiveData<List<LocalUser?>> {
+    fun getLocalCoworkers(): MutableLiveData<List<LocalUser?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
             val result: MutableList<LocalUser?> = try {
@@ -128,6 +126,8 @@ class UserViewModel(
             if (result.isEmpty()) {
                 Log.d(TAG, "CoworkerListFragment result is empty")
             } else {
+                Log.d(TAG, "CoworkerListFragment result is $result")
+
                 withContext(Dispatchers.Main) {
                     coworkerList.postValue(result)
                     Log.d(
@@ -136,10 +136,7 @@ class UserViewModel(
                     )
                 }
             }
-
         }
         return coworkerList
-
     }
-
 }

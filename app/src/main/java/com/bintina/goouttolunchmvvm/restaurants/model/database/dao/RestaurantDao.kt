@@ -14,10 +14,10 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 interface RestaurantDao {
 
     @Query("SELECT * FROM LocalRestaurant WHERE restaurantId = :restaurantId")
-    fun getRestaurant(restaurantId: String): LiveData<LocalRestaurant>
+    fun getRestaurant(restaurantId: String): LocalRestaurant
 
     @Query("SELECT * FROM LocalRestaurant")
-    fun getAllRestaurants(): MutableList<LocalRestaurant?>
+    fun getAllRestaurants(): MutableList<LocalRestaurant>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRestaurant(restaurant: LocalRestaurant)
@@ -27,4 +27,6 @@ interface RestaurantDao {
 
     @Update
     suspend fun updateRestaurant(restaurant: LocalRestaurant)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertAll(listRestaurants: List<LocalRestaurant>)
 }

@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.user.model.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -24,7 +25,7 @@ interface UserDao {
 
     // Get a specific UserX object by its localId
     @Query("SELECT * FROM LocalUser WHERE uid = :localId")
-    fun getUser(localId: String): Flow<LocalUser>
+    fun getUser(localId: String): LocalUser
 
     @Update
     suspend fun updateUser(localUser: LocalUser)

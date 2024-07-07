@@ -25,23 +25,25 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
         lateinit var myContext: Context
 
-//Database instance
-lateinit var db: AppDatabase
+        //Database instance
+        lateinit var db: AppDatabase
 
 
         //val restaurantAdapter = Adapter()
-        var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> = emptyList()
+        var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> =
+            emptyList()
+        var coworkerList: List<com.bintina.goouttolunchmvvm.user.model.LocalUser?> =
+            emptyList()
 
 
         //Date variable
         var currentDate: LocalDateTime = java.time.LocalDateTime.now()
 
 
-
-
         //Current User
         var currentUser: LocalUser? = null
-
+        var currentUserRestaurant: com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant? = null
+        var currentClickedRestaurant: CurrentUserRestaurant? = null
 
         //Testing vals
         val sleepDuration: Long = 50000

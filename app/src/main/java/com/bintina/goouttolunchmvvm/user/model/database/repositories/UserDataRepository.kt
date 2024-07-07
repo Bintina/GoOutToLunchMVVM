@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class UserDataRepository(private val userDao: UserDao) {
 
     //Get User
-    fun getUser(userId: String): Flow<LocalUser> {
+    fun getUser(userId: String): LocalUser {
         return this.userDao.getUser(userId)
     }
 }

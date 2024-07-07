@@ -1,7 +1,6 @@
 package com.bintina.goouttolunchmvvm.user.viewmodel
 
 import android.util.Log
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.auth.FirebaseUser
@@ -13,7 +12,9 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+//Get Firebase Auth User methods....................................................................
 
 // Convert a FirebaseUser object to a LocalUser object
 fun mapFirebaseUserToLocalUser(firebaseUser: FirebaseUser): LocalUser {
@@ -24,34 +25,72 @@ fun mapFirebaseUserToLocalUser(firebaseUser: FirebaseUser): LocalUser {
         uid = firebaseUser.uid.toString(),
         email = firebaseUser.email.toString(),
         profilePictureUrl = firebaseUser.photoUrl.toString(),
-        attending = null,
+        attendingString = null,
         createdAt = downloadDate,
         updatedAt = refreshedDate
     )
 }
 
+
+//Room Database methods.............................................................................
 // Save a LocalUser object to the Room database
 fun saveLocalUserToRoomDatabase(result: FirebaseUser?) {
 
     // Convert each User object to a LocalRestaurant object
     val localUser =
         mapFirebaseUserToLocalUser(result!!)
-    Log.d("UserExtensionLog", "localUserList is $localUser")
+    Log.d("UserExtensionLog", "localUser is $localUser")
 
-    val localUserJson = userObjectToJson(localUser!!)
+    MyApp.currentUser = localUser
     CoroutineScope(Dispatchers.IO).launch {
 
         // Get the AppDatabase instance
         val db = MyApp.db
 
-        // Save each LocalUser object to the database
-
-        db.userDao().insert(localUserJson!!)
+        // Save each LocalUser object to the room database
+        db.userDao().insert(localUser)
         Log.d("UserExtensionLog", "Inserting($localUser) called")
+    }
+
+}
+
+fun saveRealtimeUserListToRoom(users: List<LocalUser>){
+
+    CoroutineScope(Dispatchers.IO).launch {
+
+        // Get the AppDatabase instance
+        val db = MyApp.db
+
+        // Save each LocalUser object to the room database
+
+        db.userDao().insertAll(users)
+        Log.d("UserExtensionLog", "Inserting($users) called")
+    }
+}
+//Fetch LocalUser from Room methods
+suspend fun fetchLocalUserList(): List<LocalUser?>{
+    var localUsers = emptyList<LocalUser?>()
+    withContext(Dispatchers.IO) {
+        val db = MyApp.db
+        localUsers = db.userDao().getAllUsers()
+        Log.d("UserExtensionLog", "localUsers are $localUsers")
+        localUsers
+    }
+    return if (localUsers != null) {
+        localUsers
+    } else {
+        emptyList()
     }
 }
 
-fun saveUsersToRealtimeDatabase(
+suspend fun getLocalUserById(uid: String): LocalUser {
+    // Get the AppDatabase instance
+    val db = MyApp.db
+    return db.userDao().getUser(uid)
+}
+
+//Firebase Realtime Database methods................................................................
+suspend fun saveUsersToRealtimeDatabase(
 ) {
     val databaseReference = Firebase.database.reference
 
@@ -59,14 +98,19 @@ fun saveUsersToRealtimeDatabase(
     val localUserList = fetchLocalUserList()
     Log.d("UserExtensionLog", "insertAll has been called. localUserList is $localUserList")
     Log.d("UserExtensionLog", "insertAll has been called")
-    writeToRealtimeDatabaseExtension(localUserList, databaseReference)
+    if (localUserList.isEmpty()){
+        Log.d("UserExtensionLog", "localUserList is empty")
+    } else {
+        val newUserList: List<LocalUser> = localUserList as List<LocalUser>
+    writeUsersToRealtimeDatabaseExtension(newUserList, databaseReference)
+    }
     Log.d("UserExtensionLog", "writeToRealtimeDatabaseExtension called")
 
 }
 
 
 
-fun writeToRealtimeDatabaseExtension(localUserList: List<LocalUser>, databaseReference: DatabaseReference) {
+    fun writeUsersToRealtimeDatabaseExtension(localUserList: List<LocalUser>, databaseReference: DatabaseReference) {
 
     //Writing data to Firebase Realtime Database
     val firebaseUserId = databaseReference.push().key!!
@@ -80,20 +124,19 @@ fun writeToRealtimeDatabaseExtension(localUserList: List<LocalUser>, databaseRef
         }
 
 }
-fun getUpdatedLocalUserList (){
 
-}
-fun fetchLocalUserList(): List<LocalUser>{
-    var localUserList = listOf<LocalUser>()
-    CoroutineScope(Dispatchers.IO).launch {
-        val db = MyApp.db
-        val localUserString = db.userDao().getAllUsers()
-        localUserList = userJsonToObject(localUserString, LocalUser::class.java)
-        Log.d("UserExtensionLog", "localUserList is $localUserList")
-
+fun getRealtimeUsers() {
+    val databaseReference = Firebase.database.reference
+    databaseReference.child("users").get().addOnSuccessListener {
+        val value = it.value
+        Log.d("UserExtensionLog", "Realtime Value is: $value")
+        saveRealtimeUserListToRoom(value as List<LocalUser>)
+    }.addOnFailureListener {
+        Log.d("UserExtensionLog", "Failed to read Realtime value.")
     }
-    return localUserList
 }
+//JSON methods......................................................................................
+
 fun userObjectToJson(user: LocalUser): String {
     val attendingJsonString = Gson().toJson(user)
 

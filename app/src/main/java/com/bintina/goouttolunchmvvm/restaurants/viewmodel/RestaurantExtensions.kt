@@ -144,18 +144,19 @@ suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     return db.restaurantDao().getRestaurant(restaurantId)
 }
 
-fun fetchLocalRestaurantList(): List<LocalRestaurant> {
+suspend fun fetchLocalRestaurantList(): List<LocalRestaurant> {
 
-    var localRestaurants: List<LocalRestaurant?> = listOf()
-    CoroutineScope(Dispatchers.IO).launch {
-        val db = MyApp.db
-        localRestaurants = db.restaurantDao().getAllRestaurants()
-
-        Log.d("RestaurantExtensionLog", "localUsers are $localRestaurants")
-
+    return withContext(Dispatchers.IO) {
+        try {
+            val db = MyApp.db
+            val localRestaurants = db.restaurantDao().getAllRestaurants()
+            Log.d("RestaurantExtensionLog", "localRestaurants are $localRestaurants")
+            localRestaurants
+        } catch (e: Exception) {
+            Log.e("RestaurantExtensionLog", "Error fetching restaurants", e)
+            emptyList()
+        }
     }
-    return localRestaurants as List<LocalRestaurant>
-
 }
 
 //Confirm Attending methods.........................................................................
@@ -226,14 +227,16 @@ fun saveRestaurantsToRealtimeDatabase() {
 
     val databaseReference = Firebase.database.reference
 
-    val localRestaurantList = fetchLocalRestaurantList()
-    Log.d(
-        "RestaurantExtensionLog",
-        "insertAll has been called. localRestaurantList is $localRestaurantList"
-    )
-    Log.d("RestaurantExtensionLog", "insertAll has been called")
-    writeRestaurantsToRealtimeDatabaseExtension(localRestaurantList, databaseReference)
-    Log.d("RestaurantExtensionLog", "writeToRealtimeDatabaseExtension called")
+    CoroutineScope(Dispatchers.Main).launch {
+        val localRestaurantList = withContext(Dispatchers.IO) { fetchLocalRestaurantList() }
+        Log.d(
+            "RestaurantExtensionLog",
+            "insertAll has been called. localRestaurantList is $localRestaurantList"
+        )
+        Log.d("RestaurantExtensionLog", "insertAll has been called")
+        writeRestaurantsToRealtimeDatabaseExtension(localRestaurantList, databaseReference)
+        Log.d("RestaurantExtensionLog", "writeToRealtimeDatabaseExtension called")
+    }
 }
 
 

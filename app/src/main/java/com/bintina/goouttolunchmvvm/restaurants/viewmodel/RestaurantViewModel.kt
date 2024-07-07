@@ -54,12 +54,8 @@ fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
     fun getLocalRestaurants(): MutableLiveData<List<LocalRestaurant?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result: MutableList<LocalRestaurant> = try {
-                restaurantDao.getAllRestaurants()
-            } catch (e: Exception) {
-                Log.d(TAG, "Error is $e. Cause is ${e.cause}")
-                mutableListOf()
-            }
+            val result = fetchLocalRestaurantList()
+
             if (result.isEmpty()) {
                 Log.d(TAG, "RestaurantListFragment result is empty")
             } else {
@@ -73,14 +69,8 @@ fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
                     )
                 }
             }
-
         }
         return restaurantList
-        /*var list: MutableList<User?> = mutableListOf()
-        viewModelScope.launch(Dispatchers.IO) {
-            list = userDao.getAllUsers()
-        }
-        return list*/
     }
 
     /*    private fun saveRestaurantToDatabase(restaurant: Restaurant?) {

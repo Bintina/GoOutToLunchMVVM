@@ -2,32 +2,20 @@ package com.bintina.goouttolunchmvvm.restaurants.work
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.viewModelScope
 import androidx.work.CoroutineWorker
-import androidx.work.ListenableWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.convertPlacesRestaurantListToLocalRestaurantList
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveListToRoomDatabaseExtension
-import com.bintina.goouttolunchmvvm.utils.MainActivity
-import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantListToRoomDatabaseExtension
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class DownloadWork(
@@ -54,15 +42,23 @@ class DownloadWork(
 
         val result = getPlacesRestaurantList()
 
+        //set localUser.attending value to ""
+
         val notificationBuilder = NotificationCompat.Builder(applicationContext, CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_baseline_check_circle_24)
             setContentTitle(DOWNLOAD_TITLE)
+            setContentText("Download completed successfully.")
             priority = NotificationCompat.PRIORITY_DEFAULT
             setAutoCancel(true)
         }
 
         val notificationManager = NotificationManagerCompat.from(applicationContext)
-        if (ActivityCompat.checkSelfPermission(applicationContext, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                applicationContext,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.e(TAG, "Notification permission not granted.")
             return Result.failure()
         }
         notificationManager.notify(DOWNLOAD_ID, notificationBuilder.build())
@@ -83,7 +79,8 @@ class DownloadWork(
                 description = DOWNLOAD_CHANNEL_DESCRIPTION
             }
 
-            val notificationManager = applicationContext.getSystemService(NotificationManager::class.java)
+            val notificationManager =
+                applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
 
         }
@@ -92,8 +89,8 @@ class DownloadWork(
     //.......................Call.............................................
     private suspend fun getPlacesRestaurantList(): Result {
 
-            val dataSource =
-                com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+        val dataSource =
+            com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 
         return withContext(Dispatchers.IO) {
             try {
@@ -117,12 +114,18 @@ class DownloadWork(
 //.......................Response.............................................
 
 
-    suspend fun saveListToRoomDatabase(result: List<Restaurant?>) {
+    suspend fun saveListToRoomDatabase(result: List<Restaurant>) {
+        if (result.isNullOrEmpty()) {
+            Log.d(TAG, "result is null or empty. Local list is not updated")
+        } else {
 
-        val localRestaurantList =
-            convertPlacesRestaurantListToLocalRestaurantList(result)
-        //Log.d(TAG, "localRestaurantList is $localRestaurantList")
-
-        saveListToRoomDatabaseExtension(localRestaurantList)
+            val localRestaurantList =
+                convertPlacesRestaurantListToLocalRestaurantList(result)
+            //Log.d(TAG, "localRestaurantList is $localRestaurantList")
+            if (localRestaurantList != null && localRestaurantList.isNotEmpty()) {
+                saveRestaurantListToRoomDatabaseExtension(localRestaurantList)
+            }
+        }
+//Clean up User attending constructor
     }
 }

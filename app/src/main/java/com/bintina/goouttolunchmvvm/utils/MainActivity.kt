@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.work.WorkInfo
@@ -25,6 +27,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 open class MainActivity : AppCompatActivity() {
@@ -34,6 +39,7 @@ open class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivityLog"
     private lateinit var databaseReference: DatabaseReference
     private lateinit var outPutWorkInfoItems: LiveData<List<WorkInfo>>
+
 
     // WorkManager variables
     private val workManager: WorkManager by lazy {
@@ -73,14 +79,17 @@ open class MainActivity : AppCompatActivity() {
 
         instantiateTodaysDate()
 
+
+
         // Write a message to the database
         databaseReference = Firebase.database.reference
-        readFromRealtimeDatabase()
+        //readFromRealtimeDatabase()
 
         // Initialize WorkManager and LiveData
         outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
-        observeWorkStatus()
         downloadRestaurants()
+        observeWorkStatus()
+
 
         Log.d(TAG, "Fragment committed")
     }
@@ -146,7 +155,7 @@ open class MainActivity : AppCompatActivity() {
         com.firebase.ui.auth.AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener {
-                // ...
+                Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
             }
 
     }
@@ -164,12 +173,37 @@ open class MainActivity : AppCompatActivity() {
 
             // Check the status of the work
             val workInfo = workInfos[0]
-            if (workInfo.state.isFinished) {
-                Log.d(TAG, "Work finished with state: ${workInfo.state}")
-                // Do something when the work is finished
-            } else {
-                Log.d(TAG, "Work in progress with state: ${workInfo.state}")
-                // Do something when the work is in progress
+            when (workInfo.state) {
+                WorkInfo.State.ENQUEUED -> {
+                    Log.d(TAG, "Work is enqueued with state: ${workInfo.state}")
+                    // Do something when the work is enqueued
+                }
+
+                WorkInfo.State.RUNNING -> {
+                    Log.d(TAG, "Work is running with state: ${workInfo.state}")
+                    // Do something when the work is running
+                }
+
+                WorkInfo.State.SUCCEEDED -> {
+                    Log.d(TAG, "Work finished with state: ${workInfo.state}")
+                    // Do something when the work is finished
+
+                }
+
+                WorkInfo.State.FAILED -> {
+                    Log.d(TAG, "Work failed with state: ${workInfo.state}")
+                    // Do something when the work has failed
+                }
+
+                WorkInfo.State.BLOCKED -> {
+                    Log.d(TAG, "Work is blocked with state: ${workInfo.state}")
+                    // Do something when the work is blocked
+                }
+
+                WorkInfo.State.CANCELLED -> {
+                    Log.d(TAG, "Work is cancelled with state: ${workInfo.state}")
+                    // Do something when the work is cancelled
+                }
             }
         }
     }

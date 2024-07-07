@@ -8,16 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI.*
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -25,11 +27,14 @@ import kotlinx.coroutines.launch
 class MyLogInFragment : Fragment(), LifecycleOwner {
 
     private lateinit var viewModel: UserViewModel
+    var coworkersList: List<LocalUser> = listOf()
 
     //private val safeArgs: MyLogInFragmentArgs by navArgs()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val TAG = "LoginFragLog"
+    private val _coworkers = MutableLiveData<List<LocalUser?>>()
+    val coworkers: LiveData<List<LocalUser?>> get() = _coworkers
 
 
     private val signInLauncher =
@@ -50,27 +55,34 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                 UserViewModel::class.java
             )
 
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            currentUser = user
-            Log.d(TAG, "onCreateView currentUser name is ${currentUser?.displayName}")
+        //loadCoworkers()
+
+
+        binding.facebookBtn.setOnClickListener {
+            Log.d(TAG, "facebook btn clicked")
+            LoginManager.getInstance()
+                .logInWithReadPermissions(this, listOf("email", "public_profile"))
+            Log.d(TAG, "startFacebookSignIn called by onClick")
         }
-
-
-            binding.facebookBtn.setOnClickListener {
-                Log.d(TAG, "facebook btn clicked")
-                LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
-                Log.d(TAG, "startFacebookSignIn called by onClick")
-            }
-            binding.googleLoginBtn.setOnClickListener {
-                Log.d(TAG, "google btn clicked")
-                startGoogleSignIn()
-            }
+        binding.googleLoginBtn.setOnClickListener {
+            Log.d(TAG, "google btn clicked")
+            startGoogleSignIn()
+        }
 
         addCoworker(viewModel.coworker)
         Log.d(TAG, "LoginFragment inflated")
         return binding.root
 
     }
+
+/*    fun loadCoworkers() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val coworkerList = viewModel.getLocalCoworkers()
+            _coworkers.value = coworkerList
+            //viewModel.localCoworkerList = coworkerList
+        }
+    }*/
+
     @Deprecated("This method is deprecated")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -112,7 +124,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         lifecycleScope.launch(Dispatchers.IO) {
             if (localUser != null) {
                 Log.d(TAG, "addCoworker called with user ${localUser.displayName}")
-            viewModel.userDao.insert(localUser)
+                viewModel.userDao.insert(localUser)
             }
         }
     }

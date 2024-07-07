@@ -7,19 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.databinding.FragmentCoworkersListBinding
 import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.coworkerList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CoworkerListFragment : Fragment(), LifecycleOwner {
 
+    val TAG = "CoworkerListFragLog"
     lateinit var viewModel: UserViewModel
     lateinit var adapter: Adapter
 
     private var _binding: FragmentCoworkersListBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,29 +44,31 @@ class CoworkerListFragment : Fragment(), LifecycleOwner {
                 requireContext()
             )
         ).get(UserViewModel::class.java)
-
+        viewModel.getLocalCoworkers()
 
         initializeViews()
 
-        Log.d("CoworkerFragmentLog", "CoworkerListFragment inflated")
+        Log.d(TAG, "CoworkerListFragment inflated")
         return binding.root
     }
 
     private fun initializeViews() {
 
-
         binding.coworkerRecyclerContainer.layoutManager = LinearLayoutManager(requireContext())
-        adapter = Adapter(mutableListOf())
-        binding.coworkerRecyclerContainer.adapter = adapter
+        adapter = com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter()
 
         // Observe coworkerList and update the adapter when it changes
-        viewModel.coworkerList.observe(viewLifecycleOwner, { users ->
-            adapter.updateData(users)
-/*            adapter.coworkerList = users
-            adapter.notifyDataSetChanged()*/
+        viewModel.coworkerList.observe(viewLifecycleOwner, { coworkerList ->
+            adapter.coworkerList = coworkerList
+            adapter.notifyDataSetChanged()
         })
+        Log.d(TAG, "Adapter list has ${adapter.coworkerList.size} items")
+        binding.coworkerRecyclerContainer.adapter = adapter
+        /*            adapter.coworkerList = users
+                })
+                    */
 
-        viewModel.getCoworkers(requireContext())
+
     }
 
 

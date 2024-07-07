@@ -5,15 +5,25 @@ import android.util.Log
 import android.widget.ImageView
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 import com.bintina.goouttolunchmvvm.R
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
+
+import com.bintina.goouttolunchmvvm.user.viewmodel.saveUsersToRealtimeDatabase
+import com.bintina.goouttolunchmvvm.user.viewmodel.writeUsersToRealtimeDatabaseExtension
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 
 
@@ -108,3 +118,28 @@ fun isGooglePlayServicesAvailable(context: Context): Boolean {
     return resultCode == ConnectionResult.SUCCESS
 }
 
+fun saveLocalClassesToRoom(listUsers: List<LocalUser>, listRestaurants: List<LocalRestaurant>) {
+    val db = MyApp.db
+    CoroutineScope(Dispatchers.IO).launch {
+        db.userDao().insertAll(listUsers)
+        db.restaurantDao().insertAll(listRestaurants)
+    }
+
+}
+
+fun downloadFromRealtime() {
+
+}
+
+suspend fun uploadToRealtime(
+) {
+    withContext(Dispatchers.IO) {
+        //val db = MyApp.db
+        Log.d("ExtensionsLog", "uploadToRealtime called")
+        //Upload users
+        saveUsersToRealtimeDatabase()
+
+        //Upload restaurants
+        saveRestaurantsToRealtimeDatabase()
+    }
+}

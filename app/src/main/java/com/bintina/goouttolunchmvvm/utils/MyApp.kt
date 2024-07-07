@@ -71,7 +71,7 @@ lateinit var db: AppDatabase
     }
 
     override val workManagerConfiguration: androidx.work.Configuration
-        get()  {
+        get() {
             // Initialize the DataSource here
             val dataSource =
                 com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource

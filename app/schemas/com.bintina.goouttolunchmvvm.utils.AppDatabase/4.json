@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "42bde1e95ed70fb7cda3be80e8fe9cab",
+    "identityHash": "b3fb9e78e366c15e4934464b110e1f77",
     "entities": [
       {
         "tableName": "LocalUser",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `display_name` TEXT NOT NULL, `email` TEXT NOT NULL, `profile_picture_url` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `display_name` TEXT NOT NULL, `email` TEXT NOT NULL, `profile_picture_url` TEXT, `attendingString` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -29,6 +29,12 @@
           {
             "fieldPath": "profilePictureUrl",
             "columnName": "profile_picture_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attendingString",
+            "columnName": "attendingString",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -126,7 +132,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '42bde1e95ed70fb7cda3be80e8fe9cab')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3fb9e78e366c15e4934464b110e1f77')"
     ]
   }
 }

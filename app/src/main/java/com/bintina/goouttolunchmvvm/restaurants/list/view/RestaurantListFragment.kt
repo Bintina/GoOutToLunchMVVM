@@ -13,8 +13,11 @@ import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurant
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
+
 
 class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
 
@@ -73,8 +76,10 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
     }
 
     override fun onRestaurantClick(restaurant: LocalRestaurant) {
-        viewModel.currentRestaurant = restaurant
-        Log.d(TAG, "onRestaurantClick called.")
+        //consider returning currentUserRestaurant instead of global var
+        viewModel.selectRestaurant(restaurant)
+
+        Log.d(TAG, "onRestaurantClick called. viewModel.currentClicked is ${MyApp.currentClickedRestaurant}")
         MyApp.navController.navigate(R.id.restaurant_screen_dest)
     }
 

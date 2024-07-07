@@ -25,6 +25,7 @@ Log.d("RestScreenAdapterLog", "bind called")
             }
 
             val userName = user?.displayName
+
             if (userName != null && userName.isNotEmpty()){
                 view.tvAttendingText.text = "$userName is joining!"
             }

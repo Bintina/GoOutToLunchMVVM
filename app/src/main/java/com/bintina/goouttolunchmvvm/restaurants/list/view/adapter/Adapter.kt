@@ -62,9 +62,11 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
             //Set Location and type
             /*            val restaurantVicinity = restaurant.vicinity*/
-            val restaurantVicinity = "Some address"
+            val restaurantVicinity = restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
+            val numberAttending = "(${restaurant?.attending})"
+            view.tvNumberOfGuests.text = numberAttending
 
             /* //Set Caption View
              val restaurantOpen = if (restaurant.opening_hours.open_now == true) {

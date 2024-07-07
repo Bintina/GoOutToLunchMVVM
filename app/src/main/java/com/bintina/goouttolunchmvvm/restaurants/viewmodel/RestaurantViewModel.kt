@@ -3,25 +3,17 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
-import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
-import com.bintina.goouttolunchmvvm.utils.objectToJson
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentClickedRestaurant
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,25 +36,32 @@ class RestaurantViewModel(
 
 
 
+
     private val restaurantDataSource: RestaurantDataRepository =
         RestaurantDataRepository(restaurantDao)
     lateinit var databaseReference: DatabaseReference
 
 
+fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
+    Log.d(TAG, "selectRestaurant called.Restaurant selected is $restaurant")
+        MyApp.currentClickedRestaurant = getClickedRestaurant(restaurant)
+    Log.d(TAG, "selectRestaurant called. currentClickedRestaurant is $currentClickedRestaurant")
+    return currentClickedRestaurant!!
+    }
 
 
 
     fun getLocalRestaurants(): MutableLiveData<List<LocalRestaurant?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result: MutableList<LocalRestaurant?> = try {
+            val result: MutableList<LocalRestaurant> = try {
                 restaurantDao.getAllRestaurants()
             } catch (e: Exception) {
                 Log.d(TAG, "Error is $e. Cause is ${e.cause}")
                 mutableListOf()
             }
             if (result.isEmpty()) {
-                Log.d(TAG, "CoworkerListFragment result is empty")
+                Log.d(TAG, "RestaurantListFragment result is empty")
             } else {
                 Log.d(TAG, "Restaurant result is $result")
                 withContext(Dispatchers.Main) {

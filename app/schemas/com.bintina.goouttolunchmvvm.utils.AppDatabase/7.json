@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 5,
-    "identityHash": "1ad79eaf8da3b784844b6fcb99f630bd",
+    "version": 7,
+    "identityHash": "b7ee5b9bd8cd1720a893cddb8377ea12",
     "entities": [
       {
         "tableName": "LocalUser",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `display_name` TEXT NOT NULL, `email` TEXT NOT NULL, `profile_picture_url` TEXT, `attendingString` TEXT, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `display_name` TEXT NOT NULL, `email` TEXT NOT NULL, `profile_picture_url` TEXT, `attending_string` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -34,19 +34,19 @@
           },
           {
             "fieldPath": "attendingString",
-            "columnName": "attendingString",
+            "columnName": "attending_string",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "createdAt",
-            "columnName": "createdAt",
+            "columnName": "created_at",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "updatedAt",
-            "columnName": "updatedAt",
+            "columnName": "updated_at",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "LocalRestaurant",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`restaurantId` TEXT NOT NULL, `name` TEXT NOT NULL, `address` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `photoUrl` TEXT, `attending` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, PRIMARY KEY(`restaurantId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`restaurantId` TEXT NOT NULL, `name` TEXT NOT NULL, `address` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `photoUrl` TEXT, `attending` TEXT NOT NULL, `createdAt` INTEGER NOT NULL, `updatedAt` INTEGER NOT NULL, `visited` INTEGER NOT NULL, PRIMARY KEY(`restaurantId`))",
         "fields": [
           {
             "fieldPath": "restaurantId",
@@ -117,6 +117,12 @@
             "columnName": "updatedAt",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "visited",
+            "columnName": "visited",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -132,7 +138,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1ad79eaf8da3b784844b6fcb99f630bd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b7ee5b9bd8cd1720a893cddb8377ea12')"
     ]
   }
 }

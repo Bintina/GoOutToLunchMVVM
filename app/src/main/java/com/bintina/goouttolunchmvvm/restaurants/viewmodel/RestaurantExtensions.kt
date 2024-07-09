@@ -14,8 +14,9 @@ import com.bintina.goouttolunchmvvm.user.viewmodel.getLocalUserById
 import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
-import com.bintina.goouttolunchmvvm.utils.objectToJson
+import com.bintina.goouttolunchmvvm.utils.userListObjectToJson
 import com.bintina.goouttolunchmvvm.utils.uploadToRealtime
+import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -41,8 +42,7 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
                   "convertRestaurantToLocalRestaurant photo url is $photoUrl"
               )*/
 
-        val attending = listOf<LocalUser>()
-        val attendingString = objectToJson(attending)
+
         //Log.d("RestaurantExtensionsLog", "attendingString is $attendingString")
         // Use the current date and time for updatedAt
         val currentDateTime = LocalDateTime.now()
@@ -59,9 +59,10 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
             latitude = it.geometry.location.lat,
             longitude = it.geometry.location.lng,
             photoUrl = photoUrl,
-            attending = 0,
+            attending = "",
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
+            visited = false
 
         )
 //        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
@@ -105,7 +106,10 @@ fun saveListToRoomDatabase(result: List<Restaurant>) {
 
 
 suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<LocalRestaurant>) {
+//TODO("Convert attending constructor to object list string - for each.")
 
+    val attending = listOf<LocalUser>()
+    val attendingString = userListObjectToJson(attending)
     // Get the AppDatabase instance
     val db = MyApp.db
 
@@ -121,16 +125,24 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
 
 //Fetch Room Restaurant methods.....................................................................
 fun getClickedRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant? {
+
+    //TODO("convert restaurant.attending json to object here")
+    val  attendingString = restaurant.attending
+    var attending = userListJsonToObject(attendingString)
+
+
     Log.d("RestaurantExtensionsLog", "getClickedRestaurant restaurant is $restaurant")
     val currentUser = MyApp.currentUser
     val currentClickedUserRestaurant = CurrentUserRestaurant(
         currentUser!!.uid,
         currentUser!!.displayName,
+        restaurant.address,
         restaurant.photoUrl,
         restaurant.restaurantId,
         restaurant.name,
         restaurant.latitude,
-        restaurant.longitude
+        restaurant.longitude,
+        attending
     )
     Log.d(
         "RestaurantExtensionsLog",
@@ -145,7 +157,7 @@ suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
 }
 
 suspend fun fetchLocalRestaurantList(): List<LocalRestaurant> {
-
+//TODO("jsoning attending constructor to retain it as object list string")
     return withContext(Dispatchers.IO) {
         try {
             val db = MyApp.db
@@ -166,10 +178,8 @@ fun confirmAttending(restaurant: CurrentUserRestaurant) {
 
         val localUser = getLocalUserById(restaurant.uid)
         val localRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-        Log.d(
-            "RestaurantExtensionsLog",
-            "confirmAttending called.before updateUserRestaurantChoiceToRoomObject: localUser is $localUser. localRestaurant is $localRestaurant. currentUserRestaurant is $restaurant"
-        )
+       //Handle attending list
+
 
         updateUserResaurantChoiceToRoomObjects(restaurant, localRestaurant, localUser)
         Log.d(
@@ -190,10 +200,22 @@ fun updateUserResaurantChoiceToRoomObjects(
     restaurant: LocalRestaurant,
     user: LocalUser
 ) {
-    restaurant.attending += 1
+
+    //Consider jsoning attending constructor to retain it as object list string
+    restaurant.attending = userListObjectToJson(clickedRestaurant.attending)
     user.attendingString = restaurant.name
 
-    clickedRestaurant.attending += user
+    val attendingList = clickedRestaurant.attending
+    if(!attendingList.contains(user)){
+        attendingList.add(user)
+    } else {
+        attendingList.remove(user)
+    }
+
+    Log.d(
+        "RestaurantExtensionsLog",
+        "updateUserRestaurantChoiceToRoomObject called: localUser is $user. localRestaurant is $clickedRestaurant. currentUserRestaurant is $restaurant"
+    )
 
     CoroutineScope(Dispatchers.IO).launch {
         val db = MyApp.db

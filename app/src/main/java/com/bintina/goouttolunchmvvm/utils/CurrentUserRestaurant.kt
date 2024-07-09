@@ -6,11 +6,11 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 data class CurrentUserRestaurant(
     val uid: String,
     val displayName: String,
-
+    val address: String,
     val restaurantPictureUrl: String?,
     val restaurantId: String,
     val restaurantName: String,
     val latitude: Double,
     val longitude: Double,
-    var attending: List<LocalUser> = listOf()
+    var attending: MutableList<LocalUser> = mutableListOf()
 )

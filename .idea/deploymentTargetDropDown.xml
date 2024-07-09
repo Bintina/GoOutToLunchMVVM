@@ -7,18 +7,18 @@
       </entry>
       <entry key="app">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\delly\.android\avd\Nexus_5_API_31.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="adb-H0A0586000014379-Ri8x73._adb-tls-connect._tcp" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-07T21:40:28.407053500Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-07-09T06:12:15.785786600Z" />
         </State>
       </entry>
       <entry key="insertRestaurant()">

@@ -10,23 +10,23 @@ import com.google.android.gms.maps.model.LatLng
 @Entity
 data class LocalRestaurant(
     @PrimaryKey(autoGenerate = false)
-    val restaurantId: String,
+    val restaurantId: String = "",
     @ColumnInfo(name = "name")
-    val name: String,
+    val name: String = "",
     @ColumnInfo(name = "address")
-    val address: String,
+    val address: String = "",
     @ColumnInfo(name = "latitude")
-    val latitude: Double,
+    val latitude: Double = 0.0,
     @ColumnInfo(name = "longitude")
-    val longitude: Double,
+    val longitude: Double = 0.0,
     @ColumnInfo(name = "photoUrl")
     val photoUrl: String?,
     @ColumnInfo(name = "attending")
-    var attending: String,
+    var attending: String = "",
     @ColumnInfo(name = "createdAt")
-    val createdAt: Long,
+    val createdAt: Long = 0L,
     @ColumnInfo(name = "updatedAt")
-    val updatedAt: Long,
+    val updatedAt: Long = 0L,
     @ColumnInfo(name = "visited")
-    val visited: Boolean
+    val visited: Boolean = false
 )

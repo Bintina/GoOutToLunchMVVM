@@ -9,19 +9,19 @@ import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 @Entity()
 data class LocalUser(
     @PrimaryKey(autoGenerate = false)
-    val uid: String,
+    val uid: String = "",
     @ColumnInfo(name = "display_name")
-    val displayName: String,
+    val displayName: String ="",
     @ColumnInfo(name = "email")
-    val email: String,
+    val email: String = "",
     @ColumnInfo(name = "profile_picture_url")
     val profilePictureUrl: String? = null,
     @ColumnInfo(name = "attending_string")
-    var attendingString: String?,
+    var attendingString: String? = null,
     @ColumnInfo(name = "created_at")
-    val createdAt: Long,
+    val createdAt: Long = 0L,
     @ColumnInfo(name = "updated_at")
-    val updatedAt: Long
+    val updatedAt: Long = 0L
     //var restaurant: Restaurant? = null
 
 ){

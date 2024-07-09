@@ -7,8 +7,10 @@ import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRealtimeRestaurants
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.user.viewmodel.getRealtimeUsers
 
 import com.bintina.goouttolunchmvvm.user.viewmodel.saveUsersToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
@@ -136,8 +138,16 @@ suspend fun uploadToRealtime(
         Log.d("ExtensionsLog", "uploadToRealtime called")
         //Upload users
         saveUsersToRealtimeDatabase()
+        Log.d("ExtensionsLog", "saveUsersToRealtimeDatabase called")
 
         //Upload restaurants
         saveRestaurantsToRealtimeDatabase()
+        Log.d("ExtensionsLog", "saveRestaurantsToRealtimeDatabase called")
     }
+}
+
+fun downloadRealtimeUpdates() {
+
+    getRealtimeUsers()
+    getRealtimeRestaurants()
 }

@@ -4,7 +4,10 @@ import android.util.Log
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -127,14 +130,32 @@ suspend fun saveUsersToRealtimeDatabase(
 
 fun getRealtimeUsers() {
     val databaseReference = Firebase.database.reference
-    databaseReference.child("users").get().addOnSuccessListener {
-        val value = it.value
-        Log.d("UserExtensionLog", "Realtime Value is: $value")
-        saveRealtimeUserListToRoom(value as List<LocalUser>)
+    fetchUsersFromRealtimeDatabase(databaseReference) { users ->
+        // Handle fetched user list here
+        saveRealtimeUserListToRoom(users)
+        Log.d("UserExtensionLog", "Fetched users: $users")
+    }
+
+}
+
+fun fetchUsersFromRealtimeDatabase(databaseReference: DatabaseReference, onUsersFetched: (List<LocalUser>) -> Unit) {
+    databaseReference.child("users").get().addOnSuccessListener { dataSnapshot ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val localUserList = mutableListOf<LocalUser>()
+            for (userSnapshot in dataSnapshot.children) {
+                Log.d("UserExtensions", "User Snapshot: ${userSnapshot.value}")
+                val user = userSnapshot.getValue(LocalUser::class.java)
+                user?.let { localUserList.add(it) }
+            }
+            withContext(Dispatchers.Main) {
+                onUsersFetched(localUserList)
+            }
+        }
     }.addOnFailureListener {
-        Log.d("UserExtensionLog", "Failed to read Realtime value.")
+        Log.d("UserExtensions", "Failed to fetch users: ${it.message}")
     }
 }
+
 //JSON methods......................................................................................
 
 fun userObjectToJson(user: LocalUser): String {

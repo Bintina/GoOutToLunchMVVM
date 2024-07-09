@@ -11,13 +11,10 @@ import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsToRealt
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
 import com.bintina.goouttolunchmvvm.user.viewmodel.saveUsersToRealtimeDatabase
-import com.bintina.goouttolunchmvvm.user.viewmodel.writeUsersToRealtimeDatabaseExtension
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -101,15 +98,16 @@ fun loadImage(url: String, imageView: ImageView) {
         .into(imageView)
 }
 
-fun objectToJson(attendingList: List<LocalUser>): String {
+fun userListObjectToJson(attendingList: List<LocalUser>): String {
     val attendingJsonString = Gson().toJson(attendingList)
 
     return attendingJsonString
 }
 
-fun <T> jsonToObject(attendingJsonString: String, clazz: Class<T>): List<T> {
-    val typeToken = TypeToken.getParameterized(List::class.java, clazz).type
-    return Gson().fromJson(attendingJsonString, typeToken)
+fun userListJsonToObject(attendingJsonString: String): MutableList<LocalUser> {
+    if (attendingJsonString.isEmpty()) return mutableListOf()
+    val listType = object : TypeToken<List<LocalUser>>() {}.type
+    return Gson().fromJson(attendingJsonString, listType)
 }
 
 fun isGooglePlayServicesAvailable(context: Context): Boolean {

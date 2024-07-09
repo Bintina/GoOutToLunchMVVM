@@ -63,12 +63,13 @@ class RestaurantScreenFragment : Fragment() {
         Log.d(TAG, "currentRestaurant is $currentRestaurant")
         binding.attendanceRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.restaurantName.text = currentRestaurant.restaurantName
-        binding.restaurantStyleAndAddress.text = "Some address"
-
-        adapter = Adapter()
         Log.d(TAG, "profile photo url is ${currentRestaurant.restaurantPictureUrl}")
         loadImage("${currentRestaurant.restaurantPictureUrl}", binding.restaurantImage)
+        binding.restaurantName.text = currentRestaurant.restaurantName
+        binding.restaurantStyleAndAddress.text = currentRestaurant.address
+
+        //Set recyclerView adapter
+        adapter = Adapter()
         binding.attendanceRecycler.adapter = adapter
         viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
             adapter.attendingList = currentRestaurant.attending

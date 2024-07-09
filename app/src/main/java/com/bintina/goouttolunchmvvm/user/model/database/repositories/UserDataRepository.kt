@@ -10,4 +10,8 @@ class UserDataRepository(private val userDao: UserDao) {
     fun getUser(userId: String): LocalUser {
         return this.userDao.getUser(userId)
     }
+
+    fun getUserList(): MutableList<LocalUser> {
+        return userDao.getAllUsers()
+    }
 }

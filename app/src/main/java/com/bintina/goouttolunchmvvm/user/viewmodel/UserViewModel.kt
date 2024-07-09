@@ -117,7 +117,7 @@ class UserViewModel(
     fun getLocalCoworkers(): MutableLiveData<List<LocalUser?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result: MutableList<LocalUser?> = try {
+            val result: MutableList<LocalUser> = try {
                 userDao.getAllUsers()
             } catch (e: Exception) {
                 Log.d(TAG, "Error is $e. Cause is ${e.cause}")

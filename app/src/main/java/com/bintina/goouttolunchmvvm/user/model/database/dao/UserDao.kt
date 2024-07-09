@@ -21,7 +21,7 @@ interface UserDao {
 
     // Get all UserX objects
     @Query("SELECT * FROM LocalUser")
-    fun getAllUsers(): MutableList<LocalUser?>
+    fun getAllUsers(): MutableList<LocalUser>
 
     // Get a specific UserX object by its localId
     @Query("SELECT * FROM LocalUser WHERE uid = :localId")

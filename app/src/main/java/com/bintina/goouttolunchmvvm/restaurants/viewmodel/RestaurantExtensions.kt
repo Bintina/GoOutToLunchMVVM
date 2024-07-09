@@ -17,10 +17,7 @@ import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bintina.goouttolunchmvvm.utils.userListObjectToJson
 import com.bintina.goouttolunchmvvm.utils.uploadToRealtime
 import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -268,30 +265,12 @@ fun saveRestaurantsToRealtimeDatabase() {
 fun getRealtimeRestaurants() {
     val databaseReference = Firebase.database.reference
 
-    fetchRestaurantsFromRealtimeDatabase(databaseReference) { restaurants ->
-        Log.d("RestaurantExtensionLog", "Fetched restaurants: $restaurants")
+    databaseReference.child("restaurants").get().addOnSuccessListener {
         CoroutineScope(Dispatchers.IO).launch {
-            saveRestaurantListToRoomDatabaseExtension(restaurants)
+            val localRestaurantList = it.getValue() as List<LocalRestaurant>
+            saveRestaurantListToRoomDatabaseExtension(localRestaurantList)
         }
     }
-}
-
-fun fetchRestaurantsFromRealtimeDatabase(databaseReference: DatabaseReference, onRestaurantsFetched: (List<LocalRestaurant>) -> Unit) {
-    databaseReference.child("restaurants").addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(snapshot: DataSnapshot) {
-            val restaurantList = mutableListOf<LocalRestaurant>()
-            for (restaurantSnapshot in snapshot.children) {
-                val restaurant = restaurantSnapshot.getValue(LocalRestaurant::class.java)
-                restaurant?.let { restaurantList.add(it) }
-            }
-            onRestaurantsFetched(restaurantList)
-        }
-
-        override fun onCancelled(error: DatabaseError) {
-            Log.d("RestaurantExtensionLog", "Fetch from database canceled: ${error.message}")
-        }
-    })
 }
 
 //Worker methods....................................................................................

@@ -19,7 +19,6 @@ import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUserRestaurant
-import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates
 import com.bintina.goouttolunchmvvm.utils.loadImage
 
 
@@ -43,7 +42,7 @@ class RestaurantScreenFragment : Fragment() {
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
                 RestaurantViewModel::class.java
             )
-        downloadRealtimeUpdates()
+
         binding.attendingButton.setOnClickListener {
 
             Log.d(TAG, " currentUserRestaurant is ${MyApp.currentClickedRestaurant}")

@@ -139,21 +139,25 @@ fun getRealtimeUsers() {
 }
 
 fun fetchUsersFromRealtimeDatabase(databaseReference: DatabaseReference, onUsersFetched: (List<LocalUser>) -> Unit) {
-    databaseReference.child("users").get().addOnSuccessListener { dataSnapshot ->
-        CoroutineScope(Dispatchers.IO).launch {
-            val localUserList = mutableListOf<LocalUser>()
-            for (userSnapshot in dataSnapshot.children) {
-                Log.d("UserExtensions", "User Snapshot: ${userSnapshot.value}")
-                val user = userSnapshot.getValue(LocalUser::class.java)
-                user?.let { localUserList.add(it) }
-            }
-            withContext(Dispatchers.Main) {
-                onUsersFetched(localUserList)
+    databaseReference.child("users").addValueEventListener(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val localUserList = mutableListOf<LocalUser>()
+                for (userSnapshot in dataSnapshot.children) {
+                    Log.d("UserExtensions", "User Snapshot: ${userSnapshot.value}")
+                    val user = userSnapshot.getValue(LocalUser::class.java)
+                    user?.let { localUserList.add(it) }
+                }
+                withContext(Dispatchers.Main) {
+                    onUsersFetched(localUserList)
+                }
             }
         }
-    }.addOnFailureListener {
-        Log.d("UserExtensions", "Failed to fetch users: ${it.message}")
-    }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d("UserExtensions", "Failed to fetch users: ${databaseError.message}")
+        }
+    })
 }
 
 //JSON methods......................................................................................

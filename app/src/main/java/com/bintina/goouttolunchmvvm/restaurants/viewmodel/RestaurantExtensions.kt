@@ -130,7 +130,7 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
 fun getClickedRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant? {
 
     //TODO("convert restaurant.attending json to object here")
-    val  attendingString = restaurant.attending
+    val attendingString = restaurant.attending
     var attending = userListJsonToObject(attendingString)
 
 
@@ -153,6 +153,7 @@ fun getClickedRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant? {
     )
     return currentClickedUserRestaurant
 }
+
 suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     // Get the AppDatabase instance
     val db = MyApp.db
@@ -181,7 +182,7 @@ fun confirmAttending(restaurant: CurrentUserRestaurant) {
 
         val localUser = getLocalUserById(restaurant.uid)
         val localRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-       //Handle attending list
+        //Handle attending list
 
 
         updateUserResaurantChoiceToRoomObjects(restaurant, localRestaurant, localUser)
@@ -209,7 +210,7 @@ fun updateUserResaurantChoiceToRoomObjects(
     user.attendingString = restaurant.name
 
     val attendingList = clickedRestaurant.attending
-    if(!attendingList.contains(user)){
+    if (!attendingList.contains(user)) {
         attendingList.add(user)
     } else {
         attendingList.remove(user)
@@ -224,30 +225,13 @@ fun updateUserResaurantChoiceToRoomObjects(
         val db = MyApp.db
         db.userDao().insert(user)
         db.restaurantDao().insertRestaurant(restaurant)
+
     }
     //save userList to Room
     //save restaurantList to Room
 }
 
 //Realtime Database methods.........................................................................
-
-fun writeRestaurantsToRealtimeDatabaseExtension(
-    localRestaurantList: List<LocalRestaurant>,
-    databaseReference: DatabaseReference
-) {
-    //Writing data to Firebase Realtime Database
-    val firebaseUserId = databaseReference.push().key!!
-
-    databaseReference.child("restaurants").child(firebaseUserId).setValue(localRestaurantList)
-        .addOnCanceledListener {
-            Log.d("RestaurantExtensionLog", "Write to database canceled")
-        }
-        .addOnFailureListener {
-            Log.d("RestaurantExtensionLog", "Write to database failed")
-        }
-
-}
-
 fun saveRestaurantsToRealtimeDatabase() {
 
     val databaseReference = Firebase.database.reference
@@ -258,10 +242,51 @@ fun saveRestaurantsToRealtimeDatabase() {
             "RestaurantExtensionLog",
             "insertAll has been called. localRestaurantList is $localRestaurantList"
         )
-        Log.d("RestaurantExtensionLog", "insertAll has been called")
+
         writeRestaurantsToRealtimeDatabaseExtension(localRestaurantList, databaseReference)
         Log.d("RestaurantExtensionLog", "writeToRealtimeDatabaseExtension called")
     }
+}
+
+fun writeRestaurantsToRealtimeDatabaseExtension(
+    localRestaurantList: List<LocalRestaurant>,
+    databaseReference: DatabaseReference
+) {
+            Log.d("RestaurantExtensionLog", "writeRestaurantsToRealtimeDatabaseExtension() called.")
+localRestaurantList.forEach{ localRestaurant ->
+    val restaurantQuery = databaseReference.child("restaurants").orderByChild("restaurantId").equalTo(localRestaurant.restaurantId)
+    restaurantQuery.addListenerForSingleValueEvent(object : ValueEventListener{
+        override fun onDataChange(snapshot: DataSnapshot) {
+            if (snapshot.exists()){
+                for (restaurantSnapshot in snapshot.children){
+                    restaurantSnapshot.ref.setValue(localRestaurant)
+                        .addOnSuccessListener {
+            Log.d("RestaurantExtensionLog", "Restaurant data updated successfully for restaurantId ${localRestaurant.restaurantId}")
+
+                        }
+                        .addOnFailureListener{ e ->
+            Log.d("RestaurantExtensionLog", "Failed to update restaurant data for restaurantId ${localRestaurant.restaurantId}")
+
+                        }
+                }
+            } else {
+                val firebaseRestaurantId = databaseReference.child("restaurants").push().key!!
+                databaseReference.child("restaurants").child(firebaseRestaurantId).setValue(localRestaurant)
+                    .addOnSuccessListener {
+            Log.d("RestaurantExtensionLog", "New restaurant data saved successfully for restaurantId ${localRestaurant.restaurantId}")
+                    }
+                    .addOnFailureListener{
+            Log.d("RestaurantExtensionLog", "Failed to save restaurant data save for restaurantId ${localRestaurant.restaurantId}")
+                    }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Log.d("RestaurantExtensionLog", "Restaurant query cancelled, error: ${error.message}")
+        }
+    })
+}
+
 }
 
 
@@ -276,7 +301,10 @@ fun getRealtimeRestaurants() {
     }
 }
 
-fun fetchRestaurantsFromRealtimeDatabase(databaseReference: DatabaseReference, onRestaurantsFetched: (List<LocalRestaurant>) -> Unit) {
+fun fetchRestaurantsFromRealtimeDatabase(
+    databaseReference: DatabaseReference,
+    onRestaurantsFetched: (List<LocalRestaurant>) -> Unit
+) {
     databaseReference.child("restaurants").addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {

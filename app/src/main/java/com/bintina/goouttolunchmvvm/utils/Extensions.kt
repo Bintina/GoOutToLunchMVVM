@@ -127,9 +127,7 @@ fun saveLocalClassesToRoom(listUsers: List<LocalUser>, listRestaurants: List<Loc
 
 }
 
-fun downloadFromRealtime() {
 
-}
 
 suspend fun uploadToRealtime(
 ) {

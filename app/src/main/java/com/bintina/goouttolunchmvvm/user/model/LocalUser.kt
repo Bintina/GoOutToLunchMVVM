@@ -4,7 +4,7 @@ package com.bintina.goouttolunchmvvm.user.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+
 
 @Entity()
 data class LocalUser(

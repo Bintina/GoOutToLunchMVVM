@@ -89,6 +89,7 @@ open class MainActivity : AppCompatActivity() {
         outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
         downloadRestaurants()
         observeWorkStatus()
+        downloadRealtimeUpdates()
 
 
         Log.d(TAG, "Fragment committed")

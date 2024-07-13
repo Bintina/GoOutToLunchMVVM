@@ -30,10 +30,10 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
 
         //val restaurantAdapter = Adapter()
-        var restaurantList: List<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> =
-            emptyList()
-        var coworkerList: List<com.bintina.goouttolunchmvvm.user.model.LocalUser?> =
-            emptyList()
+        var restaurantList: ArrayList<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> =
+            arrayListOf()
+        var coworkerList: ArrayList<com.bintina.goouttolunchmvvm.user.model.LocalUser?> =
+            arrayListOf()
 
 
         //Date variable

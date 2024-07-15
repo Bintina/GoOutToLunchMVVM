@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantScreenBinding
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.confirmAttending
@@ -28,7 +29,7 @@ class RestaurantScreenFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var adapter: Adapter
     private lateinit var viewModel: RestaurantViewModel
-    lateinit var currentRestaurant: CurrentUserRestaurant
+    lateinit var currentRestaurant: LocalRestaurant
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,9 +63,9 @@ class RestaurantScreenFragment : Fragment() {
         Log.d(TAG, "currentRestaurant is $currentRestaurant")
         binding.attendanceRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        Log.d(TAG, "profile photo url is ${currentRestaurant.restaurantPictureUrl}")
-        loadImage("${currentRestaurant.restaurantPictureUrl}", binding.restaurantImage)
-        binding.restaurantName.text = currentRestaurant.restaurantName
+        Log.d(TAG, "profile photo url is ${currentRestaurant.photoUrl}")
+        loadImage("${currentRestaurant.photoUrl}", binding.restaurantImage)
+        binding.restaurantName.text = currentRestaurant.name
         binding.restaurantStyleAndAddress.text = currentRestaurant.address
 
         //Set recyclerView adapter

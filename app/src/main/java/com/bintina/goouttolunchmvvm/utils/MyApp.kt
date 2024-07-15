@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.navigation.NavController
 import androidx.room.Room
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.facebook.FacebookSdk
@@ -39,7 +40,7 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
         //Current User
         var currentUser: LocalUser? = null
         var currentUserRestaurant: com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant? = null
-        var currentClickedRestaurant: CurrentUserRestaurant? = null
+        var currentClickedRestaurant: LocalRestaurant? = null
 
         //Testing vals
         val sleepDuration: Long = 50000

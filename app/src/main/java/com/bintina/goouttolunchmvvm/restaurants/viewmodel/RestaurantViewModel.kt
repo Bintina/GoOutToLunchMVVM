@@ -45,7 +45,7 @@ class RestaurantViewModel(
 
 fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
     Log.d(TAG, "selectRestaurant called.Restaurant selected is $restaurant")
-        MyApp.currentClickedRestaurant = getClickedRestaurant(restaurant)
+        MyApp.currentClickedRestaurant = getClickedRestaurantAttendeeObjects(restaurant)
     Log.d(TAG, "selectRestaurant called. currentClickedRestaurant is $currentClickedRestaurant")
     return currentClickedRestaurant!!
     }
@@ -74,7 +74,7 @@ fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
         return restaurantList
     }
 
-    fun getAttendingList(restaurant: CurrentUserRestaurant): List<LocalUser?>{
+    fun getAttendingList(restaurant: LocalRestaurant): List<LocalUser?>{
 
         CoroutineScope(Dispatchers.IO).launch {
         val currentLocalRestaurant = getLocalRestaurantById(restaurant.restaurantId)

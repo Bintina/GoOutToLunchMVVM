@@ -9,11 +9,9 @@ import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
-import com.bintina.goouttolunchmvvm.utils.userListObjectToJson
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -31,7 +29,10 @@ import java.util.concurrent.TimeUnit
 
 
 //Get Places Restaurants and save to Room methods...................................................
-fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant? {
+fun convertRestaurantToLocalRestaurant(
+    restaurant: Restaurant?,
+    currentUser: LocalUser
+): LocalRestaurant? {
     var localRestaurant: LocalRestaurant? = null
     restaurant?.let {
 
@@ -59,10 +60,13 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
             latitude = it.geometry.location.lat,
             longitude = it.geometry.location.lng,
             photoUrl = photoUrl,
-            attending = "",
+            attendingList = "",
             createdAt = createdAt,
             updatedAt = updatedAt,
-            visited = false
+            visited = false,
+            currentUserName = currentUser.displayName,
+            currentUserUid = currentUser.uid,
+            currentUserAttendingBoolean = false
 
         )
 //        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
@@ -71,20 +75,23 @@ fun convertRestaurantToLocalRestaurant(restaurant: Restaurant?): LocalRestaurant
     return localRestaurant
 }
 
-fun convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList: List<Restaurant?>): List<LocalRestaurant> {
+fun convertPlacesRestaurantListToLocalRestaurantList(
+    placesRestaurantList: List<Restaurant?>,
+    currentUser: LocalUser
+): List<LocalRestaurant> {
     if (placesRestaurantList.isNullOrEmpty()) {
         return MyApp.restaurantList as List<LocalRestaurant>
     } else {
 
         val convertedList: List<LocalRestaurant?> = placesRestaurantList.map { restaurant ->
-            convertRestaurantToLocalRestaurant(restaurant)
+            convertRestaurantToLocalRestaurant(restaurant, currentUser)
         }
         return convertedList.filterNotNull()
 
     }
 }
 
-
+/*
 fun saveListToRoomDatabase(result: List<Restaurant>) {
 
     val placesRestaurantList = result.toMutableList()
@@ -102,14 +109,11 @@ fun saveListToRoomDatabase(result: List<Restaurant>) {
         Log.d("RestaurantExtensionsLog", "Inserting: $localRestaurant")
         db.restaurantDao().insertRestaurant(localRestaurant!!)
     }
-}
+}*/
 
 
 suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<LocalRestaurant>) {
-//TODO("Convert attending constructor to object list string - for each.")
 
-    val attending = listOf<LocalUser>()
-    val attendingString = userListObjectToJson(attending)
     // Get the AppDatabase instance
     val db = MyApp.db
 
@@ -124,34 +128,17 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
 }
 
 //Fetch Room Restaurant methods.....................................................................
-fun getClickedRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant? {
+fun getClickedRestaurantAttendeeObjects(restaurant: LocalRestaurant): List<LocalUser> {
 
     //TODO("convert restaurant.attending json to object here")
-    val attendingString = restaurant.attending
+    val attendingString = restaurant.attendingList
     val attending = userListJsonToObject(attendingString)
 
 
-    Log.d("RestaurantExtensionsLogDebug", "getClickedRestaurant restaurant is $restaurant. Restaurant attending string is $attendingString. Attending objects are $attending")
-    val currentUser = MyApp.currentUser
-    val currentClickedUserRestaurant = CurrentUserRestaurant(
-        currentUser!!.uid,
-        currentUser!!.displayName,
-        restaurant.address,
-        restaurant.photoUrl,
-        restaurant.restaurantId,
-        restaurant.name,
-        restaurant.latitude,
-        restaurant.longitude,
-        attending
-    )
-    Log.d(
-        "RestaurantExtensionsLog",
-        "currentClickedUserRestaurant is $currentClickedUserRestaurant"
-    )
-    return currentClickedUserRestaurant
+    return attending
 }
 
- fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
+fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     // Get the AppDatabase instance
     val db = MyApp.db
     return db.restaurantDao().getRestaurant(restaurantId)
@@ -193,40 +180,57 @@ fun writeRestaurantsToRealtimeDatabaseExtension(
     localRestaurantList: List<LocalRestaurant>,
     databaseReference: DatabaseReference
 ) {
-            Log.d("RestaurantExtensionLog", "writeRestaurantsToRealtimeDatabaseExtension() called.")
-localRestaurantList.forEach{ localRestaurant ->
-    val restaurantQuery = databaseReference.child("restaurants").orderByChild("restaurantId").equalTo(localRestaurant.restaurantId)
-    restaurantQuery.addListenerForSingleValueEvent(object : ValueEventListener{
-        override fun onDataChange(snapshot: DataSnapshot) {
-            if (snapshot.exists()){
-                for (restaurantSnapshot in snapshot.children){
-                    restaurantSnapshot.ref.setValue(localRestaurant)
+    Log.d("RestaurantExtensionLog", "writeRestaurantsToRealtimeDatabaseExtension() called.")
+    localRestaurantList.forEach { localRestaurant ->
+        val restaurantQuery = databaseReference.child("restaurants").orderByChild("restaurantId")
+            .equalTo(localRestaurant.restaurantId)
+        restaurantQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (restaurantSnapshot in snapshot.children) {
+                        restaurantSnapshot.ref.setValue(localRestaurant)
+                            .addOnSuccessListener {
+                                Log.d(
+                                    "RestaurantExtensionLog",
+                                    "Restaurant data updated successfully for restaurantId ${localRestaurant.name}"
+                                )
+
+                            }
+                            .addOnFailureListener { e ->
+                                Log.d(
+                                    "RestaurantExtensionLog",
+                                    "Failed to update restaurant data for restaurantId ${localRestaurant.restaurantId}"
+                                )
+
+                            }
+                    }
+                } else {
+                    val firebaseRestaurantId = databaseReference.child("restaurants").push().key!!
+                    databaseReference.child("restaurants").child(firebaseRestaurantId)
+                        .setValue(localRestaurant)
                         .addOnSuccessListener {
-            Log.d("RestaurantExtensionLog", "Restaurant data updated successfully for restaurantId ${localRestaurant.name}")
-
+                            Log.d(
+                                "RestaurantExtensionLog",
+                                "New restaurant data saved successfully for restaurantId ${localRestaurant.restaurantId}"
+                            )
                         }
-                        .addOnFailureListener{ e ->
-            Log.d("RestaurantExtensionLog", "Failed to update restaurant data for restaurantId ${localRestaurant.restaurantId}")
-
+                        .addOnFailureListener {
+                            Log.d(
+                                "RestaurantExtensionLog",
+                                "Failed to save restaurant data save for restaurantId ${localRestaurant.restaurantId}"
+                            )
                         }
                 }
-            } else {
-                val firebaseRestaurantId = databaseReference.child("restaurants").push().key!!
-                databaseReference.child("restaurants").child(firebaseRestaurantId).setValue(localRestaurant)
-                    .addOnSuccessListener {
-            Log.d("RestaurantExtensionLog", "New restaurant data saved successfully for restaurantId ${localRestaurant.restaurantId}")
-                    }
-                    .addOnFailureListener{
-            Log.d("RestaurantExtensionLog", "Failed to save restaurant data save for restaurantId ${localRestaurant.restaurantId}")
-                    }
             }
-        }
 
-        override fun onCancelled(error: DatabaseError) {
-            Log.d("RestaurantExtensionLog", "Restaurant query cancelled, error: ${error.message}")
-        }
-    })
-}
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(
+                    "RestaurantExtensionLog",
+                    "Restaurant query cancelled, error: ${error.message}"
+                )
+            }
+        })
+    }
 
 }
 

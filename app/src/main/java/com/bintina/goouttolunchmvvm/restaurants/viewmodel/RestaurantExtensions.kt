@@ -128,10 +128,10 @@ fun getClickedRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant? {
 
     //TODO("convert restaurant.attending json to object here")
     val attendingString = restaurant.attending
-    var attending = userListJsonToObject(attendingString)
+    val attending = userListJsonToObject(attendingString)
 
 
-    Log.d("RestaurantExtensionsLog", "getClickedRestaurant restaurant is $restaurant")
+    Log.d("RestaurantExtensionsLogDebug", "getClickedRestaurant restaurant is $restaurant. Restaurant attending string is $attendingString. Attending objects are $attending")
     val currentUser = MyApp.currentUser
     val currentClickedUserRestaurant = CurrentUserRestaurant(
         currentUser!!.uid,
@@ -258,7 +258,7 @@ localRestaurantList.forEach{ localRestaurant ->
                 for (restaurantSnapshot in snapshot.children){
                     restaurantSnapshot.ref.setValue(localRestaurant)
                         .addOnSuccessListener {
-            Log.d("RestaurantExtensionLog", "Restaurant data updated successfully for restaurantId ${localRestaurant.restaurantId}")
+            Log.d("RestaurantExtensionLog", "Restaurant data updated successfully for restaurantId ${localRestaurant.name}")
 
                         }
                         .addOnFailureListener{ e ->

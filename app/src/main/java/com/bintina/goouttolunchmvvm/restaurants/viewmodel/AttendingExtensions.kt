@@ -3,11 +3,11 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 import android.util.Log
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.user.viewmodel.fetchLocalUserList
 import com.bintina.goouttolunchmvvm.user.viewmodel.getLocalUserById
 import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.uploadToRealtime
+import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
 import com.bintina.goouttolunchmvvm.utils.userListObjectToJson
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,20 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-//Fetch Restaurant attending objects
 
-fun getUsersAttendingRestaurant(restaurant: LocalRestaurant): List<LocalUser> {
-
-    val currentRestaurantObject = getClickedRestaurant(restaurant)
-
-    val attendingList = currentRestaurantObject!!.attending
-    Log.d("AttendingExtensionsLog", "attendingList is $attendingList")
-    return attendingList
-
-}
 
 //Confirm Attending methods.........................................................................
-fun confirmAttending(restaurant: CurrentUserRestaurant) {
+fun confirmAttending(restaurant: LocalRestaurant, currentUser: LocalUser) {
     Log.d(
         "AttendingExtensionsLog",
         "confirmAttending called()."
@@ -38,18 +28,10 @@ fun confirmAttending(restaurant: CurrentUserRestaurant) {
 
     //introduce previous restaurant code here?
     CoroutineScope(Dispatchers.IO).launch {
-
-        val localUser = getLocalUserById(restaurant.uid)
-        Log.d("AttendingExtensionsLog", "confirmAttending localUser is $localUser")
-        val localRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-        Log.d("AttendingExtensionsLog", "confirmAttending localRestaurant is $localRestaurant")
-        //Handle attending list
-
-
-        updateUserRestaurantChoiceToRoomObjects(restaurant, localRestaurant, localUser)
+        updateUserRestaurantChoiceToRoomObjects(restaurant, currentUser)
         Log.d(
             "AttendingExtensionsLog",
-            "confirmAttending called. after updateUserRestaurantChoiceToRoomObject: localUser is $localUser. localRestaurant is $localRestaurant. currentUserRestaurant is $restaurant"
+            "confirmAttending called. after updateUserRestaurantChoiceToRoomObject: localUser is $currentUser. localRestaurant is $restaurant."
         )
         uploadToRealtime()
         //download from Realtime
@@ -61,7 +43,6 @@ fun confirmAttending(restaurant: CurrentUserRestaurant) {
 
 
 fun updateUserRestaurantChoiceToRoomObjects(
-    clickedRestaurant: CurrentUserRestaurant,
     restaurant: LocalRestaurant,
     user: LocalUser
 ) {
@@ -69,12 +50,28 @@ fun updateUserRestaurantChoiceToRoomObjects(
     CoroutineScope(Dispatchers.IO).launch {
         Log.d(
             "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attending} before."
+            "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attendingList} before attending update."
         )
-        restaurant.attending = userListObjectToJson(clickedRestaurant.attending)
+        val usersAttendingObjects = userListJsonToObject(restaurant.attendingList)
+
+        if (!usersAttendingObjects.contains(user)) {
+            usersAttendingObjects.add(user)
+            Log.d(
+                "AttendingExtensionsLog",
+                "updateUserRestaurantChoiceToRoomObjects() add $user called."
+            )
+        } else {
+            usersAttendingObjects.remove(user)
+            Log.d(
+                "AttendingExtensionsLog",
+                "updateUserRestaurantChoiceToRoomObjects() remove $user called."
+            )
+        }
+        //Convert back to string
+        restaurant.attendingList = userListObjectToJson(usersAttendingObjects)
         Log.d(
             "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attending} after."
+            "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attendingList} after."
         )
 
         val userAttendingString = user.attendingString ?: ""
@@ -93,29 +90,6 @@ fun updateUserRestaurantChoiceToRoomObjects(
             user.attendingString = restaurant.name
         }
 
-        val attendingList = clickedRestaurant.attending
-        Log.d(
-            "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObjects() restaurant attending list is $attendingList."
-        )
-        if (!attendingList.contains(user)) {
-            attendingList.add(user)
-            Log.d(
-                "AttendingExtensionsLog",
-                "updateUserRestaurantChoiceToRoomObjects() add $user called."
-            )
-        } else {
-            attendingList.remove(user)
-            Log.d(
-                "AttendingExtensionsLog",
-                "updateUserRestaurantChoiceToRoomObjects() remove $user called."
-            )
-        }
-
-        Log.d(
-            "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObject called: localUser is $user. localRestaurant is $clickedRestaurant. currentUserRestaurant is $restaurant"
-        )
 
         val db = MyApp.db
         db.userDao().insert(user)
@@ -134,13 +108,13 @@ suspend fun cleanUpPreviousSelections(user: LocalUser, userAttendingString: Stri
     val previousRestaurant = findRestaurantByName(userAttendingString)
     previousRestaurant.let {
         // Convert the attending JSON string to a list of LocalUser
-        val attendingList = jsonToUserList(it.attending)
+        val attendingList = userListJsonToObject(it.attendingList)
         Log.d("AttendingExtensionsLog", "attendingList is $attendingList")
         // Remove the user from the list
         attendingList.removeIf { attendingUser -> attendingUser.uid == user.uid }
 
         // Convert the list back to a JSON string
-        it.attending = userListObjectToJson(attendingList)
+        it.attendingList = userListObjectToJson(attendingList)
 
         // Update the restaurant in the database
         val db = MyApp.db
@@ -160,12 +134,13 @@ suspend fun findRestaurantByName(userAttendingString: String): LocalRestaurant {
 
 
 }
-
+/*
+//Likely Redundant method
 fun removeAttending(
     user: LocalUser,
-    previousCurrentUserRestaurant: CurrentUserRestaurant
+    previousRestaurant: LocalRestaurant
 ): LocalRestaurant {
-    val attendingList = previousCurrentUserRestaurant!!.attending
+    val attendingList = previousRestaurant!!.attendingList
     lateinit var previousLocalRestaurant: LocalRestaurant
     CoroutineScope(Dispatchers.IO).launch {
 
@@ -179,8 +154,4 @@ fun removeAttending(
     }
     return previousLocalRestaurant
 }
-
-fun jsonToUserList(jsonString: String): MutableList<LocalUser> {
-    val type = object : TypeToken<MutableList<LocalUser>>() {}.type
-    return Gson().fromJson(jsonString, type)
-}
+*/

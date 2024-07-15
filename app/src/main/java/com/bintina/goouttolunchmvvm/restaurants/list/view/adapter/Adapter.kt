@@ -60,8 +60,13 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val restaurantVicinity = restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
-            val numberAttending = "(${restaurant?.attending})"
-            view.tvNumberOfGuests.text = numberAttending
+            val attendingList = getUsersAttendingRestaurant(restaurant!!)
+            val numberAttending = attendingList.size
+            val attending = if (numberAttending != 0){
+                "(${numberAttending.toString()})"}
+            else {""}
+            view.tvNumberOfGuests.text = attending
+
 
             /* //Set Caption View
              val restaurantOpen = if (restaurant.opening_hours.open_now == true) {

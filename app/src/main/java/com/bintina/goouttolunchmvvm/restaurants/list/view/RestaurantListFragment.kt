@@ -64,7 +64,8 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
         binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = Adapter()
         viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
-            adapter.restaurantList = restaurantList
+            val sortedRestaurantList = restaurantList.sortedBy { it?.name }
+            adapter.restaurantList = sortedRestaurantList
             adapter.notifyDataSetChanged()
         })
         Log.d(TAG, "adapterlist has ${adapter.restaurantList.size}")

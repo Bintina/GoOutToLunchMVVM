@@ -15,6 +15,7 @@ import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentClickedRestaurant
 import com.google.firebase.database.DatabaseReference
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -73,6 +74,19 @@ fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
         return restaurantList
     }
 
+    fun getAttendingList(restaurant: CurrentUserRestaurant): List<LocalUser?>{
+
+        CoroutineScope(Dispatchers.IO).launch {
+        val currentLocalRestaurant = getLocalRestaurantById(restaurant.restaurantId)
+            val attendingJson = currentLocalRestaurant.attending
+        withContext(Dispatchers.Main){
+
+            currentRestaurantAttendingList = jsonToUserList(attendingJson)
+        }
+        }
+        return currentRestaurantAttendingList
+
+    }
     /*    private fun saveRestaurantToDatabase(restaurant: Restaurant?) {
         restaurant?.let {
             val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"

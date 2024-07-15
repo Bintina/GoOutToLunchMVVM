@@ -41,7 +41,7 @@ class RestaurantScreenFragment : Fragment() {
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
                 RestaurantViewModel::class.java
             )
-        downloadRealtimeUpdates()
+        //downloadRealtimeUpdates()
         binding.attendingButton.setOnClickListener {
 
             Log.d(TAG, " currentUserRestaurant is ${MyApp.currentClickedRestaurant}")
@@ -70,9 +70,11 @@ class RestaurantScreenFragment : Fragment() {
         //Set recyclerView adapter
         adapter = Adapter()
         binding.attendanceRecycler.adapter = adapter
+
+
         viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
-            adapter.attendingList = currentRestaurant.attending
-            Log.d(TAG, "attendingList is ${adapter.attendingList}")
+            adapter.attendingList = viewModel.getAttendingList(currentRestaurant)
+            Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
             adapter.notifyDataSetChanged()
         })
     }

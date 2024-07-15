@@ -151,7 +151,7 @@ fun getClickedRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant? {
     return currentClickedUserRestaurant
 }
 
-suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
+ fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     // Get the AppDatabase instance
     val db = MyApp.db
     return db.restaurantDao().getRestaurant(restaurantId)
@@ -170,62 +170,6 @@ suspend fun fetchLocalRestaurantList(): List<LocalRestaurant> {
             emptyList()
         }
     }
-}
-
-//Confirm Attending methods.........................................................................
-fun confirmAttending(restaurant: CurrentUserRestaurant) {
-
-    CoroutineScope(Dispatchers.IO).launch {
-
-        val localUser = getLocalUserById(restaurant.uid)
-        val localRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-        //Handle attending list
-
-
-        updateUserResaurantChoiceToRoomObjects(restaurant, localRestaurant, localUser)
-        Log.d(
-            "RestaurantExtensionsLog",
-            "confirmAttending called. after updateUserRestaurantChoiceToRoomObject: localUser is $localUser. localRestaurant is $localRestaurant. currentUserRestaurant is $restaurant"
-        )
-        uploadToRealtime()
-        //download from Realtime
-        withContext(Dispatchers.Main) {
-            fetchLocalUserList()
-        }
-    }
-}
-
-
-fun updateUserResaurantChoiceToRoomObjects(
-    clickedRestaurant: CurrentUserRestaurant,
-    restaurant: LocalRestaurant,
-    user: LocalUser
-) {
-
-    //Consider jsoning attending constructor to retain it as object list string
-    restaurant.attending = userListObjectToJson(clickedRestaurant.attending)
-    user.attendingString = restaurant.name
-
-    val attendingList = clickedRestaurant.attending
-    if (!attendingList.contains(user)) {
-        attendingList.add(user)
-    } else {
-        attendingList.remove(user)
-    }
-
-    Log.d(
-        "RestaurantExtensionsLog",
-        "updateUserRestaurantChoiceToRoomObject called: localUser is $user. localRestaurant is $clickedRestaurant. currentUserRestaurant is $restaurant"
-    )
-
-    CoroutineScope(Dispatchers.IO).launch {
-        val db = MyApp.db
-        db.userDao().insert(user)
-        db.restaurantDao().insertRestaurant(restaurant)
-
-    }
-    //save userList to Room
-    //save restaurantList to Room
 }
 
 //Realtime Database methods.........................................................................

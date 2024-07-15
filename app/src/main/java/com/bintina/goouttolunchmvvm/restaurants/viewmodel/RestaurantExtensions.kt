@@ -9,14 +9,11 @@ import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.user.viewmodel.fetchLocalUserList
-import com.bintina.goouttolunchmvvm.user.viewmodel.getLocalUserById
 import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
-import com.bintina.goouttolunchmvvm.utils.userListObjectToJson
-import com.bintina.goouttolunchmvvm.utils.uploadToRealtime
 import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
+import com.bintina.goouttolunchmvvm.utils.userListObjectToJson
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference

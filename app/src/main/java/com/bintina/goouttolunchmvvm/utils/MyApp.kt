@@ -2,17 +2,13 @@ package com.bintina.goouttolunchmvvm.utils
 
 import android.app.Application
 import android.content.Context
-
 import androidx.navigation.NavController
 import androidx.room.Room
-
 import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.facebook.FacebookSdk
 import com.google.android.libraries.places.api.Places
-import com.google.firebase.auth.FirebaseUser
 import java.time.LocalDateTime
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
 class MyApp : Application(), androidx.work.Configuration.Provider {
 

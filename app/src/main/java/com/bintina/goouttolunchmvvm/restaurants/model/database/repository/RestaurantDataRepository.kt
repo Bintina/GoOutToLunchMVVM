@@ -1,6 +1,5 @@
 package com.bintina.goouttolunchmvvm.restaurants.model.database.repository
 
-import androidx.lifecycle.LiveData
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 

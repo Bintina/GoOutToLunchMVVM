@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.databinding.ItemAttendingBinding
-import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
-import com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.OnAttendingClickedListener
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.loadImage
 

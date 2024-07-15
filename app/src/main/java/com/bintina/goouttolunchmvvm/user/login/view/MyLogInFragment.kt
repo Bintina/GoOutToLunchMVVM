@@ -13,13 +13,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.facebook.login.LoginManager
-import com.firebase.ui.auth.AuthUI.*
+import com.firebase.ui.auth.AuthUI.IdpConfig
+import com.firebase.ui.auth.AuthUI.getInstance
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

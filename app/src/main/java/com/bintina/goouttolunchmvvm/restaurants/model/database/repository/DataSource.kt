@@ -1,12 +1,9 @@
 package com.bintina.goouttolunchmvvm.restaurants.model.database.repository
 
 import android.util.Log
-import androidx.lifecycle.LifecycleCoroutineScope
 import com.bintina.goouttolunchmvvm.restaurants.model.api.ApiService
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import kotlinx.coroutines.CoroutineScope
-
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

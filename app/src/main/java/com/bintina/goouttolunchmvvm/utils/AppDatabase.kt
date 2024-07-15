@@ -12,8 +12,8 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
-@Database(entities = [LocalUser::class,LocalRestaurant::class], version = 7, autoMigrations = [
-    AutoMigration (from = 6, to = 7)
+@Database(entities = [LocalUser::class,LocalRestaurant::class], version = 8, autoMigrations = [
+    AutoMigration (from = 7, to = 8, spec = MyAutoMigrationSpec::class)
 ])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -29,45 +29,30 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    .addMigrations(MIGRATION_5_6)
-                    .fallbackToDestructiveMigration() // This will clear data on schema change
+
                     .build()
                 instance = newInstance
                 newInstance
             }
         }
-        private val MIGRATION_5_6 = object : Migration(5, 6) {
+      /*  private val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                // Create the new table
+                // Rename the old column
                 db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS LocalRestaurant_new (" +
-                            "restaurantId TEXT NOT NULL, " +
-                            "name TEXT NOT NULL, " +
-                            "address TEXT NOT NULL, " +
-                            "latitude REAL NOT NULL, " +
-                            "longitude REAL NOT NULL, " +
-                            "photoUrl TEXT, " +
-                            "attending TEXT NOT NULL, " + // Change to TEXT
-                            "createdAt INTEGER NOT NULL, " +
-                            "updatedAt INTEGER NOT NULL, " +
-                            "visited INTEGER NOT NULL, " + // Add visited field
-                            "PRIMARY KEY(restaurantId)" +
-                            ")"
+                    "ALTER TABLE LocalRestaurant RENAME COLUMN attending TO attendingList"
                 )
 
-                // Copy data from the old table to the new table
+                // Add new columns
                 db.execSQL(
-                    "INSERT INTO LocalRestaurant_new (restaurantId, name, address, latitude, longitude, photoUrl, attending, createdAt, updatedAt, visited) " +
-                            "SELECT restaurantId, name, address, latitude, longitude, photoUrl, CAST(attending AS TEXT), createdAt, updatedAt, 0 " + // Default value for visited
-                            "FROM LocalRestaurant"
+                    "ALTER TABLE LocalRestaurant ADD COLUMN currentUserName TEXT DEFAULT '' NOT NULL"
                 )
-
-                // Remove the old table
-                db.execSQL("DROP TABLE LocalRestaurant")
-
-                // Rename the new table to the old table name
-                db.execSQL("ALTER TABLE LocalRestaurant_new RENAME TO LocalRestaurant")
+                db.execSQL(
+                    "ALTER TABLE LocalRestaurant ADD COLUMN currentUserUid TEXT DEFAULT '' NOT NULL"
+                )
+                db.execSQL(
+                    "ALTER TABLE LocalRestaurant ADD COLUMN currentUserAttendingBoolean INTEGER DEFAULT 0 NOT NULL"
+                )
             }
-        }
+        }*/
     }
 }

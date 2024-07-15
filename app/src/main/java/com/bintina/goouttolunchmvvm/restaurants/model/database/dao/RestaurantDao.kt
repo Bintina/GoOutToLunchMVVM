@@ -7,13 +7,14 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
 @Dao
 interface RestaurantDao {
 
     @Query("SELECT * FROM LocalRestaurant WHERE restaurantId = :restaurantId")
     fun getRestaurant(restaurantId: String): LocalRestaurant
+    @Query("SELECT * FROM LocalRestaurant WHERE name = :restaurantName")
+    fun getRestaurantByName(restaurantName: String): LocalRestaurant
 
     @Query("SELECT * FROM LocalRestaurant")
     fun getAllRestaurants(): MutableList<LocalRestaurant>

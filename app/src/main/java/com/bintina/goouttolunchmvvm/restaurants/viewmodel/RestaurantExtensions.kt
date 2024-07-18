@@ -132,10 +132,10 @@ fun getClickedRestaurantAttendeeObjects(restaurant: LocalRestaurant): List<Local
 
     //TODO("convert restaurant.attending json to object here")
     val attendingString = restaurant.attendingList
-    val attending = userListJsonToObject(attendingString)
+    MyApp.currentAttendingList = userListJsonToObject(attendingString)
 
 
-    return attending
+    return MyApp.currentAttendingList
 }
 
 fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {

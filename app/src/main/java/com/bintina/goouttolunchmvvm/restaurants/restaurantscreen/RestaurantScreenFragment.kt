@@ -33,16 +33,16 @@ class RestaurantScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRestaurantScreenBinding.inflate(inflater, container, false)
-Log.d(TAG, "onCreateView called.")
+        Log.d(TAG, "onCreateView called.")
         viewModel =
             ViewModelProvider(this, Injection.provideViewModelFactory(requireActivity())).get(
                 RestaurantViewModel::class.java
             )
-Log.d(TAG, "viewModel instantiated")
+        Log.d(TAG, "viewModel instantiated")
         //downloadRealtimeUpdates()
         binding.attendingButton.setOnClickListener {
 
-                confirmAttending(currentRestaurant)
+            confirmAttending(currentRestaurant)
         }
 
         initializeViews()
@@ -50,7 +50,10 @@ Log.d(TAG, "viewModel instantiated")
     }
 
     private fun initializeViews() {
-        Log.d(TAG, "viewModel.currentRestaurant is ${viewModel.currentRestaurant} and currentRestaurant is $currentRestaurant")
+        Log.d(
+            TAG,
+            "viewModel.currentRestaurant is ${viewModel.currentRestaurant} and currentRestaurant is $currentRestaurant"
+        )
         currentRestaurant = MyApp.currentRestaurant
         Log.d(
             TAG,
@@ -70,11 +73,10 @@ Log.d(TAG, "viewModel instantiated")
         binding.attendanceRecycler.adapter = adapter
 
 
-        viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
-            adapter.attendingList = viewModel.getAttendingList(viewModel.currentRestaurant!!)
-            Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
-            adapter.notifyDataSetChanged()
-        })
+        adapter.attendingList = MyApp.currentAttendingList
+        Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
+        adapter.notifyDataSetChanged()
+
     }
 
     override fun onDestroyView() {

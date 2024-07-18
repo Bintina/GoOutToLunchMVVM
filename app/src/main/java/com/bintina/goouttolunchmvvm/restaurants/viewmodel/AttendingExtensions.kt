@@ -23,7 +23,7 @@ fun confirmAttending(restaurant: LocalRestaurant) {
         "confirmAttending called()."
     )
 
-    //introduce previous restaurant code here?
+    //updateUserRestaurantChoice may need to be waited for before uploadToRealtime runs
     CoroutineScope(Dispatchers.IO).launch {
         updateUserRestaurantChoiceToRoomObjects(restaurant)
         Log.d(
@@ -51,7 +51,7 @@ fun updateUserRestaurantChoiceToRoomObjects(
             "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attendingList} before attending update."
         )
         val usersAttendingObjects = userListJsonToObject(restaurant.attendingList)
-        val user = getLocalUserById(restaurant.currentUserUid)
+        //val user = getLocalUserById(restaurant.currentUserUid)
         //Log.d("AttendingExtensionsLog", "user is ${user.displayName}")
 
         if (!usersAttendingObjects.contains(currentUser)) {
@@ -64,7 +64,7 @@ fun updateUserRestaurantChoiceToRoomObjects(
             usersAttendingObjects.remove(currentUser)
             Log.d(
                 "AttendingExtensionsLog",
-                "updateUserRestaurantChoiceToRoomObjects() remove $user called."
+                "updateUserRestaurantChoiceToRoomObjects() remove $currentUser called."
             )
         }
         //Convert back to string

@@ -28,6 +28,7 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
         //val restaurantAdapter = Adapter()
         var currentRestaurant = LocalRestaurant()
+        var currentAttendingList = listOf<LocalUser>()
         var restaurantList: ArrayList<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> =
             arrayListOf()
         var coworkerList: ArrayList<com.bintina.goouttolunchmvvm.user.model.LocalUser?> =

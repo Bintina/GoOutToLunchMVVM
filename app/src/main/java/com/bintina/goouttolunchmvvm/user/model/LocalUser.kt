@@ -17,7 +17,7 @@ data class LocalUser(
     @ColumnInfo(name = "profile_picture_url")
     val profilePictureUrl: String? = null,
     @ColumnInfo(name = "attending_string")
-    var attendingString: String? = null,
+    var attendingString: String = "",
     @ColumnInfo(name = "created_at")
     val createdAt: Long = 0L,
     @ColumnInfo(name = "updated_at")

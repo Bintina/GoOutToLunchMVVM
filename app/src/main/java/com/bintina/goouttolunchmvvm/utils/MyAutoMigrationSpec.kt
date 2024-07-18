@@ -3,7 +3,7 @@ import androidx.room.DeleteColumn
 import androidx.room.RenameColumn
 import androidx.room.migration.AutoMigrationSpec
 
-@RenameColumn.Entries(
+/*@RenameColumn.Entries(
     RenameColumn(
         tableName = "LocalRestaurant",
         fromColumnName = "attending",
@@ -15,5 +15,5 @@ import androidx.room.migration.AutoMigrationSpec
         tableName = "LocalRestaurant",
         columnName = "attending"
     )
-)
+)*/
 class MyAutoMigrationSpec : AutoMigrationSpec

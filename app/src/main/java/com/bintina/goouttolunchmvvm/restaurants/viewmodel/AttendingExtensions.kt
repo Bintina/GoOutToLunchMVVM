@@ -109,7 +109,7 @@ suspend fun cleanUpPreviousSelections(user: LocalUser, userAttendingString: Stri
     previousRestaurant.let {
         // Convert the attending JSON string to a list of LocalUser
         val attendingList = userListJsonToObject(it.attendingList)
-        Log.d("AttendingExtensionsLog", "attendingList is $attendingList")
+        Log.d("AttendingExtensionsLog", "cleanUpPreviousSelections() attendingList is $attendingList")
         // Remove the user from the list
         attendingList.removeIf { attendingUser -> attendingUser.uid == user.uid }
 

@@ -2,10 +2,21 @@ package com.bintina.goouttolunchmvvm.restaurants.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
 
-@Entity
+@Entity(
+    foreignKeys = [ForeignKey(
+        entity = LocalUser::class,
+        parentColumns = ["uid"],
+        childColumns = ["currentUserUid"],
+        onDelete = ForeignKey.CASCADE
+    )],
+    indices = [Index(value = ["currentUserUid"])]
+)
 data class LocalRestaurant(
     @PrimaryKey(autoGenerate = false)
     val restaurantId: String = "",

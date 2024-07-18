@@ -12,8 +12,8 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 
-@Database(entities = [LocalUser::class,LocalRestaurant::class], version = 9, autoMigrations = [
-    AutoMigration (from = 8, to = 9, spec = MyAutoMigrationSpec::class)
+@Database(entities = [LocalUser::class,LocalRestaurant::class], version = 10, autoMigrations = [
+    AutoMigration (from = 9, to = 10, spec = MyAutoMigrationSpec::class)
 ])
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -29,46 +29,61 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                    .addMigrations(MIGRATION_8_9)
+                    .addMigrations(MIGRATION_9_10)
                     .build()
                 instance = newInstance
                 newInstance
             }
         }
-        private val MIGRATION_8_9 = object : Migration(8, 9) {
+        private val MIGRATION_9_10 = object : Migration(9, 10) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Step 1: Add a new non-null column with a default value
-                database.execSQL("ALTER TABLE LocalUser ADD COLUMN new_attending_string TEXT NOT NULL DEFAULT ''")
-
-                // Step 2: Copy data from the old column to the new column (if necessary)
-                database.execSQL("UPDATE LocalUser SET new_attending_string = attending_string WHERE attending_string IS NOT NULL")
-
-                // Step 3: Drop the old column (not possible directly in SQLite, hence the renaming approach)
-                // So we create a new table with the correct schema and copy the data
-                database.execSQL("""
-            CREATE TABLE new_LocalUser (
-                uid TEXT NOT NULL PRIMARY KEY,
-                display_name TEXT NOT NULL,
-                email TEXT NOT NULL,
-                profile_picture_url TEXT,
-                attending_string TEXT NOT NULL DEFAULT '',
-                created_at INTEGER NOT NULL,
-                updated_at INTEGER NOT NULL
+                // Create a new table with the foreign key relationship
+                database.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS `LocalRestaurant_new` (
+                `restaurantId` TEXT NOT NULL,
+                `name` TEXT NOT NULL,
+                `address` TEXT NOT NULL,
+                `latitude` REAL NOT NULL,
+                `longitude` REAL NOT NULL,
+                `photoUrl` TEXT,
+                `attendingList` TEXT NOT NULL,
+                `createdAt` INTEGER NOT NULL,
+                `updatedAt` INTEGER NOT NULL,
+                `visited` INTEGER NOT NULL,
+                `currentUserName` TEXT NOT NULL DEFAULT '',
+                `currentUserUid` TEXT NOT NULL DEFAULT '',
+                `currentUserAttendingBoolean` INTEGER NOT NULL DEFAULT 0,
+                PRIMARY KEY(`restaurantId`),
+                FOREIGN KEY(`currentUserUid`) REFERENCES `LocalUser`(`uid`) ON DELETE CASCADE
             )
-        """.trimIndent())
+        """.trimIndent()
+                )
 
                 // Copy the data from the old table to the new table
-                database.execSQL("""
-            INSERT INTO new_LocalUser (uid, display_name, email, profile_picture_url, attending_string, created_at, updated_at)
-            SELECT uid, display_name, email, profile_picture_url, new_attending_string, created_at, updated_at
-            FROM LocalUser
-        """.trimIndent())
+                database.execSQL(
+                    """
+            INSERT INTO `LocalRestaurant_new` (
+                `restaurantId`, `name`, `address`, `latitude`, `longitude`, `photoUrl`, 
+                `attendingList`, `createdAt`, `updatedAt`, `visited`, 
+                `currentUserName`, `currentUserUid`, `currentUserAttendingBoolean`
+            )
+            SELECT 
+                `restaurantId`, `name`, `address`, `latitude`, `longitude`, `photoUrl`, 
+                `attendingList`, `createdAt`, `updatedAt`, `visited`, 
+                `currentUserName`, `currentUserUid`, `currentUserAttendingBoolean`
+            FROM `LocalRestaurant`
+        """.trimIndent()
+                )
 
-                // Drop the old table
-                database.execSQL("DROP TABLE LocalUser")
+                // Remove the old table
+                database.execSQL("DROP TABLE `LocalRestaurant`")
 
-                // Rename the new table to the old table name
-                database.execSQL("ALTER TABLE new_LocalUser RENAME TO LocalUser")
+                // Rename the new table to the original table name
+                database.execSQL("ALTER TABLE `LocalRestaurant_new` RENAME TO `LocalRestaurant`")
+
+                // Create the index for the foreign key column
+                database.execSQL("CREATE INDEX `index_LocalRestaurant_currentUserUid` ON `LocalRestaurant` (`currentUserUid`)")
             }
         }
     }

@@ -28,9 +28,9 @@ data class LocalRestaurant(
     @ColumnInfo(name = "visited")
     val visited: Boolean = false,
     @ColumnInfo(name = "currentUserName", defaultValue = "")
-    val currentUserName: String = "",
+    var currentUserName: String = "",
     @ColumnInfo(name = "currentUserUid", defaultValue = "")
-    val currentUserUid: String = "",
+    var currentUserUid: String = "",
     @ColumnInfo(name = "currentUserAttendingBoolean", defaultValue = "false")
-    val currentUserAttendingBoolean: Boolean = false
+    var currentUserAttendingBoolean: Boolean = false
 )

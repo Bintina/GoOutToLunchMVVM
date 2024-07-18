@@ -11,6 +11,7 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
+import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -49,6 +50,7 @@ class UserViewModel(
             this.user.value = user
             Log.d(TAG, "Sign in successful: ${user?.displayName}")
             saveLocalUserToRoomDatabase(user)
+            downloadRealtimeUpdates()
             Log.d(TAG, "saveUserToLocalDatabase called")
             Log.d(TAG, "currentUser is $currentUser")
 
@@ -92,6 +94,7 @@ class UserViewModel(
                     Log.d(TAG, "handleFacebookAccessToken credential successful, user is $user")
 
                     saveLocalUserToRoomDatabase(user!!)
+                    downloadRealtimeUpdates()
                     Log.d(TAG, "saveLocalUserToRoomDatabase called")
                     MyApp.navController.navigate(R.id.restaurant_list_dest)
                 } else {

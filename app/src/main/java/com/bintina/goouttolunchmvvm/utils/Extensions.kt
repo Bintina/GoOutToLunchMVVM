@@ -103,7 +103,7 @@ fun loadImage(url: String, imageView: ImageView) {
 fun userListObjectToJson(attendingList: List<LocalUser>): String {
     Log.d("Debug", "Attending list size: ${attendingList.size}")
     for (user in attendingList) {
-        Log.d("Debug", "User in attending list: $user")
+        Log.d("Debug", "User in attending list: $user. Attending list is $attendingList")
     }
     val attendingJsonString = Gson().toJson(attendingList)
 

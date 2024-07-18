@@ -13,12 +13,8 @@ import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.confirmAttending
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getLocalRestaurantById
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersAttendingRestaurant
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
-import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
-import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates
 import com.bintina.goouttolunchmvvm.utils.loadImage
 
 
@@ -29,7 +25,7 @@ class RestaurantScreenFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var adapter: Adapter
     private lateinit var viewModel: RestaurantViewModel
-    lateinit var currentRestaurant: LocalRestaurant
+    private var currentRestaurant: LocalRestaurant = LocalRestaurant()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,17 +33,16 @@ class RestaurantScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRestaurantScreenBinding.inflate(inflater, container, false)
-
+Log.d(TAG, "onCreateView called.")
         viewModel =
-            ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
+            ViewModelProvider(this, Injection.provideViewModelFactory(requireActivity())).get(
                 RestaurantViewModel::class.java
             )
+Log.d(TAG, "viewModel instantiated")
         //downloadRealtimeUpdates()
         binding.attendingButton.setOnClickListener {
 
-            Log.d(TAG, " currentUserRestaurant is ${MyApp.currentClickedRestaurant}")
-            confirmAttending(MyApp.currentClickedRestaurant!!)
-            Log.d(TAG, " currentUserRestaurant is ${MyApp.currentClickedRestaurant} after click")
+                confirmAttending(currentRestaurant)
         }
 
         initializeViews()
@@ -55,18 +50,20 @@ class RestaurantScreenFragment : Fragment() {
     }
 
     private fun initializeViews() {
+        Log.d(TAG, "viewModel.currentRestaurant is ${viewModel.currentRestaurant} and currentRestaurant is $currentRestaurant")
+        currentRestaurant = MyApp.currentRestaurant
         Log.d(
             TAG,
-            "viewModel.currenClickedRestaurant is ${MyApp.currentClickedRestaurant}"
+            "viewModel.currentClickedRestaurant is ${currentRestaurant}"
         )
-        currentRestaurant = MyApp.currentClickedRestaurant!!
-        Log.d(TAG, "currentRestaurant is $currentRestaurant")
+
+        Log.d(TAG, "currentRestaurant is ${currentRestaurant}")
         binding.attendanceRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         Log.d(TAG, "profile photo url is ${currentRestaurant.photoUrl}")
         loadImage("${currentRestaurant.photoUrl}", binding.restaurantImage)
         binding.restaurantName.text = currentRestaurant.name
-        binding.restaurantStyleAndAddress.text = currentRestaurant.address
+        binding.restaurantStyleAndAddress.text = currentRestaurant!!.address
 
         //Set recyclerView adapter
         adapter = Adapter()
@@ -74,7 +71,7 @@ class RestaurantScreenFragment : Fragment() {
 
 
         viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
-            adapter.attendingList = viewModel.getAttendingList(currentRestaurant)
+            adapter.attendingList = viewModel.getAttendingList(viewModel.currentRestaurant!!)
             Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
             adapter.notifyDataSetChanged()
         })

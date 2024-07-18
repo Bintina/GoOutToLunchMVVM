@@ -241,6 +241,7 @@ fun getRealtimeRestaurants() {
     fetchRestaurantsFromRealtimeDatabase(databaseReference) { restaurants ->
         Log.d("RestaurantExtensionLog", "Fetched restaurants: $restaurants")
         CoroutineScope(Dispatchers.IO).launch {
+
             saveRestaurantListToRoomDatabaseExtension(restaurants)
         }
     }
@@ -266,6 +267,8 @@ fun fetchRestaurantsFromRealtimeDatabase(
         }
     })
 }
+
+
 
 //Worker methods....................................................................................
 fun getWorkManagerStartDelay(): Long {

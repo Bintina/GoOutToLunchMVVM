@@ -75,10 +75,9 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
     }
 
     override fun onRestaurantClick(restaurant: LocalRestaurant) {
-        //consider returning currentUserRestaurant instead of global var
-        viewModel.selectRestaurant(restaurant)
-
-        Log.d(TAG, "onRestaurantClick called. viewModel.currentClicked is ${MyApp.currentClickedRestaurant}")
+        Log.d(TAG, "onRestaurantClick called, restaurant is $restaurant")
+    viewModel.setCurrentRestaurant(restaurant)
+        Log.d(TAG, "onRestaurantClick called. viewModel.currentRestaurant is ${viewModel.currentRestaurant}")
         MyApp.navController.navigate(R.id.restaurant_screen_dest)
     }
 

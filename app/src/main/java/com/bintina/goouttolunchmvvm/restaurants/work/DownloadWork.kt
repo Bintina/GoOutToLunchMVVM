@@ -15,6 +15,7 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.convertPlacesRestaurantListToLocalRestaurantList
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantListToRoomDatabaseExtension
+import com.bintina.goouttolunchmvvm.user.viewmodel.getWorkManagerUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -118,9 +119,9 @@ class DownloadWork(
         if (result.isNullOrEmpty()) {
             Log.d(TAG, "result is null or empty. Local list is not updated")
         } else {
-
+val user = getWorkManagerUser()
             val localRestaurantList =
-                convertPlacesRestaurantListToLocalRestaurantList(result)
+                convertPlacesRestaurantListToLocalRestaurantList(result, user)
             //Log.d(TAG, "localRestaurantList is $localRestaurantList")
             if (localRestaurantList != null && localRestaurantList.isNotEmpty()) {
                 saveRestaurantListToRoomDatabaseExtension(localRestaurantList)

@@ -11,9 +11,9 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentClickedRestaurant
+import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ class RestaurantViewModel(
 
     private val TAG = "RestaurantVMLog"
     private var placesRestaurantList = mutableListOf<Restaurant?>()
-    var currentRestaurant: LocalRestaurant? = null
+    var currentRestaurant: LocalRestaurant? = LocalRestaurant()
     var localRestaurantList: List<LocalRestaurant?> = listOf()
     var restaurantList: MutableLiveData<List<LocalRestaurant?>> = MutableLiveData()
     val adapter: Adapter = Adapter()
@@ -42,13 +42,13 @@ class RestaurantViewModel(
         RestaurantDataRepository(restaurantDao)
     lateinit var databaseReference: DatabaseReference
 
-
-fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
+/*
+fun selectedRestaurantAttendees(restaurant: LocalRestaurant): List<LocalUser?>{
     Log.d(TAG, "selectRestaurant called.Restaurant selected is $restaurant")
-        MyApp.currentClickedRestaurant = getClickedRestaurantAttendeeObjects(restaurant)
+        currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
     Log.d(TAG, "selectRestaurant called. currentClickedRestaurant is $currentClickedRestaurant")
-    return currentClickedRestaurant!!
-    }
+    return currentRestaurantAttendingList
+    }*/
 
 
 
@@ -74,19 +74,39 @@ fun selectRestaurant(restaurant: LocalRestaurant): CurrentUserRestaurant{
         return restaurantList
     }
 
+    //TODO this method is likely redundant. Replace with method below.
     fun getAttendingList(restaurant: LocalRestaurant): List<LocalUser?>{
 
         CoroutineScope(Dispatchers.IO).launch {
         val currentLocalRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-            val attendingJson = currentLocalRestaurant.attending
+            val attendingJson = currentLocalRestaurant.attendingList
         withContext(Dispatchers.Main){
 
-            currentRestaurantAttendingList = jsonToUserList(attendingJson)
+            currentRestaurantAttendingList = userListJsonToObject(attendingJson)
         }
         }
         return currentRestaurantAttendingList
 
     }
+    //Fetch Restaurant attending objects
+    fun getUsersAttendingRestaurant(restaurant: LocalRestaurant): List<LocalUser> {
+        val currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
+        Log.d("AttendingExtensionsLog", "attendingList is $currentRestaurantAttendingList")
+        return currentRestaurantAttendingList
+    }
+
+    fun setCurrentRestaurant(restaurant: LocalRestaurant): LocalRestaurant{
+        Log.d(TAG, "setCurrentRestaurant called. restaurant is $restaurant")
+
+            MyApp.currentRestaurant = restaurant
+        Log.d(TAG, "setCurrentRestaurant called. currentRestaurant is $currentRestaurant")
+        currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
+        Log.d(TAG, "setCurrentRestaurant called. currentRestaurantAttending is $currentRestaurantAttendingList")
+
+        return currentRestaurant!!
+    }
+
+
     /*    private fun saveRestaurantToDatabase(restaurant: Restaurant?) {
         restaurant?.let {
             val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"

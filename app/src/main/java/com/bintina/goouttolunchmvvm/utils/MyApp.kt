@@ -27,6 +27,7 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
 
         //val restaurantAdapter = Adapter()
+        var currentRestaurant = LocalRestaurant()
         var restaurantList: ArrayList<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> =
             arrayListOf()
         var coworkerList: ArrayList<com.bintina.goouttolunchmvvm.user.model.LocalUser?> =
@@ -39,7 +40,6 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
         //Current User
         var currentUser: LocalUser? = null
-        var currentUserRestaurant: com.bintina.goouttolunchmvvm.utils.CurrentUserRestaurant? = null
         var currentClickedRestaurant: LocalRestaurant? = null
 
         //Testing vals

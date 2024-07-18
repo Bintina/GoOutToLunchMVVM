@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersAttendingRestaurant
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurantAttendeeObjects
+
 import com.bintina.goouttolunchmvvm.utils.loadImage
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
@@ -60,7 +61,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val restaurantVicinity = restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
-            val attendingList = getUsersAttendingRestaurant(restaurant!!)
+            val attendingList = getClickedRestaurantAttendeeObjects(restaurant!!)
             val numberAttending = attendingList.size
             val attending = if (numberAttending != 0){
                 "(${numberAttending.toString()})"}

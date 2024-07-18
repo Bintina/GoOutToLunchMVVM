@@ -1,6 +1,7 @@
 package com.bintina.goouttolunchmvvm.user.viewmodel
 
 import android.util.Log
+import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.user.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.auth.FirebaseUser
@@ -28,7 +29,7 @@ fun mapFirebaseUserToLocalUser(firebaseUser: FirebaseUser): LocalUser {
         uid = firebaseUser.uid.toString(),
         email = firebaseUser.email.toString(),
         profilePictureUrl = firebaseUser.photoUrl.toString(),
-        attendingString = null,
+        attendingString = "",
         createdAt = downloadDate,
         updatedAt = refreshedDate
     )
@@ -49,17 +50,36 @@ fun saveLocalUserToRoomDatabase(result: FirebaseUser?) {
 
         // Get the AppDatabase instance
         val db = MyApp.db
-
         // Save each LocalUser object to the room database
         db.userDao().insert(localUser)
         Log.d("UserExtensionLog", "Inserting($localUser) called")
+
+        //add user to Restaurant objects
+        val restaurants = db.restaurantDao().getAllRestaurants()
+        addCurrentUserToRestaurants(restaurants)
     }
 
 }
 
+fun addCurrentUserToRestaurants(restaurants: List<LocalRestaurant>): List<LocalRestaurant>{
+    val currentUser = MyApp.currentUser
+    val currentUserUid = currentUser!!.uid
+    val currentUserName = currentUser.displayName
+
+
+    val modifiedRestaurants = restaurants.map { restaurant ->
+        restaurant.apply {
+            this.currentUserUid = currentUserUid
+            this.currentUserName = currentUserName
+            this.currentUserAttendingBoolean = currentUser.attendingString == restaurant.name
+        }
+    }
+    return modifiedRestaurants
+}
+
 fun saveRealtimeUserListToRoom(users: List<LocalUser>) {
 
-        Log.d("UserExtensionLog", "saveRealtimeUserListToRoom() called.")
+    Log.d("UserExtensionLog", "saveRealtimeUserListToRoom() called.")
     CoroutineScope(Dispatchers.IO).launch {
 
         // Get the AppDatabase instance
@@ -74,7 +94,7 @@ fun saveRealtimeUserListToRoom(users: List<LocalUser>) {
 
 //Fetch LocalUser from Room methods
 suspend fun fetchLocalUserList(): List<LocalUser> {
-        Log.d("UserExtensionLog", "fetchLocalUserList() has been called")
+    Log.d("UserExtensionLog", "fetchLocalUserList() has been called")
     var localUsers = emptyList<LocalUser>()
     withContext(Dispatchers.IO) {
         val db = MyApp.db
@@ -87,9 +107,12 @@ suspend fun fetchLocalUserList(): List<LocalUser> {
 
 
 suspend fun getLocalUserById(uid: String): LocalUser {
+    Log.d("UserExtensionsLog", "getLocalUserById called. uid is $uid")
     // Get the AppDatabase instance
     val db = MyApp.db
-    return db.userDao().getUser(uid)
+    val user =  db.userDao().getUser(uid)
+    Log.d("UserExtensionsLog", "getLocalUserById user is $user")
+    return user
 }
 
 //Firebase Realtime Database methods................................................................
@@ -225,4 +248,16 @@ fun userObjectToJson(user: LocalUser): String {
 fun <T> userJsonToObject(attendingJsonString: String, clazz: Class<T>): List<T> {
     val typeToken = object : TypeToken<List<LocalUser>>() {}.type
     return Gson().fromJson(attendingJsonString, typeToken)
+}
+
+//Work Manager User Method
+
+fun getWorkManagerUser(): LocalUser {
+    val dummyUser = LocalUser("123", "Dummy User", "dummy@user.com", "", "", 0L, 0L)
+
+    if (MyApp.currentUser == null){
+        return dummyUser
+    } else {
+        return MyApp.currentUser!!
+    }
 }

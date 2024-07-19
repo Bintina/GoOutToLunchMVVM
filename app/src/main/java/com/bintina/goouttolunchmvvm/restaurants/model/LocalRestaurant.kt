@@ -9,13 +9,24 @@ import com.bintina.goouttolunchmvvm.user.model.LocalUser
 
 
 @Entity(
-    foreignKeys = [ForeignKey(
-        entity = LocalUser::class,
-        parentColumns = ["uid"],
-        childColumns = ["currentUserUid"],
-        onDelete = ForeignKey.CASCADE
-    )],
-    indices = [Index(value = ["currentUserUid"])]
+    foreignKeys = [
+        ForeignKey(
+            entity = LocalUser::class,
+            parentColumns = ["uid"],
+            childColumns = ["currentUserUid"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = LocalUser::class,
+            parentColumns = ["display_name"],
+            childColumns = ["currentUserName"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [
+        Index(value = ["currentUserUid"]),
+        Index(value = ["currentUserName"])
+    ]
 )
 data class LocalRestaurant(
     @PrimaryKey(autoGenerate = false)

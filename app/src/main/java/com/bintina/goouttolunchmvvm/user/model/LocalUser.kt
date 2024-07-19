@@ -3,10 +3,13 @@ package com.bintina.goouttolunchmvvm.user.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 
-@Entity()
+@Entity(
+    indices = [Index(value = ["display_name"], unique = true)]
+)
 data class LocalUser(
     @PrimaryKey(autoGenerate = false)
     val uid: String = "",

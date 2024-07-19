@@ -1,6 +1,7 @@
 package com.bintina.goouttolunchmvvm.user.model.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,7 +14,9 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(localUser: LocalUser)
 
-    // Insert multiple UserX objects
+    @Update
+    suspend fun updateUser(localUser: LocalUser)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertAll(localUsers: List<LocalUser>)
 
@@ -25,7 +28,10 @@ interface UserDao {
     @Query("SELECT * FROM LocalUser WHERE uid = :localId")
     fun getUser(localId: String): LocalUser
 
-    @Update
-    suspend fun updateUser(localUser: LocalUser)
+    @Query("SELECT * FROM LocalUser WHERE uid = :userId")
+    suspend fun getUserById(userId: String): LocalUser
+
+    @Delete
+    suspend fun deleteUser(user: LocalUser)
 
 }

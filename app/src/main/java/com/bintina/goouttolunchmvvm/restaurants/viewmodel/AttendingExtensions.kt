@@ -46,58 +46,29 @@ fun updateUserRestaurantChoiceToRoomObjects(
     //Add MyApp currentUser in this method to be safe.
     Log.d("AttendingExtensionsLog", "updateUserRestaurantChoiceToRoomObjects() called.")
     CoroutineScope(Dispatchers.IO).launch {
-        Log.d(
-            "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attendingList} before attending update."
-        )
-        val usersAttendingObjects = userListJsonToObject(restaurant.attendingList)
-        //val user = getLocalUserById(restaurant.currentUserUid)
-        //Log.d("AttendingExtensionsLog", "user is ${user.displayName}")
-
-        if (!usersAttendingObjects.contains(currentUser)) {
-            usersAttendingObjects.add(currentUser!!)
-            Log.d(
-                "AttendingExtensionsLog",
-                "updateUserRestaurantChoiceToRoomObjects() add $currentUser called."
-            )
-        } else {
-            usersAttendingObjects.remove(currentUser)
-            Log.d(
-                "AttendingExtensionsLog",
-                "updateUserRestaurantChoiceToRoomObjects() remove $currentUser called."
-            )
-        }
-        //Convert back to string
-        restaurant.attendingList = userListObjectToJson(usersAttendingObjects)
-        Log.d(
-            "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObjects() restaurant.attending is ${restaurant.attendingList} after."
-        )
-
-        //val userAttendingString = user.attendingString
-        Log.d(
-            "AttendingExtensionsLog",
-            "updateUserRestaurantChoiceToRoomObjects() userAttendingString is ${currentUser!!.attendingString} before."
-        )
-        if (currentUser!!.attendingString.isEmpty()) {
-            currentUser!!.attendingString = restaurant.name
-        } else {
-            Log.d(
-                "AttendingExtensionsLog",
-                "updateUserRestaurantChoiceToRoomObjects() userAttendingString not empty and else branch triggered."
-            )
-            cleanUpPreviousSelections(currentUser, currentUser.attendingString)
-            currentUser.attendingString = restaurant.name
-        }
-
 
         val db = MyApp.db
-        db.userDao().insert(currentUser)
-        db.restaurantDao().insertRestaurant(restaurant)
+        val userDao = db.userDao()
+        val restaurantDao = db.restaurantDao()
 
+        //Remove user from previous restaurant's attending list
+        if(currentUser!!.attendingString.isNotEmpty()){
+            val previousRestaurant = restaurantDao.getRestaurantByName(currentUser.attendingString)
+            val previousAttendingList = userListJsonToObject(previousRestaurant.attendingList)
+            previousAttendingList.remove(currentUser)
+            previousRestaurant.attendingList = userListObjectToJson(previousAttendingList)
+            restaurantDao.updateRestaurant(previousRestaurant)
+        }
 
-        //save userList to Room
-        //save restaurantList to Room
+        //Add user tto new restaurant's attending list
+        val newAttendingList = userListJsonToObject(restaurant.attendingList)
+        newAttendingList.add(currentUser)
+        restaurant.attendingList = userListObjectToJson(newAttendingList)
+        restaurantDao.updateRestaurant(restaurant)
+
+        //Update user's attending string
+        currentUser.attendingString = restaurant.restaurantId
+        userDao.updateUser(currentUser)
     }
 }
 

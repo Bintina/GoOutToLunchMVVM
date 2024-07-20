@@ -38,21 +38,46 @@ class RestaurantViewModel(
     val adapter: Adapter = Adapter()
     var currentRestaurantAttendingList: List<LocalUser?> = listOf()
 
-
+    private val _restaurantsWithUsers = MutableLiveData<List<RestaurantWithUsers>>()
+    val restaurantsWithUsers: LiveData<List<RestaurantWithUsers>> get() = _restaurantsWithUsers
 
 
     private val restaurantDataSource: RestaurantDataRepository =
         RestaurantDataRepository(restaurantDao)
     lateinit var databaseReference: DatabaseReference
 
-/*
-fun selectedRestaurantAttendees(restaurant: LocalRestaurant): List<LocalUser?>{
-    Log.d(TAG, "selectRestaurant called.Restaurant selected is $restaurant")
-        currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
-    Log.d(TAG, "selectRestaurant called. currentClickedRestaurant is $currentClickedRestaurant")
-    return currentRestaurantAttendingList
-    }*/
+    fun loadRestaurantsWithUsers() {
+        viewModelScope.launch {
+            _restaurantsWithUsers.value = getRestaurantsWithUsers()
+        }
+    }
 
+    fun handleUserSelection(userId: String, restaurantId: String) {
+        viewModelScope.launch {
+            val currentRestaurants = restaurantsWithUsers.value ?: return@launch
+
+            // Find the restaurant the user is currently in
+            val currentRestaurant = currentRestaurants.find { restaurantWithUsers ->
+                restaurantWithUsers.users.any { it.uid == userId }
+            }
+
+            // If the user is in a different restaurant, remove them from it
+            if (currentRestaurant != null && currentRestaurant.restaurant.restaurantId != restaurantId) {
+                removeUserFromRestaurant(userId, currentRestaurant.restaurant.restaurantId)
+            }
+
+            // Add the user to the selected restaurant
+            addUserToRestaurant(userId, restaurantId)
+        }
+    }
+
+    /*
+    fun selectedRestaurantAttendees(restaurant: LocalRestaurant): List<LocalUser?>{
+        Log.d(TAG, "selectRestaurant called.Restaurant selected is $restaurant")
+            currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
+        Log.d(TAG, "selectRestaurant called. currentClickedRestaurant is $currentClickedRestaurant")
+        return currentRestaurantAttendingList
+        }*/
 
 
     fun getLocalRestaurants(): MutableLiveData<List<LocalRestaurant?>> {
@@ -78,38 +103,47 @@ fun selectedRestaurantAttendees(restaurant: LocalRestaurant): List<LocalUser?>{
     }
 
     //TODO this method is likely redundant. Replace with method below.
-    fun getAttendingList(restaurant: LocalRestaurant): List<LocalUser?>{
+    /*   fun getAttendingList(restaurant: LocalRestaurant): List<LocalUser?>{
 
-        CoroutineScope(Dispatchers.IO).launch {
-        val currentLocalRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-            val attendingJson = currentLocalRestaurant.attendingList
-        withContext(Dispatchers.Main){
+           CoroutineScope(Dispatchers.IO).launch {
+           val currentLocalRestaurant = getLocalRestaurantById(restaurant.restaurantId)
+               val attendingJson = currentLocalRestaurant.attendingList
+           withContext(Dispatchers.Main){
 
-            currentRestaurantAttendingList = userListJsonToObject(attendingJson)
-        }
-        }
-        return currentRestaurantAttendingList
+               currentRestaurantAttendingList = userListJsonToObject(attendingJson)
+           }
+           }
+           return currentRestaurantAttendingList
 
-    }
+       }*/
     //Fetch Restaurant attending objects
-    fun getUsersAttendingRestaurant(restaurant: LocalRestaurant): List<LocalUser> {
+  /*  fun getUsersAttendingRestaurant(restaurant: LocalRestaurant): List<LocalUser> {
         val currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
         Log.d("AttendingExtensionsLog", "attendingList is $currentRestaurantAttendingList")
         return currentRestaurantAttendingList
-    }
+    }*/
 
-    fun setCurrentRestaurant(restaurant: LocalRestaurant): LocalRestaurant{
+    fun setCurrentRestaurant(restaurant: LocalRestaurant): LocalRestaurant {
         Log.d(TAG, "setCurrentRestaurant called. restaurant is $restaurant")
 
-            MyApp.currentRestaurant = restaurant
+        MyApp.currentRestaurant = restaurant
         Log.d(TAG, "setCurrentRestaurant called. currentRestaurant is $currentRestaurant")
-        currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
-        Log.d(TAG, "setCurrentRestaurant called. currentRestaurantAttending is $currentRestaurantAttendingList")
+       // currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
+        Log.d(
+            TAG,
+            "setCurrentRestaurant called. currentRestaurantAttending is $currentRestaurantAttendingList"
+        )
 
         return currentRestaurant!!
     }
 
+    fun getClickedRestaurantAttendeeObjects(restaurantId: String, lifecycleOwner: LifecycleOwner): List<LocalUser> {
+            val restaurantWithUsers: RestaurantWithUsers = getRestaurantWithUsers(restaurantId)
+        MyApp.currentAttendingList = restaurantsWithUsers.users
 
+
+        return MyApp.currentAttendingList
+    }
     /*    private fun saveRestaurantToDatabase(restaurant: Restaurant?) {
         restaurant?.let {
             val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"

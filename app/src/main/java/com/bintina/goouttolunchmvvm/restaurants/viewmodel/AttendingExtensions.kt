@@ -27,11 +27,11 @@ fun confirmAttending(restaurant: LocalRestaurant) {
 
     //updateUserRestaurantChoice may need to be waited for before uploadToRealtime runs
     CoroutineScope(Dispatchers.IO).launch {
-        updateUserRestaurantChoiceToRoomObjects(restaurant)
-        Log.d(
+        //updateUserRestaurantChoiceToRoomObjects(restaurant)
+        /*Log.d(
             "AttendingExtensionsLog",
             "confirmAttending called. after updateUserRestaurantChoiceToRoomObject: localUser is ${restaurant.currentUserName}. localRestaurant is $restaurant."
-        )
+        )*/
         uploadToRealtime()
         //download from Realtime
         /*withContext(Dispatchers.Main) {
@@ -39,9 +39,40 @@ fun confirmAttending(restaurant: LocalRestaurant) {
         }*/
     }
 }
+fun getRestaurantsWithUsers(): List<RestaurantWithUsers> {
+    val db = MyApp.db
+    val userDao = db.userDao()
+    val restaurantDao = db.restaurantDao()
 
+    return restaurantDao.getRestaurantsWithUsers()
+}
+
+suspend fun addUserToRestaurant(userId: String, restaurantId: String) {
+    val db = MyApp.db
+    val userDao = db.userDao()
+    val restaurantDao = db.restaurantDao()
+
+    val crossRef = UserRestaurantCrossRef(uid = userId, restaurantId = restaurantId)
+    restaurantDao.insertUserRestaurantCrossRef(crossRef)
+}
+
+suspend fun removeUserFromRestaurant(userId: String, restaurantId: String) {
+    val db = MyApp.db
+    val userDao = db.userDao()
+    val restaurantDao = db.restaurantDao()
+
+    val crossRef = UserRestaurantCrossRef(uid = userId, restaurantId = restaurantId)
+    restaurantDao.deleteUserRestaurantCrossRef(crossRef)
+}
+
+fun getRestaurantWithUsers(restaurantId: String): RestaurantWithUsers {
+    val db = MyApp.db
+    val restaurantDao = db.restaurantDao()
+    return restaurantDao.getRestaurantWithUsers(restaurantId)
+}
 
 fun updateUserRestaurantChoiceToRoomObjects(
+    restaurantsWithUsers: List<RestaurantWithUsers>,
     restaurant: LocalRestaurant
 ) {
     val currentUser = MyApp.currentUser
@@ -53,7 +84,10 @@ fun updateUserRestaurantChoiceToRoomObjects(
         val userDao = db.userDao()
         val restaurantDao = db.restaurantDao()
 
+
+
         //Remove user from previous restaurant's attending list
+/*
         if(currentUser!!.attendingString.isNotEmpty()){
             val previousRestaurant = restaurantDao.getRestaurantByName(currentUser.attendingString)
             val previousAttendingList = userListJsonToObject(previousRestaurant.attendingList)
@@ -61,21 +95,22 @@ fun updateUserRestaurantChoiceToRoomObjects(
             previousRestaurant.attendingList = userListObjectToJson(previousAttendingList)
             restaurantDao.updateRestaurant(previousRestaurant)
         }
+*/
 
         //Add user tto new restaurant's attending list
-        val newAttendingList = userListJsonToObject(restaurant.attendingList)
+/*        val newAttendingList = userListJsonToObject(restaurant.attendingList)
         newAttendingList.add(currentUser)
         restaurant.attendingList = userListObjectToJson(newAttendingList)
-        restaurantDao.updateRestaurant(restaurant)
+        restaurantDao.updateRestaurant(restaurant)*/
 
         //Update user's attending string
-        currentUser.attendingString = restaurant.restaurantId
-        userDao.updateUser(currentUser)
+/*        currentUser.attendingString = restaurant.restaurantId
+        userDao.updateUser(currentUser)*/
     }
 }
 
 
-suspend fun cleanUpPreviousSelections(user: LocalUser, userAttendingString: String) {
+/*suspend fun cleanUpPreviousSelections(user: LocalUser, userAttendingString: String) {
     Log.d("AttendingExtensionsLog", "cleanUpPreviousSelections() called.")
     //Create CurrentUserRestaurantObject to manipulate user list
     val previousRestaurant = findRestaurantByName(userAttendingString)
@@ -95,7 +130,7 @@ suspend fun cleanUpPreviousSelections(user: LocalUser, userAttendingString: Stri
             db.restaurantDao().insertRestaurant(it)
         }
     }
-}
+}*/
 
 suspend fun findRestaurantByName(userAttendingString: String): LocalRestaurant {
 

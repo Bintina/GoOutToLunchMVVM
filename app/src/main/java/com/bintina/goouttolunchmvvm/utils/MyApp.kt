@@ -31,9 +31,9 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
         //val restaurantAdapter = Adapter()
         var currentRestaurant = LocalRestaurant()
         var currentAttendingList = listOf<LocalUser>()
-        var restaurantList: ArrayList<com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?> =
+        var restaurantList: ArrayList<LocalRestaurant?> =
             arrayListOf()
-        var coworkerList: ArrayList<com.bintina.goouttolunchmvvm.user.model.LocalUser?> =
+        var coworkerList: ArrayList<LocalUser?> =
             arrayListOf()
 
 
@@ -76,7 +76,7 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
         get() {
             // Initialize the DataSource here
             val dataSource =
-                com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+                DataSource
 
             return androidx.work.Configuration.Builder()
                 .setWorkerFactory(CustomWorkerFactory(dataSource))

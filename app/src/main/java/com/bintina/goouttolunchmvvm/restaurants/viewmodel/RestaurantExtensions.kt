@@ -60,13 +60,9 @@ fun convertRestaurantToLocalRestaurant(
             latitude = it.geometry.location.lat,
             longitude = it.geometry.location.lng,
             photoUrl = photoUrl,
-            attendingList = "",
             createdAt = createdAt,
             updatedAt = updatedAt,
             visited = false,
-            currentUserName = currentUser.displayName,
-            currentUserUid = currentUser.uid,
-            currentUserAttendingBoolean = false
 
         )
 //        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
@@ -128,7 +124,7 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
 }
 
 //Fetch Room Restaurant methods.....................................................................
-fun getClickedRestaurantAttendeeObjects(restaurant: LocalRestaurant): List<LocalUser> {
+/*fun getClickedRestaurantAttendeeObjects(restaurant: LocalRestaurant): List<LocalUser> {
 
     //TODO("convert restaurant.attending json to object here")
     val attendingString = restaurant.attendingList
@@ -136,7 +132,7 @@ fun getClickedRestaurantAttendeeObjects(restaurant: LocalRestaurant): List<Local
 
 
     return MyApp.currentAttendingList
-}
+}*/
 
 fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     // Get the AppDatabase instance

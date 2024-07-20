@@ -12,11 +12,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.user.coworkers.view.CoworkerListFragment
 import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
-import com.bintina.goouttolunchmvvm.user.model.database.repositories.MockUser
+import com.bintina.goouttolunchmvvm.model.database.repositories.MockUser
 import com.bintina.goouttolunchmvvm.utils.instantiateTodaysDate
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4

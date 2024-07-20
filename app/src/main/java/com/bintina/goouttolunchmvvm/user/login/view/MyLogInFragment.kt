@@ -13,7 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.facebook.login.LoginManager

@@ -7,7 +7,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 //import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.core.app.ApplicationProvider
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import org.junit.Before

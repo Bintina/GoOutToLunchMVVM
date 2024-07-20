@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurantAttendeeObjects
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.utils.MyApp
+//import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurantAttendeeObjects
 
 import com.bintina.goouttolunchmvvm.utils.loadImage
 

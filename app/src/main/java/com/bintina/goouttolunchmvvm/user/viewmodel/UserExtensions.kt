@@ -1,8 +1,8 @@
 package com.bintina.goouttolunchmvvm.user.viewmodel
 
 import android.util.Log
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot

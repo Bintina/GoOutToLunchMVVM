@@ -1,9 +1,11 @@
 package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.util.Log
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.user.viewmodel.getLocalUserById
+import androidx.lifecycle.LiveData
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
+import com.bintina.goouttolunchmvvm.model.UserRestaurantCrossRef
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.uploadToRealtime
 import com.bintina.goouttolunchmvvm.utils.userListJsonToObject

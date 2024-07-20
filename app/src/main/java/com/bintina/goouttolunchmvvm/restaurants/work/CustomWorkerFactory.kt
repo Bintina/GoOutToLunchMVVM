@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 
 class CustomWorkerFactory(private val dataSource: DataSource) : WorkerFactory() {
     override fun createWorker(

@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bintina.goouttolunchmvvm.R
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates

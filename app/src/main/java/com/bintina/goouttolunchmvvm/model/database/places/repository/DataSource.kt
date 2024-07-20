@@ -1,7 +1,7 @@
-package com.bintina.goouttolunchmvvm.restaurants.model.database.repository
+package com.bintina.goouttolunchmvvm.model.database.places.repository
 
 import android.util.Log
-import com.bintina.goouttolunchmvvm.restaurants.model.api.ApiService
+import com.bintina.goouttolunchmvvm.model.database.places.api.ApiService
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -10,7 +10,7 @@ import kotlinx.coroutines.async
 
 object DataSource {
 
-    suspend fun loadRestaurantList(lifecycleScope: CoroutineScope): List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant> {
+    suspend fun loadRestaurantList(lifecycleScope: CoroutineScope): List<Restaurant> {
         var populatedRestaurantResult = emptyList<Restaurant>()
         try{
         val restaurantsDeferred = loadRestaurants(lifecycleScope)
@@ -24,7 +24,7 @@ object DataSource {
         return populatedRestaurantResult
     }
 
-    suspend fun loadRestaurants(lifecycleScope: CoroutineScope): Deferred<List<com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant?>> =
+    suspend fun loadRestaurants(lifecycleScope: CoroutineScope): Deferred<List<Restaurant?>> =
         lifecycleScope.async(Dispatchers.IO) {
             val apiCall = ApiService.create()
 

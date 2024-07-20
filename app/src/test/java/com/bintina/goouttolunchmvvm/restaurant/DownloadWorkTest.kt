@@ -5,7 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker
 import androidx.work.testing.TestListenableWorkerBuilder
 
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Geometry
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Location
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Northeast

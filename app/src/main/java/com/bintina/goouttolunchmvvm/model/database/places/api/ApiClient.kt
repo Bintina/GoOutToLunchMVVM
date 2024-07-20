@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.model.api
+package com.bintina.goouttolunchmvvm.model.database.places.api
 
 import com.bintina.goouttolunchmvvm.utils.Constants.PLACE_END_URL
 import retrofit2.http.GET

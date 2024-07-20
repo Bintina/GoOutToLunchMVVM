@@ -1,7 +1,7 @@
 package com.bintina.goouttolunchmvvm.restaurants.model.database.repository
 
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
 
 class RestaurantDataRepository(private val restaurantDao: RestaurantDao) {
 

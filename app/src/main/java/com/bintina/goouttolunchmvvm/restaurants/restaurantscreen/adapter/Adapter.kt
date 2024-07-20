@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.databinding.ItemAttendingBinding
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.loadImage
 
 class Adapter: RecyclerView.Adapter<com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.adapter.Adapter.ItemViewHolder>() {

@@ -3,7 +3,7 @@ package com.bintina.goouttolunchmvvm.restaurants.model.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 
 @Entity
 class LocalRestaurantsList(

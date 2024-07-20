@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantScreenBinding
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.confirmAttending

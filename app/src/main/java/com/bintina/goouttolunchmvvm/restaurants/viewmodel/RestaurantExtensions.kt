@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bintina.goouttolunchmvvm.utils.userListJsonToObject

@@ -11,8 +11,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.bintina.goouttolunchmvvm.user.model.Converters
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 
 @Database(entities = [LocalUser::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

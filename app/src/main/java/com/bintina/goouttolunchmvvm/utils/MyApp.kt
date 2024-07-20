@@ -4,9 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.navigation.NavController
 import androidx.room.Room
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
+import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.facebook.FacebookSdk
 import com.google.android.libraries.places.api.Places
 import java.time.LocalDateTime

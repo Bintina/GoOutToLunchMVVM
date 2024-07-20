@@ -3,11 +3,11 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.content.Context
 import androidx.room.Room
-import com.bintina.goouttolunchmvvm.restaurants.model.database.dao.RestaurantDao
+import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.utils.ViewModelFactory
-import com.bintina.goouttolunchmvvm.utils.AppDatabase
+import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors

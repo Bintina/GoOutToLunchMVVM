@@ -2,7 +2,7 @@ package com.bintina.goouttolunchmvvm.user.login.viewmodel
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.user.model.database.repositories.UserDataRepository
 import org.mockito.Mockito.mock
 

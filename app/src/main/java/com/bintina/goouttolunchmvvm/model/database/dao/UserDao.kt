@@ -1,12 +1,14 @@
-package com.bintina.goouttolunchmvvm.user.model.database.dao
+package com.bintina.goouttolunchmvvm.model.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.UserWithRestaurants
 
 @Dao
 interface UserDao {
@@ -33,5 +35,9 @@ interface UserDao {
 
     @Delete
     suspend fun deleteUser(user: LocalUser)
+
+    @Transaction
+    @Query("SELECT * FROM LocalUser")
+    fun getUsersWithRestaurants(): List<UserWithRestaurants>
 
 }

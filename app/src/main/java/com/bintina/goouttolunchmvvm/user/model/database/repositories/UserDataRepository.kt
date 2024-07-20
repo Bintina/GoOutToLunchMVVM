@@ -1,7 +1,7 @@
 package com.bintina.goouttolunchmvvm.user.model.database.repositories
 
-import com.bintina.goouttolunchmvvm.user.model.LocalUser
-import com.bintina.goouttolunchmvvm.user.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 
 class UserDataRepository(private val userDao: UserDao) {
 

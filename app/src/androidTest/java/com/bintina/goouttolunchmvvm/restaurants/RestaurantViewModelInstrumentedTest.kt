@@ -4,15 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.bintina.goouttolunchmvvm.LiveDataTestUtil
-import com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 
-import com.bintina.goouttolunchmvvm.utils.AppDatabase
+import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
 import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDateTime
 import java.time.ZoneOffset

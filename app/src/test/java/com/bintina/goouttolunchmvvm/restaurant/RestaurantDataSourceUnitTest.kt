@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.bintina.goouttolunchmvvm.mock.MainDispatcherRule
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantList
 import com.bintina.goouttolunchmvvm.utils.instantiateTodaysDate

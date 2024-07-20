@@ -40,10 +40,13 @@ class RestaurantScreenFragment : Fragment() {
                 RestaurantViewModel::class.java
             )
         Log.d(TAG, "viewModel instantiated")
+        viewModel.loadRestaurantsWithUsers()
+
+
         //downloadRealtimeUpdates()
         binding.attendingButton.setOnClickListener {
 
-            confirmAttending(currentRestaurant)
+            viewModel.handleUserSelection(MyApp.currentUser!!.uid, MyApp.currentRestaurant.restaurantId)
         }
 
         initializeViews()

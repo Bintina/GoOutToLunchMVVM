@@ -92,7 +92,7 @@ class DownloadWork(
     private suspend fun getPlacesRestaurantList(): Result {
 
         val dataSource =
-            com.bintina.goouttolunchmvvm.restaurants.model.database.repository.DataSource
+            DataSource
 
         return withContext(Dispatchers.IO) {
             try {

@@ -26,7 +26,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
          * Binds the restaurant data to the view holder.
          */
         fun bind(
-            restaurant: com.bintina.goouttolunchmvvm.restaurants.model.LocalRestaurant?,
+            restaurant: LocalRestaurant?,
             listener: OnRestaurantClickedListener
         ) {
 
@@ -62,7 +62,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val restaurantVicinity = restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
-            val attendingList = getClickedRestaurantAttendeeObjects(restaurant!!)
+            val attendingList = MyApp.currentAttendingList
             val numberAttending = attendingList.size
             val attending = if (numberAttending != 0){
                 "(${numberAttending.toString()})"}

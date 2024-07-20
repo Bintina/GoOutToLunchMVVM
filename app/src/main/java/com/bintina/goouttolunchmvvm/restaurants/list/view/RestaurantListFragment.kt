@@ -36,8 +36,8 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
                 RestaurantViewModel::class.java
             )
-
-        viewModel.getLocalRestaurants()
+        viewModel.loadRestaurantsWithUsers()
+        //viewModel.getLocalRestaurants()
         initializeViews()
 
 

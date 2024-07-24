@@ -40,7 +40,8 @@ class Adapter() :
             Log.d("CoworkerAdapterLog", "Coworker adapter item display name is $coworkerName")
             view.tvWorkmateName.text = coworkerName
 
-            val restaurantChoice = coworker.attendingString
+/*
+            val restaurantChoice =
             val coworkerRestaurantChoiceContent = if (restaurantChoice.isNullOrBlank()){
                 "$coworkerName hasn't decided yet"
             } else {
@@ -48,6 +49,7 @@ class Adapter() :
 
             }
             view.tvWorkmateRestaurantChoice.text = coworkerRestaurantChoiceContent
+*/
 
         }
     }

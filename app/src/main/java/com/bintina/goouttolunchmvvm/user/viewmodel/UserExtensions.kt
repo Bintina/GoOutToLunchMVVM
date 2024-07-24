@@ -29,7 +29,6 @@ fun mapFirebaseUserToLocalUser(firebaseUser: FirebaseUser): LocalUser {
         uid = firebaseUser.uid.toString(),
         email = firebaseUser.email.toString(),
         profilePictureUrl = firebaseUser.photoUrl.toString(),
-        attendingString = "",
         createdAt = downloadDate,
         updatedAt = refreshedDate
     )
@@ -56,12 +55,12 @@ fun saveLocalUserToRoomDatabase(result: FirebaseUser?) {
 
         //add user to Restaurant objects
         val restaurants = db.restaurantDao().getAllRestaurants()
-        addCurrentUserToRestaurants(restaurants)
+        //addCurrentUserToRestaurants(restaurants)
     }
 
 }
 
-fun addCurrentUserToRestaurants(restaurants: List<LocalRestaurant>): List<LocalRestaurant>{
+/*fun addCurrentUserToRestaurants(restaurants: List<LocalRestaurant>): List<LocalRestaurant>{
     val currentUser = MyApp.currentUser
     val currentUserUid = currentUser!!.uid
     val currentUserName = currentUser.displayName
@@ -75,7 +74,7 @@ fun addCurrentUserToRestaurants(restaurants: List<LocalRestaurant>): List<LocalR
         }
     }
     return modifiedRestaurants
-}
+}*/
 
 fun saveRealtimeUserListToRoom(users: List<LocalUser>) {
 
@@ -253,7 +252,7 @@ fun <T> userJsonToObject(attendingJsonString: String, clazz: Class<T>): List<T> 
 //Work Manager User Method
 
 fun getWorkManagerUser(): LocalUser {
-    val dummyUser = LocalUser("123", "Dummy User", "dummy@user.com", "", "", 0L, 0L)
+    val dummyUser = LocalUser("123", "Dummy User", "dummy@user.com", "",  0L, 0L)
 
     if (MyApp.currentUser == null){
         return dummyUser

@@ -77,7 +77,7 @@ class RestaurantScreenFragment : Fragment() {
         binding.attendanceRecycler.adapter = adapter
 
 
-        adapter.attendingList = MyApp.currentAttendingList
+        adapter.attendingList = viewModel.getClickedRestaurantAttendeeObjects(currentRestaurant.restaurantId)
         Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
         adapter.notifyDataSetChanged()
 

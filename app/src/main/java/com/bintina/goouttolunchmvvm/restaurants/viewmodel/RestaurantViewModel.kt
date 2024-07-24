@@ -40,6 +40,8 @@ class RestaurantViewModel(
 
     private val _restaurantsWithUsers = MutableLiveData<List<RestaurantWithUsers>>()
     val restaurantsWithUsers: LiveData<List<RestaurantWithUsers>> get() = _restaurantsWithUsers
+    private var restaurantUsers: List<LocalUser> = listOf()
+
 
 
     private val restaurantDataSource: RestaurantDataRepository =
@@ -137,9 +139,11 @@ class RestaurantViewModel(
         return currentRestaurant!!
     }
 
-    fun getClickedRestaurantAttendeeObjects(restaurantId: String, lifecycleOwner: LifecycleOwner): List<LocalUser> {
-            val restaurantWithUsers: RestaurantWithUsers = getRestaurantWithUsers(restaurantId)
-        MyApp.currentAttendingList = restaurantsWithUsers.users
+    fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser> {
+        val restaurant =  getRestaurantWithUsers(restaurantId)
+        restaurantUsers = restaurant.users
+
+        MyApp.currentAttendingList = restaurantUsers
 
 
         return MyApp.currentAttendingList

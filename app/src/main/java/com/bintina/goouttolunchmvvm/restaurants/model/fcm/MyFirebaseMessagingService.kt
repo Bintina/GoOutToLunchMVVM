@@ -43,7 +43,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     //Create and show Notification
-    privat fun sendNotification(messageBody: String) {
+    private fun sendNotification(messageBody: String) {
         val requestCode = 0
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

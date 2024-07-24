@@ -181,6 +181,12 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
+    //FCM
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-installations")
+    implementation("com.google.firebase:firebase-installations-ktx")
+
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     //implementation("com.google.android.libraries.identity.googleid:googleid:20.7.0")
     //credentials not supported. Recommended action: Use a different version of dependency 'androidx.credentials:credentials:1.5.0-alpha01',

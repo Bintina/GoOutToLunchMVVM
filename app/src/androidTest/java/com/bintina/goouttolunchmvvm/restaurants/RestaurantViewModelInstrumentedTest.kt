@@ -54,7 +54,6 @@ class RestaurantViewModelInstrumentedTest {
             -4.3015359,
             39.5744260,
             "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2",
-            "",
             createdAt = createdAt,
             updatedAt = updatedAt,
             visited = false

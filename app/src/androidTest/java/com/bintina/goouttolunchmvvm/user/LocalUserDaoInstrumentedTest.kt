@@ -55,7 +55,6 @@ class LocalUserDaoInstrumentedTest {
             "Philippe",
             "philippe@example.com",
             "https://oc-user.imgix.net/users/avatars/15175844164713_frame_523.jpg?auto=compress,format&q=80&h=100&dpr=2",
-            "Pinapple land",
             createdAt,
             updatedAt
         )

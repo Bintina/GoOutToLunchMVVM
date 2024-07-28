@@ -1,17 +1,26 @@
 package com.bintina.goouttolunchmvvm.user.login.view//
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
@@ -20,6 +29,9 @@ import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.AuthUI.getInstance
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -36,12 +48,21 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
     private val _coworkers = MutableLiveData<List<LocalUser?>>()
     val coworkers: LiveData<List<LocalUser?>> get() = _coworkers
 
-
     private val signInLauncher =
         registerForActivityResult(FirebaseAuthUIActivityResultContract()) { result ->
             viewModel.handleSignInResult(result)
         }
 
+    //Request notification Launcher
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){ isGranted: Boolean ->
+        if (isGranted) {
+            Toast.makeText(requireContext(), "Notification permission granted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Go Out For Lunch can not post notifications without permission", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +76,28 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                 UserViewModel::class.java
             )
 
+        //Set channel if needed
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channelId = getString(R.string.default_notification_channel_id)
+            val channelName = getString(R.string.default_notification_channel_name)
+            val notificationManager = requireContext().getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(
+                NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_LOW
+                ),
+            )
+        }
+        val intent = requireActivity().intent
+        intent.extras?.let {
+            for (key in it.keySet()){
+
+            val value = intent.extras?.getString(key)
+            Log.d(TAG, "Key: $key, Value: $value")
+            }
+        }
+
         //loadCoworkers()
 
 
@@ -63,25 +106,53 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             LoginManager.getInstance()
                 .logInWithReadPermissions(this, listOf("email", "public_profile"))
             Log.d(TAG, "startFacebookSignIn called by onClick")
+            subscribeToUpdates()
         }
         binding.googleLoginBtn.setOnClickListener {
             Log.d(TAG, "google btn clicked")
             startGoogleSignIn()
+            subscribeToUpdates()
         }
 
+        askNotificationPermission()
         addCoworker(viewModel.coworker)
+
         Log.d(TAG, "LoginFragment inflated")
         return binding.root
 
     }
 
-/*    fun loadCoworkers() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val coworkerList = viewModel.getLocalCoworkers()
-            _coworkers.value = coworkerList
-            //viewModel.localCoworkerList = coworkerList
+    fun subscribeToUpdates(){
+    Firebase.messaging.subscribeToTopic("User Choices")
+        .addOnCompleteListener { task ->
+            var msg = getString(R.string.msg_subscribed)
+            if (!task.isSuccessful) {
+                msg = getString(R.string.msg_subscribe_failed)
+            }
+            Log.d(TAG,msg)
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
         }
-    }*/
+    logToken()
+}
+
+    private fun logToken() {
+        Firebase.messaging.token.addOnCompleteListener(
+            OnCompleteListener {task ->
+                if (!task.isSuccessful){
+                    Log.d(TAG, "Fetching FCM token failed", task.exception)
+                    return@OnCompleteListener
+                }
+                //Get new token
+                val token = task.result
+
+                //Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d(TAG, msg)
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+            }
+        )
+
+    }
 
     @Deprecated("This method is deprecated")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -129,4 +200,15 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         }
     }
 
+
+    private fun askNotificationPermission() {
+        //Check API level
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(), "Go Out For Lunch is allowed to post notifications", Toast.LENGTH_SHORT).show()
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 }

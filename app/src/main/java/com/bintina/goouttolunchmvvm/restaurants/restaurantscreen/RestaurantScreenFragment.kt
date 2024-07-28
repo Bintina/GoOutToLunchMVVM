@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantScreenBinding
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
@@ -17,6 +18,7 @@ import com.bintina.goouttolunchmvvm.restaurants.viewmodel.confirmAttending
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.loadImage
+import kotlinx.coroutines.launch
 
 
 class RestaurantScreenFragment : Fragment() {
@@ -77,10 +79,17 @@ class RestaurantScreenFragment : Fragment() {
         binding.attendanceRecycler.adapter = adapter
 
 
-        adapter.attendingList = viewModel.getClickedRestaurantAttendeeObjects(currentRestaurant.restaurantId)
-        Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
-        adapter.notifyDataSetChanged()
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                // Call the suspend function and await the result
+                val attendeeObjects = viewModel.getClickedRestaurantAttendeeObjects(currentRestaurant.restaurantId)
+                adapter.attendingList = attendeeObjects
+                Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
+                adapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error fetching attending objects", e)
+            }
+        }
     }
 
     override fun onDestroyView() {

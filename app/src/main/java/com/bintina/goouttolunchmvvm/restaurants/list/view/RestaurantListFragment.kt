@@ -37,7 +37,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
                 RestaurantViewModel::class.java
             )
         viewModel.loadRestaurantsWithUsers()
-        //viewModel.getLocalRestaurants()
+        viewModel.getLocalRestaurants()
         initializeViews()
 
 

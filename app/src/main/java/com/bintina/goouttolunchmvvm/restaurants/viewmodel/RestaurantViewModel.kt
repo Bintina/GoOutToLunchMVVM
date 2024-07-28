@@ -139,7 +139,7 @@ class RestaurantViewModel(
         return currentRestaurant!!
     }
 
-    fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser> {
+   suspend fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser> {
         val restaurant =  getRestaurantWithUsers(restaurantId)
         restaurantUsers = restaurant.users
 

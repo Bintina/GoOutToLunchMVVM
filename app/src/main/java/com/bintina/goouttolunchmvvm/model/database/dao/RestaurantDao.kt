@@ -41,16 +41,16 @@ interface RestaurantDao {
 
     @Transaction
     @Query("SELECT * FROM LocalRestaurant")
-    fun getRestaurantsWithUsers(): List<RestaurantWithUsers>
+    suspend fun getRestaurantsWithUsers(): List<RestaurantWithUsers>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUserRestaurantCrossRef(crossRef: UserRestaurantCrossRef)
+    suspend fun insertUserRestaurantCrossRef(crossRef: UserRestaurantCrossRef)
 
     @Delete
-    fun deleteUserRestaurantCrossRef(crossRef: UserRestaurantCrossRef)
+    suspend fun deleteUserRestaurantCrossRef(crossRef: UserRestaurantCrossRef)
 
     @Transaction
     @Query("SELECT * FROM LocalRestaurant WHERE restaurantId = :restaurantId")
-    fun getRestaurantWithUsers(restaurantId: String): RestaurantWithUsers
+    suspend fun getRestaurantWithUsers(restaurantId: String): RestaurantWithUsers
 
 }

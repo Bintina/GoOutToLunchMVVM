@@ -120,7 +120,7 @@ class DownloadWork(
         if (result.isNullOrEmpty()) {
             Log.d(TAG, "result is null or empty. Local list is not updated")
         } else {
-val user = getWorkManagerUser()
+            val user = getWorkManagerUser()
             val localRestaurantList =
                 convertPlacesRestaurantListToLocalRestaurantList(result, user)
             //Log.d(TAG, "localRestaurantList is $localRestaurantList")

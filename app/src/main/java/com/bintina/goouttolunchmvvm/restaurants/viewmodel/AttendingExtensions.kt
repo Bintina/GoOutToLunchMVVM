@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 
 //Confirm Attending methods.........................................................................
-fun confirmAttending(restaurant: LocalRestaurant) {
+suspend fun confirmAttending(restaurant: LocalRestaurant) {
     Log.d(
         "AttendingExtensionsLog",
         "confirmAttending called()."
@@ -39,36 +39,49 @@ fun confirmAttending(restaurant: LocalRestaurant) {
         }*/
     }
 }
-fun getRestaurantsWithUsers(): List<RestaurantWithUsers> {
+suspend fun getRestaurantsWithUsers(): List<RestaurantWithUsers> {
+
+    var userList = listOf<RestaurantWithUsers>()
+
+    CoroutineScope(Dispatchers.IO).launch{
+
     val db = MyApp.db
     val userDao = db.userDao()
     val restaurantDao = db.restaurantDao()
+        userList = restaurantDao.getRestaurantsWithUsers()
+    }
 
-    return restaurantDao.getRestaurantsWithUsers()
+    return userList
 }
 
 suspend fun addUserToRestaurant(userId: String, restaurantId: String) {
-    val db = MyApp.db
-    val userDao = db.userDao()
-    val restaurantDao = db.restaurantDao()
+    CoroutineScope(Dispatchers.IO).launch {
 
-    val crossRef = UserRestaurantCrossRef(uid = userId, restaurantId = restaurantId)
-    restaurantDao.insertUserRestaurantCrossRef(crossRef)
+        val db = MyApp.db
+        val userDao = db.userDao()
+        val restaurantDao = db.restaurantDao()
+
+        val crossRef = UserRestaurantCrossRef(uid = userId, restaurantId = restaurantId)
+        restaurantDao.insertUserRestaurantCrossRef(crossRef)
+    }
 }
-
 suspend fun removeUserFromRestaurant(userId: String, restaurantId: String) {
-    val db = MyApp.db
-    val userDao = db.userDao()
-    val restaurantDao = db.restaurantDao()
+    CoroutineScope(Dispatchers.IO).launch {
 
-    val crossRef = UserRestaurantCrossRef(uid = userId, restaurantId = restaurantId)
-    restaurantDao.deleteUserRestaurantCrossRef(crossRef)
+        val db = MyApp.db
+        val userDao = db.userDao()
+        val restaurantDao = db.restaurantDao()
+
+        val crossRef = UserRestaurantCrossRef(uid = userId, restaurantId = restaurantId)
+        restaurantDao.deleteUserRestaurantCrossRef(crossRef)
+    }
 }
-
-fun getRestaurantWithUsers(restaurantId: String): RestaurantWithUsers {
-    val db = MyApp.db
-    val restaurantDao = db.restaurantDao()
-    return restaurantDao.getRestaurantWithUsers(restaurantId)
+suspend fun getRestaurantWithUsers(restaurantId: String): RestaurantWithUsers {
+    return withContext(Dispatchers.IO) {
+        val db = MyApp.db
+        val restaurantDao = db.restaurantDao()
+        restaurantDao.getRestaurantWithUsers(restaurantId)
+    }
 }
 
 fun updateUserRestaurantChoiceToRoomObjects(
@@ -142,24 +155,5 @@ suspend fun findRestaurantByName(userAttendingString: String): LocalRestaurant {
 
 
 }
-/*
-//Likely Redundant method
-fun removeAttending(
-    user: LocalUser,
-    previousRestaurant: LocalRestaurant
-): LocalRestaurant {
-    val attendingList = previousRestaurant!!.attendingList
-    lateinit var previousLocalRestaurant: LocalRestaurant
-    CoroutineScope(Dispatchers.IO).launch {
 
-        if (!attendingList.contains(user)) {
-            attendingList.add(user)
-        } else {
-            attendingList.remove(user)
-        }
-
-        previousLocalRestaurant = getLocalRestaurantById(previousCurrentUserRestaurant.restaurantId)
-    }
-    return previousLocalRestaurant
-}
-*/
+//FCM Implementation methods

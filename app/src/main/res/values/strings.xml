@@ -170,8 +170,9 @@
     <string name="no_one_is_attending_yet">No one is attending yet.</string>
     <string name="fcm_message">FCM Notification Message</string>
     <string name="default_notification_channel_name">Updated Restaurant Choices</string>
-    <string name="msg_subscribed">Subscribed to recieve Restaurant Choice updates</string>
-    <string name="msg_subscribe_failed">Failed to subscribe to recieve Restaurant Choices</string>
+    <string name="msg_subscribed">Subscribed to receive Restaurant Choice updates</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to receive Restaurant Choices</string>
+    <string name="receive_lunch_notifications">Receive Lunch Notifications</string>
 
 
 </resources>

@@ -45,6 +45,9 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
         var currentUser: LocalUser? = null
         var currentClickedRestaurant: LocalRestaurant? = null
 
+        //Notification Setting Boolean
+        var getNotifications: Boolean = true
+
         //Testing vals
         val sleepDuration: Long = 50000
 

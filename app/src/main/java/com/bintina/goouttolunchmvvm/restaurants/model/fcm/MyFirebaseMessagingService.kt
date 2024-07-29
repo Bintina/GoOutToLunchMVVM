@@ -62,7 +62,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //TODO("implement this method to send token to server")
     }
 
-    //Create and show Notification
+    //Create and show remote Notification
     private fun sendNotification(messageBody: String) {
         val requestCode = 0
         val intent = Intent(this, MainActivity::class.java)

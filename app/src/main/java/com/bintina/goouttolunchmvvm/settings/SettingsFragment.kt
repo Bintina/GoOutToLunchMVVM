@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.databinding.FragmentSettingsBinding
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.google.firebase.messaging.FirebaseMessaging
 
 class SettingsFragment: Fragment() {
 
@@ -23,20 +24,48 @@ val TAG = "SettingsFragLog"
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-        saveNotificationSettingBoolean()
+        setupNotificationToggle()
 
         return binding.root
     }
 
-    private fun saveNotificationSettingBoolean() {
-               Log.d(TAG, "notification toggle is ${binding.notificationToggle.isActivated} before action")
-        binding.notificationToggle.setOnClickListener {
-           if (binding.notificationToggle.isActivated){
-            MyApp.getNotifications = true
-           } else {
-               MyApp.getNotifications = false
-           }
-               Log.d(TAG, "notification toggle is ${binding.notificationToggle.isActivated} after action")
+    private fun setupNotificationToggle() {
+        // Set the default state of the ToggleButton
+        binding.notificationToggle.isChecked = true // Default state to subscribed
+        MyApp.getNotifications = true
+
+        // Log the initial state
+        Log.d(TAG, "Initial notification toggle state is ${binding.notificationToggle.isChecked}")
+
+        binding.notificationToggle.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // User is subscribing to notifications
+                FirebaseMessaging.getInstance().subscribeToTopic("PushNotification")
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Subscribed to topic 'PushNotification'")
+                            MyApp.getNotifications = true
+                        } else {
+                            Log.e(TAG, "Failed to subscribe", task.exception)
+                            binding.notificationToggle.isChecked = false // Revert the state if failed
+                        }
+                    }
+            } else {
+                // User is unsubscribing from notifications
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("PushNotification")
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Unsubscribed from topic 'PushNotification'")
+                            MyApp.getNotifications = false
+                        } else {
+                            Log.e(TAG, "Failed to unsubscribe", task.exception)
+                            binding.notificationToggle.isChecked = true // Revert the state if failed
+                        }
+                    }
+            }
+
+            // Log the state after action
+            Log.d(TAG, "Notification toggle state after action is ${binding.notificationToggle.isChecked}")
         }
     }
 }

@@ -104,6 +104,13 @@
         tools:layout="@layout/fragment_restaurant_screen">
     </fragment>
 
+    <fragment
+        android:id="@+id/settings_dest"
+        android:name="com.bintina.goouttolunchmvvm.settings.SettingsFragment"
+        android:label="Settings Screen"
+        tools:layout="@layout/fragment_settings">
+    </fragment>
+
 
 
 </navigation>

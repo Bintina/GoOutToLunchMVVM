@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.utils
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -86,8 +87,21 @@ open class MainActivity : AppCompatActivity() {
         observeWorkStatus()
         downloadRealtimeUpdates()
 
-
         Log.d(TAG, "Fragment committed")
+
+        //Handle incoming intent
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        if (intent.action == "com.bintina.goouttolunchmvvm.SHOW_COWORKER_FRAGMENT")
+            navController.navigate(R.id.coworkers_dest)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
     }
 
     private fun readFromRealtimeDatabase() {
@@ -137,6 +151,12 @@ open class MainActivity : AppCompatActivity() {
             R.id.sign_out_btn -> {
                 signOut()
                 navController.navigate(R.id.login_dest)
+
+                return true
+            }
+
+            R.id.settings_btn -> {
+                navController.navigate(R.id.settings_dest)
 
                 return true
             }

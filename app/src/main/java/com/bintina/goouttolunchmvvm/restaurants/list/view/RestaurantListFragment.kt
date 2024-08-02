@@ -12,6 +12,7 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
@@ -64,7 +65,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
         binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = Adapter()
         viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
-            val sortedRestaurantList = restaurantList.sortedBy { it?.name }
+            val sortedRestaurantList = restaurantList.sortedBy { it?.restaurant?.name }
             adapter.restaurantList = sortedRestaurantList
             adapter.notifyDataSetChanged()
         })
@@ -74,7 +75,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
         adapter.listener = this
     }
 
-    override fun onRestaurantClick(restaurant: LocalRestaurant) {
+    override fun onRestaurantClick(restaurant: RestaurantWithUsers) {
         Log.d(TAG, "onRestaurantClick called, restaurant is $restaurant")
     viewModel.setCurrentRestaurant(restaurant)
         Log.d(TAG, "onRestaurantClick called. viewModel.currentRestaurant is ${viewModel.currentRestaurant}")

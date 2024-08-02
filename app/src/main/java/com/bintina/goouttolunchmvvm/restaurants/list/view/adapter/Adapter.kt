@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.utils.MyApp
 //import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurantAttendeeObjects
 
@@ -16,7 +17,7 @@ import com.bintina.goouttolunchmvvm.utils.loadImage
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
 
-    var restaurantList: List<LocalRestaurant?> = mutableListOf()
+    var restaurantList: List<RestaurantWithUsers?> = mutableListOf()
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
@@ -26,7 +27,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
          * Binds the restaurant data to the view holder.
          */
         fun bind(
-            restaurant: LocalRestaurant?,
+            restaurant: RestaurantWithUsers?,
             listener: OnRestaurantClickedListener
         ) {
 
@@ -37,7 +38,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             //Load image using Glide
 
             try {
-                val restaurantImageUrl = restaurant?.photoUrl
+                val restaurantImageUrl = restaurant?.restaurant?.photoUrl
                 if (restaurantImageUrl != null && restaurantImageUrl.isNotEmpty()) {
                     //Log.d("AdapterLog", "Photo URL: $restaurantImageUrl")
 
@@ -54,12 +55,12 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             }
 
             //Set Name
-            val restaurantName = restaurant?.name
+            val restaurantName = restaurant?.restaurant?.name
             view.tvRestaurantName.text = restaurantName
 
             //Set Location and type
             /*            val restaurantVicinity = restaurant.vicinity*/
-            val restaurantVicinity = restaurant?.address
+            val restaurantVicinity = restaurant?.restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
             val attendingList = MyApp.currentAttendingList

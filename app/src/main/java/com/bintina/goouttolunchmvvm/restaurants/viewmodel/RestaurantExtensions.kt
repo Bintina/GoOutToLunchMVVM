@@ -9,6 +9,7 @@ import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
@@ -134,17 +135,36 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
     return MyApp.currentAttendingList
 }*/
 
+suspend fun getRestaurantWithUsersById(restaurantId: String): RestaurantWithUsers {
+    // TODO("Does this need to handle RestaurantWithUsers?")
+    return withContext(Dispatchers.IO){
+
+    val db = MyApp.db
+     db.restaurantDao().getRestaurantWithUsers(restaurantId)
+    }
+}
 suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
-    // Get the AppDatabase instance
+    // TODO("Does this need to handle RestaurantWithUsers?")
     return withContext(Dispatchers.IO){
 
     val db = MyApp.db
      db.restaurantDao().getRestaurant(restaurantId)
     }
 }
-
+suspend fun fetchRestaurantsWithUsersList(): List<RestaurantWithUsers> {
+    return withContext(Dispatchers.IO) {
+        try {
+            val db = MyApp.db
+            val localRestaurants = db.restaurantDao().getRestaurantsWithUsers()
+            Log.d("RestaurantExtensionLog", "localRestaurants are $localRestaurants")
+            localRestaurants
+        } catch (e: Exception) {
+            Log.e("RestaurantExtensionLog", "Error fetching restaurants", e)
+            emptyList()
+        }
+    }
+}
 suspend fun fetchLocalRestaurantList(): List<LocalRestaurant> {
-//TODO("jsoning attending constructor to retain it as object list string")
     return withContext(Dispatchers.IO) {
         try {
             val db = MyApp.db

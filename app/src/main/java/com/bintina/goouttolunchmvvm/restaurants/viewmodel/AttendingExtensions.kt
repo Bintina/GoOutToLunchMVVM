@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-suspend fun newUpdateUserRestaurantChoiceToRoomObjects(userId: String, newRestaurant: LocalRestaurant) {
+suspend fun newUpdateUserRestaurantChoiceToRoomObjects(userId: String, newRestaurant: RestaurantWithUsers) {
     val db = MyApp.db
     withContext(Dispatchers.IO) {
         val restaurantDao = db.restaurantDao()
@@ -44,7 +44,7 @@ suspend fun newUpdateUserRestaurantChoiceToRoomObjects(userId: String, newRestau
  * @param restaurant The restaurant the user is attending.
  */
 
-suspend fun newConfirmAttending(restaurant: LocalRestaurant) {
+suspend fun newConfirmAttending(restaurant: RestaurantWithUsers) {
     Log.d("AttendingExtensionsLog", "confirmAttending called().")
 
     // Use viewModelScope or another defined scope
@@ -55,7 +55,7 @@ suspend fun newConfirmAttending(restaurant: LocalRestaurant) {
         // Optionally fetch updated data from Realtime
     }
 }
-suspend fun confirmAttending(restaurant: LocalRestaurant) {
+suspend fun confirmAttending(restaurant: RestaurantWithUsers) {
     Log.d(
         "AttendingExtensionsLog",
         "confirmAttending called()."
@@ -164,7 +164,7 @@ suspend fun removeUserFromRestaurant(userId: String, restaurantId: String) {
         Log.d("AttendingExtensionsLog", "User $userId removed from restaurant $restaurantId.")
     }
 }
-suspend fun findRestaurantWithUser(uid: String): RestaurantWithUsers?{
+suspend fun findRestaurantWithUser(uid: String): String?{
     return withContext(Dispatchers.IO){
         val db = MyApp.db
         val restaurantDao = db.restaurantDao()

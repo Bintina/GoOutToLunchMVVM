@@ -28,9 +28,10 @@ class RestaurantViewModel(
 
     private val TAG = "RestaurantVMLog"
     private var placesRestaurantList = mutableListOf<Restaurant?>()
-    var currentRestaurant: LocalRestaurant? = LocalRestaurant()
+    private val restaurantPlaceholder = LocalRestaurant()
+    var currentRestaurant: RestaurantWithUsers? = RestaurantWithUsers(restaurantPlaceholder, emptyList())
     var localRestaurantList: List<LocalRestaurant?> = listOf()
-    var restaurantList: MutableLiveData<List<LocalRestaurant?>> = MutableLiveData()
+    var restaurantList: MutableLiveData<List<RestaurantWithUsers?>> = MutableLiveData()
     val adapter: Adapter = Adapter()
     var currentRestaurantAttendingList: List<LocalUser?> = listOf()
 
@@ -60,51 +61,15 @@ class RestaurantViewModel(
     fun handleUserSelection(userId: String, restaurantId: String) {
         Log.d(TAG, "handleUserSelection() called with userId: $userId, restaurantId: $restaurantId.")
         viewModelScope.launch {
-            val restaurant = getLocalRestaurantById(restaurantId)
+            val restaurant = getRestaurantWithUsersById(restaurantId)
             newConfirmAttending(restaurant)
-            /*val currentRestaurants = restaurantsWithUsers.value
-            if (currentRestaurants == null) {
-                Log.d("UserSelectionLog", "No current restaurants found currentRestaurants = $currentRestaurants.")
-                addUserToRestaurant(userId, restaurantId)
-                return@launch
-            }
-
-            // Find the restaurant the user is currently in
-            val currentRestaurant = currentRestaurants.find { restaurantWithUsers ->
-                restaurantWithUsers.users.any { it.uid == userId }
-            }
-
-            currentRestaurant?.let {
-                Log.d("UserSelectionLog", "User $userId is currently in restaurant ${it.restaurant.restaurantId}. Removing user.")
-                removeUserFromRestaurant(userId, it.restaurant.restaurantId)
-            } ?: Log.d("UserSelectionLog", "User $userId is not currently associated with any restaurant.")
-
-            // Add the user to the selected restaurant if it's not the one they were just removed from
-            if (currentRestaurant?.restaurant?.restaurantId != restaurantId) {
-                Log.d("UserSelectionLog", "Adding user $userId to restaurant $restaurantId.")
-                addUserToRestaurant(userId, restaurantId)
-            } else {
-                Log.d("UserSelectionLog", "User $userId is already in the selected restaurant $restaurantId and was removed.")
-            }
-
-            markRestaurantAsVisited(getLocalRestaurantById(restaurantId))
-            saveRestaurantsWithUsersToRealtimeDatabase()*/
         }
     }
 
-    /*
-    fun selectedRestaurantAttendees(restaurant: LocalRestaurant): List<LocalUser?>{
-        Log.d(TAG, "selectRestaurant called.Restaurant selected is $restaurant")
-            currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
-        Log.d(TAG, "selectRestaurant called. currentClickedRestaurant is $currentClickedRestaurant")
-        return currentRestaurantAttendingList
-        }*/
-
-
-    fun getLocalRestaurants(): MutableLiveData<List<LocalRestaurant?>> {
+    fun getLocalRestaurants(): MutableLiveData<List<RestaurantWithUsers?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result = fetchLocalRestaurantList()
+            val result = fetchRestaurantsWithUsersList()
 
             if (result.isEmpty()) {
                 Log.d(TAG, "RestaurantListFragment result is empty")
@@ -122,29 +87,7 @@ class RestaurantViewModel(
         }
         return restaurantList
     }
-
-    //TODO this method is likely redundant. Replace with method below.
-    /*   fun getAttendingList(restaurant: LocalRestaurant): List<LocalUser?>{
-
-           CoroutineScope(Dispatchers.IO).launch {
-           val currentLocalRestaurant = getLocalRestaurantById(restaurant.restaurantId)
-               val attendingJson = currentLocalRestaurant.attendingList
-           withContext(Dispatchers.Main){
-
-               currentRestaurantAttendingList = userListJsonToObject(attendingJson)
-           }
-           }
-           return currentRestaurantAttendingList
-
-       }*/
-    //Fetch Restaurant attending objects
-  /*  fun getUsersAttendingRestaurant(restaurant: LocalRestaurant): List<LocalUser> {
-        val currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
-        Log.d("AttendingExtensionsLog", "attendingList is $currentRestaurantAttendingList")
-        return currentRestaurantAttendingList
-    }*/
-
-    fun setCurrentRestaurant(restaurant: LocalRestaurant): LocalRestaurant {
+    fun setCurrentRestaurant(restaurant: RestaurantWithUsers): RestaurantWithUsers {
         Log.d(TAG, "setCurrentRestaurant called. restaurant is $restaurant")
 
         MyApp.currentRestaurant = restaurant
@@ -167,45 +110,4 @@ class RestaurantViewModel(
 
         return MyApp.currentAttendingList
     }
-    /*    private fun saveRestaurantToDatabase(restaurant: Restaurant?) {
-        restaurant?.let {
-            val rawImageUrl = "https://maps.googleapis.com/maps/api/place/photo"
-            val photoReference = it.photos.first().photo_reference
-            val photoWidth = 400
-            val localRestaurant = LocalRestaurant(
-                restaurantId = it.place_id,
-                name = it.name,
-                photoUrl = convertRawUrlToUrl(rawImageUrl, photoWidth.toString(), photoReference)
-            )
-            viewModelScope.launch(Dispatchers.IO) {
-                //restaurantDao.insert(realtimeRestaurant)
-                writeToDatabase(localRestaurant)
-            }
-
-        }
-    }*/
-
-    //.......................Presentation.............................................
-    /*    fun initRestaurant(restaurantId: String) {
-            if (currentRestaurant != null) {
-                return
-            }
-            currentRestaurant = restaurantDataSource.getRestaurant(restaurantId)
-
-        }*/
-
-
-    /*fun getAttendingUsers(restaurant: LocalRestaurant?): List<LocalUser?>{
-        currentRestaurantAttendingList = restaurant!!.attending
-        return currentRestaurantAttendingList
-    }*/
-    //.......................Logic.......................................................
-    /*fun getRestaurant(restaurantId: Long): LiveData<LocalRestaurant>? {
-        Log.d("TAG", "restaurant id is $restaurantId")
-        return currentRestaurant
-    }*/
-    /*
-    fun addRestaurantAttendanceMethods
-     */
-
 }

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantScreenBinding
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.confirmAttending
@@ -28,7 +29,8 @@ class RestaurantScreenFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var adapter: Adapter
     private lateinit var viewModel: RestaurantViewModel
-    private var currentRestaurant: LocalRestaurant = LocalRestaurant()
+    private val restaurantPlaceholder = LocalRestaurant()
+    private var currentRestaurant: RestaurantWithUsers = RestaurantWithUsers(restaurantPlaceholder, emptyList())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +50,7 @@ class RestaurantScreenFragment : Fragment() {
         //downloadRealtimeUpdates()
         binding.attendingButton.setOnClickListener {
 
-            viewModel.handleUserSelection(MyApp.currentUser!!.uid, MyApp.currentRestaurant.restaurantId)
+            viewModel.handleUserSelection(MyApp.currentUser!!.uid, MyApp.currentRestaurant.restaurant.restaurantId)
         }
 
         initializeViews()
@@ -69,10 +71,10 @@ class RestaurantScreenFragment : Fragment() {
         Log.d(TAG, "currentRestaurant is ${currentRestaurant}")
         binding.attendanceRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        Log.d(TAG, "profile photo url is ${currentRestaurant.photoUrl}")
-        loadImage("${currentRestaurant.photoUrl}", binding.restaurantImage)
-        binding.restaurantName.text = currentRestaurant.name
-        binding.restaurantStyleAndAddress.text = currentRestaurant!!.address
+        Log.d(TAG, "profile photo url is ${currentRestaurant.restaurant.photoUrl}")
+        loadImage("${currentRestaurant.restaurant.photoUrl}", binding.restaurantImage)
+        binding.restaurantName.text = currentRestaurant.restaurant.name
+        binding.restaurantStyleAndAddress.text = currentRestaurant!!.restaurant.address
 
         //Set recyclerView adapter
         adapter = Adapter()
@@ -82,7 +84,7 @@ class RestaurantScreenFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 // Call the suspend function and await the result
-                val attendeeObjects = viewModel.getClickedRestaurantAttendeeObjects(currentRestaurant.restaurantId)
+                val attendeeObjects = viewModel.getClickedRestaurantAttendeeObjects(currentRestaurant.restaurant.restaurantId)
                 adapter.attendingList = attendeeObjects
                 Log.d(TAG, "attendingList is ${adapter.attendingList.toString()}")
                 adapter.notifyDataSetChanged()

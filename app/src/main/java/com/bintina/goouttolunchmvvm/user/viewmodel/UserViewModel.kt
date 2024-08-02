@@ -136,6 +136,7 @@ class UserViewModel(
 
                 withContext(Dispatchers.Main) {
                     coworkerList.postValue(result)
+
                     Log.d(
                         TAG,
                         "CoworkerListFragment result has ${result.size} items"
@@ -145,14 +146,6 @@ class UserViewModel(
         }
         return coworkerList
     }
-    fun findUsersRestaurant(userId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val restaurantWithUsers = findRestaurantWithUser(userId)
-            withContext(Dispatchers.Main) {
-                usersRestaurant.value = restaurantWithUsers
-                Log.d(TAG, "findRestaurantForUser: usersRestaurant is set to $restaurantWithUsers")
-            }
-        }
-    }
+
 
 }

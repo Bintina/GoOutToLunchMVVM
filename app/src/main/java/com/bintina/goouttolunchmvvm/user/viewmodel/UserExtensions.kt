@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.user.viewmodel
 
+import android.content.Context
 import android.util.Log
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.LocalUser

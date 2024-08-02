@@ -25,6 +25,7 @@ import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.AuthUI.getInstance
@@ -116,6 +117,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
 
         askNotificationPermission()
         addCoworker(viewModel.coworker)
+
 
         Log.d(TAG, "LoginFragment inflated")
         return binding.root

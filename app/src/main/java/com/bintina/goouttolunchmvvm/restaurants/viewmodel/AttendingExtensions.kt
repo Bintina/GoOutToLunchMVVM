@@ -33,9 +33,9 @@ suspend fun newUpdateUserRestaurantChoiceToRoomObjects(userId: String, newRestau
         }
 
         // Add user to the new restaurant
-        val crossRef = UserRestaurantCrossRef(userId, newRestaurant.restaurantId)
+        val crossRef = UserRestaurantCrossRef(userId, newRestaurant.restaurant.restaurantId)
         restaurantDao.insertUserRestaurantCrossRef(crossRef)
-        markRestaurantAsVisited(newRestaurant)
+        markRestaurantAsVisited(newRestaurant.restaurant)
     }
 }
 /**
@@ -172,7 +172,7 @@ suspend fun findRestaurantWithUser(uid: String): String?{
 
         for (restaurantWithUsers in restaurantsWithUsers) {
             if (restaurantWithUsers.users.any { it.uid == uid }) {
-                return@withContext restaurantWithUsers
+                return@withContext restaurantWithUsers.restaurant.name
             }
         }
          null // Return null if no restaurant with the specified user is found

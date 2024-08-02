@@ -4,11 +4,16 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
 import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.findRestaurantWithUser
+import com.bintina.goouttolunchmvvm.user.viewmodel.getUserRestaurantChoice
+import com.bintina.goouttolunchmvvm.utils.MainActivity
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.launch
 
 
 class Adapter() :
@@ -40,16 +45,17 @@ class Adapter() :
             Log.d("CoworkerAdapterLog", "Coworker adapter item display name is $coworkerName")
             view.tvWorkmateName.text = coworkerName
 
-/*
-            val restaurantChoice =
-            val coworkerRestaurantChoiceContent = if (restaurantChoice.isNullOrBlank()){
-                "$coworkerName hasn't decided yet"
-            } else {
-                "$coworkerName is eating at $restaurantChoice"
 
+            // Fetch restaurant choice
+            (context as? MainActivity)?.lifecycleScope?.launch {
+                val restaurantChoice = findRestaurantWithUser(coworker.uid)
+                val coworkerRestaurantChoiceContent = if (restaurantChoice == null) {
+                    "$coworkerName hasn't decided yet"
+                } else {
+                    "$coworkerName is eating at $restaurantChoice"
+                }
+                view.tvWorkmateRestaurantChoice.text = coworkerRestaurantChoiceContent
             }
-            view.tvWorkmateRestaurantChoice.text = coworkerRestaurantChoiceContent
-*/
 
         }
     }

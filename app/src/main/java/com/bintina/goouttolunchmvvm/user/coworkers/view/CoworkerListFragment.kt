@@ -37,6 +37,8 @@ class CoworkerListFragment : Fragment(), LifecycleOwner {
                 requireContext()
             )
         ).get(UserViewModel::class.java)
+
+
         viewModel.getLocalCoworkers()
 
         initializeViews()

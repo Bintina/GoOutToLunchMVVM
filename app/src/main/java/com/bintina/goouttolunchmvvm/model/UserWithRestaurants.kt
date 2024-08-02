@@ -1,3 +1,4 @@
+/*
 package com.bintina.goouttolunchmvvm.model
 
 import androidx.room.Embedded
@@ -12,4 +13,4 @@ data class UserWithRestaurants(
         associateBy = Junction(UserRestaurantCrossRef::class)
     )
     val restaurants: List<LocalRestaurant>
-)
+)*/

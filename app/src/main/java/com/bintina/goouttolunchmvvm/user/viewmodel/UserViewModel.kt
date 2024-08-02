@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.findRestaurantWithUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates
@@ -41,6 +43,7 @@ class UserViewModel(
     var coworkerList: MutableLiveData<List<LocalUser?>> = MutableLiveData()
     val callbackManager = CallbackManager.Factory.create()
     lateinit var databaseReference: DatabaseReference
+    var usersRestaurant : MutableLiveData<RestaurantWithUsers?> = MutableLiveData()
 
     fun handleSignInResult(result: FirebaseAuthUIAuthenticationResult?) {
         Log.d(TAG, "handleSignInResult called")
@@ -142,4 +145,14 @@ class UserViewModel(
         }
         return coworkerList
     }
+    fun findUsersRestaurant(userId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val restaurantWithUsers = findRestaurantWithUser(userId)
+            withContext(Dispatchers.Main) {
+                usersRestaurant.value = restaurantWithUsers
+                Log.d(TAG, "findRestaurantForUser: usersRestaurant is set to $restaurantWithUsers")
+            }
+        }
+    }
+
 }

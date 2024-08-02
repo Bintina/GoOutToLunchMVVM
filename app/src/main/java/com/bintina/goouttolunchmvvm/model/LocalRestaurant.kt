@@ -24,5 +24,5 @@ data class LocalRestaurant(
     @ColumnInfo(name = "updatedAt")
     val updatedAt: Long = 0L,
     @ColumnInfo(name = "visited")
-    val visited: Boolean = false
+    var visited: Boolean = false
 )

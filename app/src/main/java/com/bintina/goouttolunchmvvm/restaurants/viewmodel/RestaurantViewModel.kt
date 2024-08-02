@@ -3,10 +3,8 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
@@ -16,9 +14,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.R
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.utils.MyApp
-import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,26 +46,49 @@ class RestaurantViewModel(
 
     fun loadRestaurantsWithUsers() {
         viewModelScope.launch {
-            _restaurantsWithUsers.value = getRestaurantsWithUsers()
+            _restaurantsWithUsers.value = getAllRestaurantsWithUsers()
         }
     }
-
+    /**
+     * Handles the user's selection of a restaurant by updating the user's association
+     * with restaurants in the database. If the user is already associated with a different
+     * restaurant, they are removed from that restaurant and added to the selected one.
+     *
+     * @param userId The ID of the user making the selection.
+     * @param restaurantId The ID of the selected restaurant.
+     */
     fun handleUserSelection(userId: String, restaurantId: String) {
+        Log.d(TAG, "handleUserSelection() called with userId: $userId, restaurantId: $restaurantId.")
         viewModelScope.launch {
-            val currentRestaurants = restaurantsWithUsers.value ?: return@launch
+            val restaurant = getLocalRestaurantById(restaurantId)
+            newConfirmAttending(restaurant)
+            /*val currentRestaurants = restaurantsWithUsers.value
+            if (currentRestaurants == null) {
+                Log.d("UserSelectionLog", "No current restaurants found currentRestaurants = $currentRestaurants.")
+                addUserToRestaurant(userId, restaurantId)
+                return@launch
+            }
 
             // Find the restaurant the user is currently in
             val currentRestaurant = currentRestaurants.find { restaurantWithUsers ->
                 restaurantWithUsers.users.any { it.uid == userId }
             }
 
-            // If the user is in a different restaurant, remove them from it
-            if (currentRestaurant != null && currentRestaurant.restaurant.restaurantId != restaurantId) {
-                removeUserFromRestaurant(userId, currentRestaurant.restaurant.restaurantId)
+            currentRestaurant?.let {
+                Log.d("UserSelectionLog", "User $userId is currently in restaurant ${it.restaurant.restaurantId}. Removing user.")
+                removeUserFromRestaurant(userId, it.restaurant.restaurantId)
+            } ?: Log.d("UserSelectionLog", "User $userId is not currently associated with any restaurant.")
+
+            // Add the user to the selected restaurant if it's not the one they were just removed from
+            if (currentRestaurant?.restaurant?.restaurantId != restaurantId) {
+                Log.d("UserSelectionLog", "Adding user $userId to restaurant $restaurantId.")
+                addUserToRestaurant(userId, restaurantId)
+            } else {
+                Log.d("UserSelectionLog", "User $userId is already in the selected restaurant $restaurantId and was removed.")
             }
 
-            // Add the user to the selected restaurant
-            addUserToRestaurant(userId, restaurantId)
+            markRestaurantAsVisited(getLocalRestaurantById(restaurantId))
+            saveRestaurantsWithUsersToRealtimeDatabase()*/
         }
     }
 

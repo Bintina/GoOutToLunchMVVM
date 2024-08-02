@@ -134,10 +134,13 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
     return MyApp.currentAttendingList
 }*/
 
-fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
+suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     // Get the AppDatabase instance
+    return withContext(Dispatchers.IO){
+
     val db = MyApp.db
-    return db.restaurantDao().getRestaurant(restaurantId)
+     db.restaurantDao().getRestaurant(restaurantId)
+    }
 }
 
 suspend fun fetchLocalRestaurantList(): List<LocalRestaurant> {

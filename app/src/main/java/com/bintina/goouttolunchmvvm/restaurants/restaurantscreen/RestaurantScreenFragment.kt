@@ -16,6 +16,7 @@ import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.restaurants.restaurantscreen.adapter.Adapter
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.confirmAttending
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantsWithUsersFromRealtimeDatabase
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.loadImage
@@ -44,6 +45,7 @@ class RestaurantScreenFragment : Fragment() {
                 RestaurantViewModel::class.java
             )
         Log.d(TAG, "viewModel instantiated")
+        getRestaurantsWithUsersFromRealtimeDatabase()
         viewModel.loadRestaurantsWithUsers()
 
 

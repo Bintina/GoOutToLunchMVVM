@@ -14,6 +14,7 @@ import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantsWithUsersFromRealtimeDatabase
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
 
@@ -60,7 +61,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
             adapter.restaurantList = restaurantList
             adapter.notifyDataSetChanged()
         }*/
-
+getRestaurantsWithUsersFromRealtimeDatabase()
         // Set LayoutManager
         binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = Adapter()

@@ -11,5 +11,5 @@ data class RestaurantWithUsers(
         entityColumn = "uid",
         associateBy = Junction(UserRestaurantCrossRef::class)
     )
-    val users: List<LocalUser>
+    val users: List<LocalUser> = emptyList()
 )

@@ -10,6 +10,7 @@ import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.R
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRealtimeRestaurants
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.model.LocalUser
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsWithUsersToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.user.viewmodel.getRealtimeUsers
 
 import com.bintina.goouttolunchmvvm.user.viewmodel.saveUsersToRealtimeDatabase
@@ -145,6 +146,9 @@ suspend fun uploadToRealtime(
         //Upload restaurants
         saveRestaurantsToRealtimeDatabase()
         Log.d("ExtensionsLog", "saveRestaurantsToRealtimeDatabase called")
+
+        saveRestaurantsWithUsersToRealtimeDatabase()
+        Log.d("ExtensionsLog", "saveRestaurantsWithUsersToRealtimeDatabase called")
     }
 }
 

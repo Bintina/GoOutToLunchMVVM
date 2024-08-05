@@ -2,6 +2,7 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.util.Log
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.UserRestaurantCrossRef
 import com.bintina.goouttolunchmvvm.utils.MyApp
@@ -22,21 +23,45 @@ suspend fun newUpdateUserRestaurantChoiceToRoomObjects(userId: String, newRestau
     withContext(Dispatchers.IO) {
         val restaurantDao = db.restaurantDao()
         val currentRestaurantsWithUsers = restaurantDao.getRestaurantsWithUsers()
+        val previousSelection = findPreviousUserSelection(userId, currentRestaurantsWithUsers)
 
-        // Find and remove user from any previously attended restaurants
-        currentRestaurantsWithUsers.forEach { restaurantWithUsers ->
-            val users = restaurantWithUsers.users
-            if (users.any { it.uid == userId }) {
-                val crossRef = UserRestaurantCrossRef(userId, restaurantWithUsers.restaurant.restaurantId)
-                restaurantDao.deleteUserRestaurantCrossRef(crossRef)
-            }
-        }
-
+        if (previousSelection == null){
         // Add user to the new restaurant
         val crossRef = UserRestaurantCrossRef(userId, newRestaurant.restaurant.restaurantId)
         restaurantDao.insertUserRestaurantCrossRef(crossRef)
         markRestaurantAsVisited(newRestaurant.restaurant)
+
+        } else if (previousSelection == newRestaurant){
+
+                val crossRef = UserRestaurantCrossRef(userId, previousSelection.restaurant.restaurantId)
+                restaurantDao.deleteUserRestaurantCrossRef(crossRef)
+        } else {
+            val crossRef = UserRestaurantCrossRef(userId, previousSelection.restaurant.restaurantId)
+            restaurantDao.deleteUserRestaurantCrossRef(crossRef)
+
+            val newCrossRef = UserRestaurantCrossRef(userId, newRestaurant.restaurant.restaurantId)
+            restaurantDao.insertUserRestaurantCrossRef(newCrossRef)
+            markRestaurantAsVisited(newRestaurant.restaurant)
+        }
+
     }
+}
+
+suspend fun findPreviousUserSelection(uid: String, currentRestaurantsWithUsers: List<RestaurantWithUsers>): RestaurantWithUsers?= withContext(Dispatchers.IO) {
+
+
+    // Iterate through each RestaurantWithUsers object
+    for (restaurantWithUsers in currentRestaurantsWithUsers) {
+        // Check if the user with the specified uid is in the list of users
+        if (restaurantWithUsers.users.any { it.uid == uid }) {
+            // Return the RestaurantWithUsers object if the uid is found
+            return@withContext restaurantWithUsers
+        }
+    }
+    // Return null if no matching RestaurantWithUsers object is found
+       return@withContext null
+
+
 }
 /**
  * Confirms attending a restaurant by updating the local and remote databases.
@@ -52,6 +77,7 @@ suspend fun newConfirmAttending(restaurant: RestaurantWithUsers) {
         newUpdateUserRestaurantChoiceToRoomObjects(MyApp.currentUser!!.uid, restaurant) // Assuming this function updates the user's choice in Room
         Log.d("AttendingExtensionsLog", "After updateUserRestaurantChoiceToRoomObject: localUser is placeholder. localRestaurant is $restaurant.")
         uploadToRealtime() // Assuming this function uploads data to Realtime Database
+        getRestaurantsWithUsersFromRealtimeDatabase()
         // Optionally fetch updated data from Realtime
     }
 }
@@ -285,18 +311,59 @@ fun saveRestaurantsWithUsersToRealtimeDatabase() {
         val localRestaurantsWithUsersList = fetchLocalRestaurantsWithUsersList()
 
         localRestaurantsWithUsersList.forEach { restaurantWithUsers ->
-            val restaurantName = restaurantWithUsers.restaurant.name
-            val restaurantRef = databaseReference.child("restaurantsWithUsers").child(restaurantName)
+            val restaurantId = restaurantWithUsers.restaurant.restaurantId
+            val restaurantRef = databaseReference.child("restaurantsWithUsers").child(restaurantId)
 
             restaurantRef.setValue(restaurantWithUsers)
                 .addOnSuccessListener {
-                    Log.d("AttendingExtensionLog", "Data saved successfully for restaurantName $restaurantName")
+                    Log.d("AttendingExtensionLog", "Data saved successfully for restaurantId $restaurantId")
                 }
                 .addOnFailureListener { e ->
-                    Log.e("AttendingExtensionLog", "Failed to save data for restaurantName $restaurantName", e)
+                    Log.e("AttendingExtensionLog", "Failed to save data for restaurantName $restaurantId", e)
                 }
         }
     }
+}
+
+fun getRestaurantsWithUsersFromRealtimeDatabase(){
+    val databaseReference = Firebase.database.reference
+
+    fetchRestaurantsWithUsersFromRealtimeDatabase(databaseReference) { restaurants ->
+    Log.d("AttendingExtensionsLog", "Fetched RestaurantsWithUsers: ")
+        CoroutineScope(Dispatchers.IO).launch{
+            saveRestaurantsWithUsersToRoomExtension(restaurants)
+        }
+    }
+
+
+}
+
+fun fetchRestaurantsWithUsersFromRealtimeDatabase(databaseReference: DatabaseReference, onRestaurantsWithUsersFetched: (ArrayList<RestaurantWithUsers>) -> Unit
+) {
+    Log.d("AttendingExtensionLog", "fetchRestaurantsWithUsersFromRealtimeDatabase() called.")
+    databaseReference.child("restaurantsWithUsers").addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val localRestaurantWithUsersList = arrayListOf<RestaurantWithUsers>()
+            Log.d(
+                "AttendingExtensionLog",
+                "onDataChangedCalled. localRestaurantWithUsers size is ${localRestaurantWithUsersList.size}. ${localRestaurantWithUsersList}"
+            )
+            for (restaurantWithUsersSnapshot in dataSnapshot.children) {
+                val restaurantWithUser = restaurantWithUsersSnapshot.getValue(RestaurantWithUsers::class.java)
+                Log.d("AttendingExtensionLog", "restaurantWithUsersSnapshot.getValue called. restaurantWithUsers is $restaurantWithUser")
+                restaurantWithUser?.let { localRestaurantWithUsersList.add(it) }
+            }
+            //withContext(Dispatchers.Main) {
+            onRestaurantsWithUsersFetched(localRestaurantWithUsersList)
+            //}
+            //}
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d("AttendingExtensions", "Failed to fetch restaurantWithUsers: ${databaseError.message}")
+        }
+    })
 }
 
 fun writeRestaurantsWithUsersToRealtimeDatabaseExtension(

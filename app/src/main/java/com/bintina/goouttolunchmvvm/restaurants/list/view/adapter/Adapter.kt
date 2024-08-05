@@ -63,10 +63,9 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             val restaurantVicinity = restaurant?.restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
-            val attendingList = MyApp.currentAttendingList
-            val numberAttending = attendingList.size
-            val attending = if (numberAttending != 0){
-                "(${numberAttending.toString()})"}
+            val attendingListSize = restaurant?.users?.size
+            val attending = if (attendingListSize != 0){
+                "(${attendingListSize.toString()})"}
             else {""}
             view.tvNumberOfGuests.text = attending
 

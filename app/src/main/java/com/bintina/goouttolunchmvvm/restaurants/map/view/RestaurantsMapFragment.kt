@@ -8,19 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantMapBinding
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
+import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -35,6 +39,18 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentRestaurantMapBinding? = null
     private val binding get() = _binding!!
 
+    private var mutableRestaurantList = MutableLiveData<List<RestaurantWithUsers?>>()
+    private var restaurantList = emptyList<RestaurantWithUsers?>()
+    private var restaurantMarkerPosition1 = LatLng(0.0, 0.0)
+    private var restaurantMarkerTitle1 = ""
+    private var markerRestaurant1: Marker? =null
+ private var restaurantMarkerPosition2 = LatLng(0.0, 0.0)
+    private var restaurantMarkerTitle2 = ""
+    private var markerRestaurant2: Marker? =null
+ private var restaurantMarkerPosition3 = LatLng(0.0, 0.0)
+    private var restaurantMarkerTitle3 = ""
+    private var markerRestaurant3: Marker? =null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +58,6 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     ): View {
         _binding = FragmentRestaurantMapBinding.inflate(inflater, container, false)
 
-        initializeViews()
         Log.d("MapFragLog", "Map Frag onCreateView called")
         return binding.root
     }
@@ -51,14 +66,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = Injection.provideRestaurantViewModel(requireContext())
-        /*val restaurant = viewModel.getRestaurant(restaurantId = 10)
 
-        // Log the restaurant name
-        restaurant?.let {
-            Toast.makeText(requireContext(), "Restaurant name is $restaurant", Toast.LENGTH_SHORT).show()
-        }*/
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
@@ -95,20 +103,52 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun initializeViews() {
+
         Toast.makeText(requireContext(), "Map Fragment views initialized", Toast.LENGTH_LONG).show()
+        mutableRestaurantList.observe(viewLifecycleOwner) { restaurantList ->
+            restaurantList?.let {
+                // Clear existing markers
+                myMap.clear()
+
+                it.forEachIndexed { index, restaurantWithUsers ->
+                    restaurantWithUsers?.restaurant?.let { restaurant ->
+                        val position = LatLng(restaurant.latitude, restaurant.longitude)
+                        val title = restaurant.name
+                        myMap.addMarker(
+                            MarkerOptions()
+                                .position(position)
+                                .title(title)
+                        )
+                    }
+                }
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         myMap = googleMap
+
+/*        //ChatGPT suggested
+        // Set up initial map settings
+        myMap.uiSettings.isZoomControlsEnabled = true
+        myMap.uiSettings.isMyLocationButtonEnabled = true*/
+
         val defaultLatLng = LatLng(-4.3015359, 39.5744260)
         myMap.uiSettings.isZoomControlsEnabled = true
         myMap.addMarker(
             MarkerOptions()
                 .position(defaultLatLng)
-                .title("Marker")
+                .title("You")
         )
         myMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng))
         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultLatLng, 12f))
+
+        markerRestaurant1 = myMap.addMarker(
+            MarkerOptions()
+                .position(restaurantMarkerPosition1)
+                .title(restaurantMarkerTitle1)
+        )
+        markerRestaurant1!!.tag = 0
     }
 
     private fun zoomOnMap(latLng: LatLng) {
@@ -119,15 +159,17 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val result = try {
-                DataSource.loadRestaurantList(lifecycleScope)
+        lifecycleScope.launch {
+            try {
+                val db = MyApp.db
+                // Fetch the restaurant list from the repository or ViewModel
+                val result = db.restaurantDao().getAllRestaurants()
+                mutableRestaurantList.value = result.map { RestaurantWithUsers(it) } // Adjust as needed for your data structure
             } catch (e: Exception) {
                 Log.d("RestaurantResultTryCatch", "Error is $e")
-                emptyList<LocalRestaurant>()
+                mutableRestaurantList.value = emptyList()
             }
-            Log.d("RestMapFragLog", "result has ${result.size} items")
         }
-        //TODO("This class will need to change to use the ViewModel To fetch restaurant list")
+
     }
 }

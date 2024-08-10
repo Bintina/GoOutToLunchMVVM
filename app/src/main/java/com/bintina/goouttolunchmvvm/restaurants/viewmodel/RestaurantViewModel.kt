@@ -29,8 +29,9 @@ class RestaurantViewModel(
     private val TAG = "RestaurantVMLog"
     private var placesRestaurantList = mutableListOf<Restaurant?>()
     private val restaurantPlaceholder = LocalRestaurant()
-    var currentRestaurant: RestaurantWithUsers? = RestaurantWithUsers(restaurantPlaceholder, emptyList())
-    var localRestaurantList: List<LocalRestaurant?> = listOf()
+    var currentRestaurant: RestaurantWithUsers? =
+        RestaurantWithUsers(restaurantPlaceholder, emptyList())
+    var localRestaurantList: List<LocalRestaurant> = emptyList()
     var restaurantList: MutableLiveData<List<RestaurantWithUsers?>> = MutableLiveData()
     val adapter: Adapter = Adapter()
     var currentRestaurantAttendingList: List<LocalUser?> = listOf()
@@ -38,7 +39,6 @@ class RestaurantViewModel(
     private val _restaurantsWithUsers = MutableLiveData<List<RestaurantWithUsers>>()
     val restaurantsWithUsers: LiveData<List<RestaurantWithUsers>> get() = _restaurantsWithUsers
     private var restaurantUsers: List<LocalUser> = listOf()
-
 
 
     private val restaurantDataSource: RestaurantDataRepository =
@@ -50,6 +50,7 @@ class RestaurantViewModel(
             _restaurantsWithUsers.value = getAllRestaurantsWithUsers()
         }
     }
+
     /**
      * Handles the user's selection of a restaurant by updating the user's association
      * with restaurants in the database. If the user is already associated with a different
@@ -59,14 +60,17 @@ class RestaurantViewModel(
      * @param restaurantId The ID of the selected restaurant.
      */
     fun handleUserSelection(userId: String, restaurantId: String) {
-        Log.d(TAG, "handleUserSelection() called with userId: $userId, restaurantId: $restaurantId.")
+        Log.d(
+            TAG,
+            "handleUserSelection() called with userId: $userId, restaurantId: $restaurantId."
+        )
         viewModelScope.launch {
             val restaurant = getRestaurantWithUsersById(restaurantId)
             newConfirmAttending(restaurant)
         }
     }
 
-    fun getLocalRestaurants(): MutableLiveData<List<RestaurantWithUsers?>> {
+    fun getLocalRestaurantsWithUsers(): MutableLiveData<List<RestaurantWithUsers?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
             val result = fetchRestaurantsWithUsersList()
@@ -77,22 +81,25 @@ class RestaurantViewModel(
                 Log.d(TAG, "Restaurant result is $result")
                 withContext(Dispatchers.Main) {
                     restaurantList.postValue(result)
+                    MyApp.localRestaurantWithUsersList = result
+
                     Log.d(
                         TAG,
                         "Restaurant getRestaurants method result has ${result.size} items. " +
-                                "Result is $result"
+                                "localRestaurantList is ${MyApp.localRestaurantWithUsersList}"
                     )
                 }
             }
         }
         return restaurantList
     }
+
     fun setCurrentRestaurant(restaurant: RestaurantWithUsers): RestaurantWithUsers {
         Log.d(TAG, "setCurrentRestaurant called. restaurant is $restaurant")
 
         MyApp.currentRestaurant = restaurant
         Log.d(TAG, "setCurrentRestaurant called. currentRestaurant is $currentRestaurant")
-       // currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
+        // currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
         Log.d(
             TAG,
             "setCurrentRestaurant called. currentRestaurantAttending is $currentRestaurantAttendingList"
@@ -101,13 +108,21 @@ class RestaurantViewModel(
         return currentRestaurant!!
     }
 
-   suspend fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser> {
-        val restaurant =  getRestaurantWithUsers(restaurantId)
+    suspend fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser> {
+        val restaurant = getRestaurantWithUsers(restaurantId)
         restaurantUsers = restaurant.users
 
         MyApp.currentAttendingList = restaurantUsers
 
 
         return MyApp.currentAttendingList
+    }
+
+    fun getLocalRestaurants(): List<LocalRestaurant> {
+        viewModelScope.launch {
+            MyApp.localRestaurantList = fetchLocalRestaurantList()
+
+        }
+        return MyApp.localRestaurantList
     }
 }

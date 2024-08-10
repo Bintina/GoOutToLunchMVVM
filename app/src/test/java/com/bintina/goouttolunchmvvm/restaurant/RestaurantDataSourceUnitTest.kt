@@ -9,7 +9,7 @@ import androidx.lifecycle.coroutineScope
 import com.bintina.goouttolunchmvvm.mock.MainDispatcherRule
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantList
+import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.restaurantArrayList
 import com.bintina.goouttolunchmvvm.utils.instantiateTodaysDate
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -67,7 +67,7 @@ class RestaurantDataSourceUnitTest {
         instantiateTodaysDate()
 
         dataSource.loadRestaurantList(lifecycleOwner.lifecycle.coroutineScope)
-        assertTrue(restaurantList is List<Restaurant?>)
+        assertTrue(restaurantArrayList is List<Restaurant?>)
     }
 
 }

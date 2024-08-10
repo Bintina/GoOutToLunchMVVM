@@ -144,7 +144,7 @@ open class MainActivity : AppCompatActivity() {
 
             R.id.restaurant_map_btn -> {
                 navController.navigate(R.id.restaurant_map_dest)
-
+Log.d(TAG, "navigate to Maps Fragment called.")
                 return true
             }
 

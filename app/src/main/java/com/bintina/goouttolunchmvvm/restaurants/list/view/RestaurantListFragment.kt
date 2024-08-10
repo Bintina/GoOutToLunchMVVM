@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
-import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantsWithUsersFromRealtimeDatabase
@@ -39,7 +38,7 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
                 RestaurantViewModel::class.java
             )
         viewModel.loadRestaurantsWithUsers()
-        viewModel.getLocalRestaurants()
+        viewModel.getLocalRestaurantsWithUsers()
         initializeViews()
 
 

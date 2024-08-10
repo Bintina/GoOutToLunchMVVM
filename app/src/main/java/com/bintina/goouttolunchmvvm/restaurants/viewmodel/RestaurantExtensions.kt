@@ -12,7 +12,6 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
-import com.bintina.goouttolunchmvvm.utils.userListJsonToObject
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -77,7 +76,7 @@ fun convertPlacesRestaurantListToLocalRestaurantList(
     currentUser: LocalUser
 ): List<LocalRestaurant> {
     if (placesRestaurantList.isNullOrEmpty()) {
-        return MyApp.restaurantList as List<LocalRestaurant>
+        return MyApp.restaurantArrayList as List<LocalRestaurant>
     } else {
 
         val convertedList: List<LocalRestaurant?> = placesRestaurantList.map { restaurant ->

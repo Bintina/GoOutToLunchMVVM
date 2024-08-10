@@ -33,8 +33,10 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
         val localRestaurant = LocalRestaurant()
         var currentRestaurant: RestaurantWithUsers = RestaurantWithUsers(localRestaurant, emptyList<LocalUser>())
         var currentAttendingList = listOf<LocalUser>()
-        var restaurantList: ArrayList<RestaurantWithUsers?> =
+        var restaurantArrayList: ArrayList<LocalRestaurant?> =
             arrayListOf()
+        var localRestaurantWithUsersList : List<RestaurantWithUsers> = emptyList()
+        var localRestaurantList : List<LocalRestaurant> = emptyList()
         var coworkerList: ArrayList<LocalUser?> =
             arrayListOf()
 

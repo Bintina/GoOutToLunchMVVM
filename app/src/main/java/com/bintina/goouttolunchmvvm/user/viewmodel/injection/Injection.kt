@@ -3,12 +3,12 @@ package com.bintina.goouttolunchmvvm.user.viewmodel.injection
 import android.content.Context
 import androidx.room.Room
 import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
-import com.bintina.goouttolunchmvvm.utils.ViewModelFactory
 import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
+import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.utils.ViewModelFactory
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 

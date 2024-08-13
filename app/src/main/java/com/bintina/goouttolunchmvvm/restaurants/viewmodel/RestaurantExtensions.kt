@@ -6,10 +6,10 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
+import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
+import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.google.firebase.database.DataSnapshot
@@ -64,7 +64,7 @@ fun convertRestaurantToLocalRestaurant(
             updatedAt = updatedAt,
             visited = false,
 
-        )
+            )
 //        Log.d("RestaurantExtensionsLog", "LocalRestaurant.photoUrl is ${localRestaurant?.photoUrl}. LocalRestaurant is $localRestaurant")
 
     }
@@ -136,20 +136,22 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
 
 suspend fun getRestaurantWithUsersById(restaurantId: String): RestaurantWithUsers {
     // TODO("Does this need to handle RestaurantWithUsers?")
-    return withContext(Dispatchers.IO){
+    return withContext(Dispatchers.IO) {
 
-    val db = MyApp.db
-     db.restaurantDao().getRestaurantWithUsers(restaurantId)
+        val db = MyApp.db
+        db.restaurantDao().getRestaurantWithUsers(restaurantId)
     }
 }
+
 suspend fun getLocalRestaurantById(restaurantId: String): LocalRestaurant {
     // TODO("Does this need to handle RestaurantWithUsers?")
-    return withContext(Dispatchers.IO){
+    return withContext(Dispatchers.IO) {
 
-    val db = MyApp.db
-     db.restaurantDao().getRestaurant(restaurantId)
+        val db = MyApp.db
+        db.restaurantDao().getRestaurant(restaurantId)
     }
 }
+
 suspend fun fetchRestaurantsWithUsersList(): List<RestaurantWithUsers> {
     return withContext(Dispatchers.IO) {
         try {
@@ -163,6 +165,7 @@ suspend fun fetchRestaurantsWithUsersList(): List<RestaurantWithUsers> {
         }
     }
 }
+
 suspend fun fetchLocalRestaurantList(): List<LocalRestaurant> {
     return withContext(Dispatchers.IO) {
         try {
@@ -259,7 +262,7 @@ fun getRealtimeRestaurants() {
     fetchRestaurantsFromRealtimeDatabase(databaseReference) { restaurants ->
         Log.d("RestaurantExtensionLog", "Fetched restaurants: $restaurants")
         CoroutineScope(Dispatchers.IO).launch {
-
+            MyApp.localRestaurantList = restaurants
             saveRestaurantListToRoomDatabaseExtension(restaurants)
         }
     }
@@ -269,12 +272,22 @@ fun fetchRestaurantsFromRealtimeDatabase(
     databaseReference: DatabaseReference,
     onRestaurantsFetched: (List<LocalRestaurant>) -> Unit
 ) {
+    Log.d("RestaurantExtensionLog", "fetchRestaurantsFromRealtimeDatabase() called")
     databaseReference.child("restaurants").addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
+            Log.d(
+                "RestaurantExtensionLog",
+                "fetchRestaurantsFromRealtimeDatabase() onChange() called"
+            )
             val restaurantList = mutableListOf<LocalRestaurant>()
             for (restaurantSnapshot in snapshot.children) {
                 val restaurant = restaurantSnapshot.getValue(LocalRestaurant::class.java)
+                Log.d(
+                    "RestaurantExtensionLog",
+                    "fetchRestaurantsFromRealtimeDatabase() onChange() restaurant is $restaurant"
+                )
+
                 restaurant?.let { restaurantList.add(it) }
             }
             onRestaurantsFetched(restaurantList)
@@ -285,7 +298,6 @@ fun fetchRestaurantsFromRealtimeDatabase(
         }
     })
 }
-
 
 
 //Worker methods....................................................................................

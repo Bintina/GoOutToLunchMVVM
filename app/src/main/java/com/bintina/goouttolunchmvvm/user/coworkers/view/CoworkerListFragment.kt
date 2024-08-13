@@ -10,7 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.databinding.FragmentCoworkersListBinding
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantsWithUsersFromRealtimeDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersWithRestaurantsFromRealtime
 import com.bintina.goouttolunchmvvm.user.coworkers.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 
@@ -38,7 +38,7 @@ class CoworkerListFragment : Fragment(), LifecycleOwner {
                 requireContext()
             )
         ).get(UserViewModel::class.java)
-getRestaurantsWithUsersFromRealtimeDatabase()
+getUsersWithRestaurantsFromRealtime()
         viewModel.getLocalCoworkers()
 
         initializeViews()

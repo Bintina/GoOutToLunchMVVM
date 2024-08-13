@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
+import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
-import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantsWithUsersFromRealtimeDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersWithRestaurantsFromRealtime
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
 import com.bintina.goouttolunchmvvm.utils.MyApp
 
@@ -37,8 +37,8 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
                 RestaurantViewModel::class.java
             )
-        viewModel.loadRestaurantsWithUsers()
-        viewModel.getLocalRestaurantsWithUsers()
+        //viewModel.loadRestaurantsWithUsers()
+        viewModel.getLocalRestaurants()
         initializeViews()
 
 
@@ -60,22 +60,28 @@ class RestaurantListFragment : Fragment(), OnRestaurantClickedListener {
             adapter.restaurantList = restaurantList
             adapter.notifyDataSetChanged()
         }*/
-getRestaurantsWithUsersFromRealtimeDatabase()
+getUsersWithRestaurantsFromRealtime()
         // Set LayoutManager
         binding.restaurantRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = Adapter()
-        viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
-            val sortedRestaurantList = restaurantList.sortedBy { it?.restaurant?.name }
+        val restaurantList = MyApp.localRestaurantList
+        Log.d(TAG, "restaurantList = $restaurantList")
+        val sortedRestaurantList = restaurantList.sortedBy { it.name }
+        Log.d(TAG, "sortedRestaurantList = $sortedRestaurantList")
+        adapter.restaurantList = sortedRestaurantList
+        adapter.notifyDataSetChanged()
+        /*viewModel.restaurantList.observe(viewLifecycleOwner, { restaurantList ->
+            val sortedRestaurantList = restaurantList.sortedBy { it?.name }
             adapter.restaurantList = sortedRestaurantList
             adapter.notifyDataSetChanged()
-        })
+        })*/
         Log.d(TAG, "adapterlist has ${adapter.restaurantList.size}")
         binding.restaurantRecyclerView.adapter = adapter
         Log.d(TAG, "initializeViews called.")
         adapter.listener = this
     }
 
-    override fun onRestaurantClick(restaurant: RestaurantWithUsers) {
+    override fun onRestaurantClick(restaurant: LocalRestaurant) {
         Log.d(TAG, "onRestaurantClick called, restaurant is $restaurant")
     viewModel.setCurrentRestaurant(restaurant)
         Log.d(TAG, "onRestaurantClick called. viewModel.currentRestaurant is ${viewModel.currentRestaurant}")

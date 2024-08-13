@@ -15,7 +15,6 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MainActivity
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

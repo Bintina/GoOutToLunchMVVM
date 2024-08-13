@@ -1,23 +1,26 @@
 package com.bintina.goouttolunchmvvm.restaurants.list.view.adapter
 
+//import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurantAttendeeObjects
+
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bintina.goouttolunchmvvm.databinding.ItemRestaurantBinding
-import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
-import com.bintina.goouttolunchmvvm.utils.MyApp
-//import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getClickedRestaurantAttendeeObjects
-
+import com.bintina.goouttolunchmvvm.restaurants.list.view.OnRestaurantClickedListener
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantUsers
 import com.bintina.goouttolunchmvvm.utils.loadImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
 
-    var restaurantList: List<RestaurantWithUsers?> = mutableListOf()
+    var restaurantList: List<LocalRestaurant?> = mutableListOf()
     lateinit var listener: OnRestaurantClickedListener
 
     class ItemViewHolder(private val view: ItemRestaurantBinding, private val context: Context) :
@@ -27,7 +30,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
          * Binds the restaurant data to the view holder.
          */
         fun bind(
-            restaurant: RestaurantWithUsers?,
+            restaurant: LocalRestaurant?,
             listener: OnRestaurantClickedListener
         ) {
 
@@ -38,7 +41,7 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             //Load image using Glide
 
             try {
-                val restaurantImageUrl = restaurant?.restaurant?.photoUrl
+                val restaurantImageUrl = restaurant?.photoUrl
                 if (restaurantImageUrl != null && restaurantImageUrl.isNotEmpty()) {
                     //Log.d("AdapterLog", "Photo URL: $restaurantImageUrl")
 
@@ -55,19 +58,27 @@ class Adapter : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
             }
 
             //Set Name
-            val restaurantName = restaurant?.restaurant?.name
+            val restaurantName = restaurant?.name
             view.tvRestaurantName.text = restaurantName
 
             //Set Location and type
             /*            val restaurantVicinity = restaurant.vicinity*/
-            val restaurantVicinity = restaurant?.restaurant?.address
+            val restaurantVicinity = restaurant?.address
             view.tvStyleAndAddress.text = restaurantVicinity
 
-            val attendingListSize = restaurant?.users?.size
-            val attending = if (attendingListSize != 0){
-                "(${attendingListSize.toString()})"}
-            else {""}
-            view.tvNumberOfGuests.text = attending
+            val restaurantId = restaurant?.restaurantId
+            CoroutineScope(Dispatchers.Main).launch {
+                val attendingList = withContext(Dispatchers.IO) {
+                    getRestaurantUsers(restaurantId!!)
+                }
+                val attendingListSize = attendingList.size
+                val attending = if (attendingListSize != 0) {
+                    "(${attendingListSize.toString()})"
+                } else {
+                    ""
+                }
+                    view.tvNumberOfGuests.text = attending
+            }
 
 
             /* //Set Caption View

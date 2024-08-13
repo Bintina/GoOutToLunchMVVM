@@ -10,6 +10,7 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ItemCoworkersBinding
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.findRestaurantWithUser
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersRestaurant
 import com.bintina.goouttolunchmvvm.utils.MainActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class Adapter() :
 
             // Fetch restaurant choice
             (context as? MainActivity)?.lifecycleScope?.launch {
-                val restaurantChoice = findRestaurantWithUser(coworker.uid)
+                val restaurantChoice = getUsersRestaurant(coworker.uid)
                 val coworkerRestaurantChoiceContent = if (restaurantChoice == null) {
                     "$coworkerName hasn't decided yet"
                 } else {

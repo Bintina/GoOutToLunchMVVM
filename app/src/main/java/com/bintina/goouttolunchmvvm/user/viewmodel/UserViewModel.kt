@@ -10,7 +10,7 @@ import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.findRestaurantWithUser
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersWithRestaurantsFromRealtime
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentUser
 import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates
@@ -123,7 +123,7 @@ class UserViewModel(
     fun getLocalCoworkers(): MutableLiveData<List<LocalUser?>> {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result: MutableList<LocalUser> = try {
+            val result: List<LocalUser?> = try {
                 userDao.getAllUsers()
             } catch (e: Exception) {
                 Log.d(TAG, "Error is $e. Cause is ${e.cause}")
@@ -147,5 +147,10 @@ class UserViewModel(
         return coworkerList
     }
 
+    fun instantiateData(){
+        getUsersWithRestaurantsFromRealtime()
+        getLocalCoworkers()
+        getRealtimeUsers()
+    }
 
 }

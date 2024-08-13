@@ -5,11 +5,11 @@ import android.content.Context
 import androidx.navigation.NavController
 import androidx.room.Room
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
 import com.bintina.goouttolunchmvvm.model.LocalUser
-import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
-import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
+import com.bintina.goouttolunchmvvm.model.UserWithRestaurant
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
+import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
+import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
 import com.facebook.FacebookSdk
 import com.google.android.libraries.places.api.Places
 import java.time.LocalDateTime
@@ -31,12 +31,14 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
         //val restaurantAdapter = Adapter()
         val localRestaurant = LocalRestaurant()
-        var currentRestaurant: RestaurantWithUsers = RestaurantWithUsers(localRestaurant, emptyList<LocalUser>())
-        var currentAttendingList = listOf<LocalUser>()
+        var currentRestaurant: LocalRestaurant = LocalRestaurant()
+        var currentAttendingList = listOf<LocalUser?>()
         var restaurantArrayList: ArrayList<LocalRestaurant?> =
             arrayListOf()
-        var localRestaurantWithUsersList : List<RestaurantWithUsers> = emptyList()
+        var localUserWithRestaurantList : List<UserWithRestaurant> = emptyList()
         var localRestaurantList : List<LocalRestaurant> = emptyList()
+        var currentUserWithRestaurant: UserWithRestaurant = com.bintina.goouttolunchmvvm.model.UserWithRestaurant(
+            null, null)
         var coworkerList: ArrayList<LocalUser?> =
             arrayListOf()
 
@@ -47,7 +49,7 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
 
         //Current User
         var currentUser: LocalUser? = null
-        var currentClickedRestaurant: RestaurantWithUsers? = null
+
 
         //Notification Setting Boolean
         var getNotifications: Boolean = true

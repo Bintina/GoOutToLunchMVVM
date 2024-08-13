@@ -1,8 +1,6 @@
 package com.bintina.goouttolunchmvvm.user.viewmodel
 
-import android.content.Context
 import android.util.Log
-import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.auth.FirebaseUser
@@ -106,7 +104,7 @@ suspend fun fetchLocalUserList(): List<LocalUser> {
 }
 
 
-suspend fun getLocalUserById(uid: String): LocalUser {
+suspend fun getLocalUserById(uid: String): LocalUser? {
     Log.d("UserExtensionsLog", "getLocalUserById called. uid is $uid")
     // Get the AppDatabase instance
     val db = MyApp.db

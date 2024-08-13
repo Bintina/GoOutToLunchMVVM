@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bintina.goouttolunchmvvm.databinding.FragmentRestaurantListBinding
 import com.bintina.goouttolunchmvvm.databinding.FragmentSettingsBinding
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.messaging.FirebaseMessaging

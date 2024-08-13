@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
@@ -42,7 +41,6 @@ open class MainActivity : AppCompatActivity() {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -74,7 +72,6 @@ open class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         instantiateTodaysDate()
-
 
 
         // Write a message to the database
@@ -144,7 +141,7 @@ open class MainActivity : AppCompatActivity() {
 
             R.id.restaurant_map_btn -> {
                 navController.navigate(R.id.restaurant_map_dest)
-Log.d(TAG, "navigate to Maps Fragment called.")
+                Log.d(TAG, "navigate to Maps Fragment called.")
                 return true
             }
 

@@ -1,6 +1,5 @@
 package com.bintina.goouttolunchmvvm.model.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -15,10 +14,10 @@ import com.bintina.goouttolunchmvvm.model.UserRestaurantCrossRef
 @Dao
 interface RestaurantDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     fun insertRestaurant(restaurant: LocalRestaurant)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     abstract fun insertAll(listRestaurants: List<LocalRestaurant>)
 
     @Update
@@ -43,7 +42,7 @@ interface RestaurantDao {
     @Query("SELECT * FROM LocalRestaurant")
     suspend fun getRestaurantsWithUsers(): List<RestaurantWithUsers>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertUserRestaurantCrossRef(crossRef: UserRestaurantCrossRef)
 
     @Delete

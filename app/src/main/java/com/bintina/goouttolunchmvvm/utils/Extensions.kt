@@ -6,13 +6,15 @@ import android.widget.ImageView
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
+import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRealtimeRestaurants
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersWithRestaurantsFromRealtime
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsToRealtimeDatabase
-import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsWithUsersToRealtimeDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveUserWithRestaurantToRealtimeDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveUsersWithRestaurantsToRoom
 import com.bintina.goouttolunchmvvm.user.viewmodel.getRealtimeUsers
-
 import com.bintina.goouttolunchmvvm.user.viewmodel.saveUsersToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
 import com.bumptech.glide.Glide
@@ -147,7 +149,7 @@ suspend fun uploadToRealtime(
         saveRestaurantsToRealtimeDatabase()
         Log.d("ExtensionsLog", "saveRestaurantsToRealtimeDatabase called")
 
-        saveRestaurantsWithUsersToRealtimeDatabase()
+        saveUserWithRestaurantToRealtimeDatabase()
         Log.d("ExtensionsLog", "saveRestaurantsWithUsersToRealtimeDatabase called")
     }
 }
@@ -156,4 +158,5 @@ fun downloadRealtimeUpdates() {
 
     getRealtimeUsers()
     getRealtimeRestaurants()
+    getUsersWithRestaurantsFromRealtime()
 }

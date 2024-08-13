@@ -23,10 +23,10 @@ import androidx.lifecycle.lifecycleScope
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentLoginBinding
 import com.bintina.goouttolunchmvvm.model.LocalUser
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantsWithUsersFromRealtimeDatabase
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.fetchLocalRestaurantList
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersWithRestaurantsFromRealtime
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.injection.Injection
-import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.facebook.login.LoginManager
 import com.firebase.ui.auth.AuthUI.IdpConfig
 import com.firebase.ui.auth.AuthUI.getInstance
@@ -77,7 +77,8 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             ViewModelProvider(this, Injection.provideViewModelFactory(requireContext())).get(
                 UserViewModel::class.java
             )
-getRestaurantsWithUsersFromRealtimeDatabase()
+
+        viewModel.instantiateData()
         //Set channel if needed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channelId = getString(R.string.default_notification_channel_id)

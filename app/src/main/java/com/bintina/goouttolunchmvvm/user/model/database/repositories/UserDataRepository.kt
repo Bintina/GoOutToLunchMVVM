@@ -6,11 +6,11 @@ import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 class UserDataRepository(private val userDao: UserDao) {
 
     //Get User
-    fun getUser(userId: String): LocalUser {
+    fun getUser(userId: String): LocalUser? {
         return this.userDao.getUser(userId)
     }
 
-    fun getUserList(): MutableList<LocalUser> {
+    fun getUserList(): List<LocalUser?> {
         return userDao.getAllUsers()
     }
 }

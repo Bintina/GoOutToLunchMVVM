@@ -6,13 +6,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
-import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
-import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
-import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
+import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
+import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
+import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
+import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.Dispatchers
@@ -29,16 +29,16 @@ class RestaurantViewModel(
     private val TAG = "RestaurantVMLog"
     private var placesRestaurantList = mutableListOf<Restaurant?>()
     private val restaurantPlaceholder = LocalRestaurant()
-    var currentRestaurant: RestaurantWithUsers? =
-        RestaurantWithUsers(restaurantPlaceholder, emptyList())
+    var currentRestaurant: LocalRestaurant? =
+        LocalRestaurant()
     var localRestaurantList: List<LocalRestaurant> = emptyList()
-    var restaurantList: MutableLiveData<List<RestaurantWithUsers?>> = MutableLiveData()
+    var restaurantList: MutableLiveData<List<LocalRestaurant?>> = MutableLiveData()
     val adapter: Adapter = Adapter()
     var currentRestaurantAttendingList: List<LocalUser?> = listOf()
 
     private val _restaurantsWithUsers = MutableLiveData<List<RestaurantWithUsers>>()
     val restaurantsWithUsers: LiveData<List<RestaurantWithUsers>> get() = _restaurantsWithUsers
-    private var restaurantUsers: List<LocalUser> = listOf()
+    private var restaurantUsers: List<LocalUser?> = listOf()
 
 
     private val restaurantDataSource: RestaurantDataRepository =
@@ -65,52 +65,58 @@ class RestaurantViewModel(
             "handleUserSelection() called with userId: $userId, restaurantId: $restaurantId."
         )
         viewModelScope.launch {
-            val restaurant = getRestaurantWithUsersById(restaurantId)
-            newConfirmAttending(restaurant)
+            val restaurant = getLocalRestaurantById(restaurantId)
+            updateUserWithRestaurantWithUserChoice(MyApp.currentUser!!.uid, restaurant)
         }
     }
 
-    fun getLocalRestaurantsWithUsers(): MutableLiveData<List<RestaurantWithUsers?>> {
+    /*  //TODO("Replace with get LocalRestaurants?")
+      fun getLocalRestaurantsWithUsers(): MutableLiveData<List<RestaurantWithUsers?>> {
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = fetchRestaurantsWithUsersList()
+          viewModelScope.launch(Dispatchers.IO) {
+              val result = fetchRestaurantsWithUsersList()
 
-            if (result.isEmpty()) {
-                Log.d(TAG, "RestaurantListFragment result is empty")
-            } else {
-                Log.d(TAG, "Restaurant result is $result")
-                withContext(Dispatchers.Main) {
-                    restaurantList.postValue(result)
-                    MyApp.localRestaurantWithUsersList = result
+              if (result.isEmpty()) {
+                  Log.d(TAG, "RestaurantListFragment result is empty")
+              } else {
+                  Log.d(TAG, "Restaurant result is $result")
+                  withContext(Dispatchers.Main) {
+                      restaurantList.postValue(result)
+                      MyApp.localRestaurantWithUsersList = result
 
-                    Log.d(
-                        TAG,
-                        "Restaurant getRestaurants method result has ${result.size} items. " +
-                                "localRestaurantList is ${MyApp.localRestaurantWithUsersList}"
-                    )
-                }
-            }
-        }
-        return restaurantList
-    }
+                      Log.d(
+                          TAG,
+                          "Restaurant getRestaurants method result has ${result.size} items. " +
+                                  "localRestaurantList is ${MyApp.localRestaurantWithUsersList}"
+                      )
+                  }
+              }
+          }
+          return restaurantList
+      }*/
 
-    fun setCurrentRestaurant(restaurant: RestaurantWithUsers): RestaurantWithUsers {
+    //TODO("Replace with setCurrentLocalRestaurant")
+    fun setCurrentRestaurant(restaurant: LocalRestaurant): LocalRestaurant {
         Log.d(TAG, "setCurrentRestaurant called. restaurant is $restaurant")
+        viewModelScope.launch(Dispatchers.Main) {
 
-        MyApp.currentRestaurant = restaurant
-        Log.d(TAG, "setCurrentRestaurant called. currentRestaurant is $currentRestaurant")
-        // currentRestaurantAttendingList = getClickedRestaurantAttendeeObjects(restaurant)
-        Log.d(
-            TAG,
-            "setCurrentRestaurant called. currentRestaurantAttending is $currentRestaurantAttendingList"
-        )
+            MyApp.currentRestaurant = restaurant
+            currentRestaurant = restaurant
+            Log.d(TAG, "setCurrentRestaurant called. currentRestaurant is $currentRestaurant")
+            currentRestaurantAttendingList =
+                withContext(Dispatchers.IO) { getRestaurantUsers(restaurant.restaurantId) }
+            Log.d(
+                TAG,
+                "setCurrentRestaurant called. currentRestaurantAttending is $currentRestaurantAttendingList"
+            )
+        }
 
         return currentRestaurant!!
     }
 
-    suspend fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser> {
-        val restaurant = getRestaurantWithUsers(restaurantId)
-        restaurantUsers = restaurant.users
+
+    suspend fun getClickedRestaurantAttendeeObjects(restaurantId: String): List<LocalUser?> {
+        restaurantUsers = getRestaurantUsers(restaurantId)
 
         MyApp.currentAttendingList = restaurantUsers
 
@@ -120,8 +126,11 @@ class RestaurantViewModel(
 
     fun getLocalRestaurants(): List<LocalRestaurant> {
         viewModelScope.launch {
-            MyApp.localRestaurantList = fetchLocalRestaurantList()
 
+            MyApp.localRestaurantList = fetchLocalRestaurantList()
+            Log.d(TAG, "MyApp.localRestaurantList is ${MyApp.localRestaurantList}")
+            localRestaurantList = MyApp.localRestaurantList
+            Log.d(TAG, "viewModel.localRestaurantList is ${localRestaurantList}")
         }
         return MyApp.localRestaurantList
     }

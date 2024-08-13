@@ -1,7 +1,6 @@
 package com.bintina.goouttolunchmvvm.model.database.repositories
 
 import androidx.room.DeleteColumn
-import androidx.room.RenameColumn
 import androidx.room.migration.AutoMigrationSpec
 
 /*@RenameColumn.Entries(

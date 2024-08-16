@@ -36,7 +36,7 @@ fun mapFirebaseUserToLocalUser(firebaseUser: FirebaseUser): LocalUser {
 
 //Room Database methods.............................................................................
 // Save a LocalUser object to the Room database
-fun saveLocalUserToRoomDatabase(result: FirebaseUser?) {
+fun saveFirebaseUserToRoomDatabase(result: FirebaseUser?) {
 
     // Convert each User object to a LocalRestaurant object
     val localUser =
@@ -87,6 +87,15 @@ fun saveRealtimeUserListToRoom(users: List<LocalUser>) {
 
         db.userDao().insertAll(users)
         Log.d("UserExtensionLog", "Inserting($users) called")
+    }
+}
+
+//Save Realtime Local User to Room
+suspend fun saveLocalUserToRoom(user: LocalUser){
+    val db = MyApp.db
+    withContext(Dispatchers.IO){
+        Log.d("UserExtensionLog", "saveLocalUserToRoom() called. user is $user")
+        db.userDao().insert(user)
     }
 }
 

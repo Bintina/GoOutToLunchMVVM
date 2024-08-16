@@ -1,6 +1,7 @@
 package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.util.Log
+import androidx.work.ListenableWorker
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
@@ -26,7 +27,10 @@ suspend fun updateUserWithRestaurantWithUserChoice(uid: String, restaurantChoice
         val userDao = db.userDao()
         val previousSelectionCrossRef = fetchLocalUserWithRestaurant(uid)
         val previousSelection = previousSelectionCrossRef.restaurant
-        Log.d("AttendingExtensionLog", "updateUserWithRestaurantWithUserChoice(), previous selection is $previousSelection")
+        Log.d(
+            "AttendingExtensionLog",
+            "updateUserWithRestaurantWithUserChoice(), previous selection is $previousSelection"
+        )
 
         if (previousSelection?.restaurantId == restaurantChoice.restaurantId) {
             val crossRef = UserRestaurantCrossRef(uid, previousSelection.restaurantId)
@@ -37,7 +41,10 @@ suspend fun updateUserWithRestaurantWithUserChoice(uid: String, restaurantChoice
                 userDao.deleteRestaurantUserCrossRef(previousCrossRef)
             }
             val crossRef = UserRestaurantCrossRef(uid, restaurantChoice.restaurantId)
-        Log.d("AttendingExtensionLog", "updateUserWithRestaurantWithUserChoice(), current selection is $crossRef")
+            Log.d(
+                "AttendingExtensionLog",
+                "updateUserWithRestaurantWithUserChoice(), current selection is $crossRef"
+            )
             userDao.insertRestaurantUserCrossRef(crossRef)
             markRestaurantAsVisited(restaurantChoice)
 
@@ -52,7 +59,7 @@ suspend fun markRestaurantAsVisited(restaurant: LocalRestaurant) {
     withContext(Dispatchers.IO) {
         restaurant.visited = true
         saveRestaurantsToRealtimeDatabase()
-    Log.d("AttendingExtensionLog", "markRestaurantAsVisited() restaurant is $restaurant")
+        Log.d("AttendingExtensionLog", "markRestaurantAsVisited() restaurant is $restaurant")
     }
 }
 
@@ -60,10 +67,11 @@ suspend fun markRestaurantAsVisited(restaurant: LocalRestaurant) {
 //Room Methods......................................................................................
 
 suspend fun fetchLocalUserWithRestaurant(uid: String): UserWithRestaurant {
-    Log.d("AttendingExtensionLog","fetchLocalUserWithRestaurant() called")
+    Log.d("AttendingExtensionLog", "fetchLocalUserWithRestaurant() called")
     val db = MyApp.db
     var usersWithRestaurants = emptyList<UserWithRestaurant>()
-    var userWithRestaurant = UserWithRestaurant(LocalUser("","","","",0L, 0L), LocalRestaurant())
+    var userWithRestaurant =
+        UserWithRestaurant(LocalUser("", "", "", "", 0L, 0L), LocalRestaurant())
     withContext(Dispatchers.IO) {
         val userDao = db.userDao()
 
@@ -73,43 +81,61 @@ suspend fun fetchLocalUserWithRestaurant(uid: String): UserWithRestaurant {
         userWithRestaurant = usersWithRestaurants.find { it.user?.uid == uid }!!
         //userWithRestaurant = userDao.getUserWithRestaurant(uid)
     }
-    Log.d("AttendingExtensionLog","fetchLocalUserWithRestaurant() fetched restaurant is $userWithRestaurant")
+    Log.d(
+        "AttendingExtensionLog",
+        "fetchLocalUserWithRestaurant() fetched restaurant is $userWithRestaurant"
+    )
 
     return userWithRestaurant
 }
 
 suspend fun getRestaurantUsers(restaurantId: String): List<LocalUser?> {
     Log.d("AttendingExtensionLog", "getRestaurantUsers() called.")
-   return withContext(Dispatchers.IO) {
-    val db = MyApp.db
+    return withContext(Dispatchers.IO) {
+        val db = MyApp.db
         val userDao = db.userDao()
 
-val usersWithRestauarantList = userDao.getUsersWithRestaurants()
+        val usersWithRestauarantList = userDao.getUsersWithRestaurants()
 
-            val restaurantUsers = usersWithRestauarantList
-                .filter { it.restaurant?.restaurantId == restaurantId }
-                .map {it.user}
-    Log.d("AttendingExtensionLog", "getRestaurantUsers() finished. Number of users: ${restaurantUsers.size}")
-       restaurantUsers
+        val restaurantUsers = usersWithRestauarantList
+            .filter { it.restaurant?.restaurantId == restaurantId }
+            .map { it.user }
+        Log.d(
+            "AttendingExtensionLog",
+            "getRestaurantUsers() finished. Number of users: ${restaurantUsers.size}"
+        )
+        restaurantUsers
     }
 
 }
 
-fun getUsersRestaurant(uid: String): String?{
+suspend fun getUsersRestaurant(uid: String): String? {
     Log.d("AttendingExtensionLog", "getUsersRestaurant() called.")
-    var userWithRestaurantObject = UserWithRestaurant(LocalUser(), LocalRestaurant())
-    CoroutineScope(Dispatchers.IO).launch {
-       userWithRestaurantObject = fetchLocalUserWithRestaurant(uid)
 
+    return withContext(Dispatchers.IO) {
+        val userWithRestaurantObject = fetchLocalUserWithRestaurant(uid)
+        val restaurantName = userWithRestaurantObject.restaurant?.name
+        Log.d("AttendingExtensionLog", "getUsersRestaurant() restaurantName is $restaurantName")
+        restaurantName
     }
 
-    val restaurantName = userWithRestaurantObject.restaurant?.name
-
-    Log.d("AttendingExtensionLog", "getUsersRestaurant() restaurantName is $restaurantName")
-    return restaurantName
 }
-suspend fun saveUsersWithRestaurantsToRoom(users: List<UserWithRestaurant>) {
 
+suspend fun saveUsersWithRestaurantsToRoom(usersWithRestaurants: List<UserWithRestaurant>) {
+    val db = MyApp.db
+    withContext(Dispatchers.IO) {
+        usersWithRestaurants.forEach { userWithRestaurant ->
+
+            val uid = userWithRestaurant.user?.uid
+            val restaurantId = userWithRestaurant.restaurant?.restaurantId
+
+            if (uid != null && restaurantId != null){
+                val crossRef = UserRestaurantCrossRef(uid, restaurantId)
+                db.userDao().insertRestaurantUserCrossRef(crossRef)
+            }
+
+        }
+    }
 }
 
 //Realtime Methods..................................................................................
@@ -169,7 +195,8 @@ fun fetchUsersWithRestaurantsFromRealtime(
 
             if (snapshot.hasChildren()) {
                 for (userWithRestaurantSnapshot in snapshot.children) {
-                    val userWithRestaurant = userWithRestaurantSnapshot.getValue(UserWithRestaurant::class.java)
+                    val userWithRestaurant =
+                        userWithRestaurantSnapshot.getValue(UserWithRestaurant::class.java)
                     Log.d(
                         "AttendingExtensionLog",
                         "userWithRestaurantSnapshot.getValue called. userWithRestaurant is $userWithRestaurant"
@@ -181,7 +208,10 @@ fun fetchUsersWithRestaurantsFromRealtime(
                             localUserWithRestaurantList.add(userWithRestaurant)
                             hasOtherUsers = true
                         } else {
-                            Log.d("AttendingExtensionLog", "Skipped current user data: ${userWithRestaurant.user?.uid}")
+                            Log.d(
+                                "AttendingExtensionLog",
+                                "Skipped current user data: ${userWithRestaurant.user?.uid}"
+                            )
                         }
                     }
                 }
@@ -194,7 +224,10 @@ fun fetchUsersWithRestaurantsFromRealtime(
                     )
                     onUsersWithRestaurantsFetched(localUserWithRestaurantList)
                 } else {
-                    Log.d("AttendingExtensionLog", "No users found other than the current user. Retaining local changes.")
+                    Log.d(
+                        "AttendingExtensionLog",
+                        "No users found other than the current user. Retaining local changes."
+                    )
                     // Optionally, you can call a method to fetch and use existing local data if needed
                     // e.g., `fetchLocalUserWithRestaurant()` to maintain local state
                 }
@@ -215,6 +248,28 @@ fun fetchUsersWithRestaurantsFromRealtime(
         }
     })
 }
+
+fun deleteAllUsersWithRestaurantsFromRealtime(callback: (ListenableWorker.Result) -> Unit) {
+    Log.d("AttendingExtensionLog", "deleteAllUsersWithRestaurantsFromRealtime() called.")
+    val databaseReference = Firebase.database.reference
+
+    CoroutineScope(Dispatchers.IO).launch {
+        val userWithRestaurantRef = databaseReference.child("usersWithRestaurants")
+
+        userWithRestaurantRef.removeValue()
+            .addOnSuccessListener {
+                Log.d("AttendingExtensionLog", "All UserRestaurant Data deleted successfully")
+                // Call the callback with a success result
+                callback(ListenableWorker.Result.success())
+            }
+            .addOnFailureListener { e ->
+                Log.e("AttendingExtensionLog", "Failed to delete all userRestaurant data", e)
+                // Call the callback with a failure result
+                callback(ListenableWorker.Result.failure())
+            }
+    }
+}
+
 
 
 //..................................................................................................

@@ -2,14 +2,16 @@ package com.bintina.goouttolunchmvvm.restaurants.viewmodel
 
 import android.content.Context
 import android.util.Log
+import androidx.work.ListenableWorker
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
+import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.restaurants.work.DownloadWork
+
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
 import com.google.firebase.database.DataSnapshot
@@ -30,8 +32,8 @@ import java.util.concurrent.TimeUnit
 
 //Get Places Restaurants and save to Room methods...................................................
 fun convertRestaurantToLocalRestaurant(
-    restaurant: Restaurant?,
-    currentUser: LocalUser
+    restaurant: Restaurant?
+
 ): LocalRestaurant? {
     var localRestaurant: LocalRestaurant? = null
     restaurant?.let {
@@ -72,40 +74,42 @@ fun convertRestaurantToLocalRestaurant(
 }
 
 fun convertPlacesRestaurantListToLocalRestaurantList(
-    placesRestaurantList: List<Restaurant?>,
-    currentUser: LocalUser
+    placesRestaurantList: List<Restaurant?>
 ): List<LocalRestaurant> {
     if (placesRestaurantList.isNullOrEmpty()) {
         return MyApp.restaurantArrayList as List<LocalRestaurant>
     } else {
 
         val convertedList: List<LocalRestaurant?> = placesRestaurantList.map { restaurant ->
-            convertRestaurantToLocalRestaurant(restaurant, currentUser)
+            convertRestaurantToLocalRestaurant(restaurant)
         }
         return convertedList.filterNotNull()
 
     }
 }
+ suspend fun downloadPlacesRestaurantList(){
 
-/*
-fun saveListToRoomDatabase(result: List<Restaurant>) {
+    val dataSource =
+        DataSource
 
-    val placesRestaurantList = result.toMutableList()
-    // Convert each Restaurant object to a LocalRestaurant object
-    val localRestaurantList =
-        convertPlacesRestaurantListToLocalRestaurantList(placesRestaurantList)
-    //Log.d("RestaurantExtensionsLog", "localRestaurantList is $localRestaurantList")
-    //restaurantList = localRestaurantList.toMutableLiveDataList()
+    return withContext(Dispatchers.IO) {
+        try {
+            val result = dataSource.loadRestaurantList(this)
+            if (result.isEmpty()) {
+                Log.d("RestaurantExtensionsLog", "result list is empty")
 
-    // Get the AppDatabase instance
-    val db = MyApp.db
+            } else {
+                Log.d("RestaurantExtensionsLog", "result list has ${result.size} items.")
+                val convertedList = convertPlacesRestaurantListToLocalRestaurantList(result)
+                saveRestaurantListToRoomDatabaseExtension(convertedList)
+            }
+        } catch (e: Exception) {
+            Log.e("RestaurantExtensionsLog", "Error fetching restaurant list", e)
 
-    // Save each LocalRestaurant object to the database
-    localRestaurantList.forEach { localRestaurant ->
-        Log.d("RestaurantExtensionsLog", "Inserting: $localRestaurant")
-        db.restaurantDao().insertRestaurant(localRestaurant!!)
+        }
+
     }
-}*/
+}
 
 
 suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<LocalRestaurant>) {
@@ -122,7 +126,13 @@ suspend fun saveRestaurantListToRoomDatabaseExtension(localRestaurantList: List<
 //}
     }
 }
-
+suspend fun saveRestaurantToRoom(restaurant: LocalRestaurant){
+    val db = MyApp.db
+    withContext(Dispatchers.IO) {
+        Log.d("RestaurantExtensionsLog", "saveRestaurantToRoom() called. restaurant is $restaurant")
+        db.restaurantDao().insertRestaurant(restaurant)
+    }
+}
 //Fetch Room Restaurant methods.....................................................................
 /*fun getClickedRestaurantAttendeeObjects(restaurant: LocalRestaurant): List<LocalUser> {
 
@@ -315,6 +325,7 @@ fun getWorkManagerStartDelay(): Long {
 
     return initialDelay
 }
+/*
 
 fun setPeriodicWorker(initialDelay: Long, context: Context) {
     val downloadRequest = PeriodicWorkRequestBuilder<DownloadWork>(24, TimeUnit.HOURS)
@@ -325,3 +336,4 @@ fun setPeriodicWorker(initialDelay: Long, context: Context) {
 
     WorkManager.getInstance(context).enqueue(downloadRequest)
 }
+*/

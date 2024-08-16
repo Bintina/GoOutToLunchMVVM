@@ -52,7 +52,7 @@ class UserViewModel(
             val user = FirebaseAuth.getInstance().currentUser
             this.user.value = user
             Log.d(TAG, "Sign in successful: ${user?.displayName}")
-            saveLocalUserToRoomDatabase(user)
+            saveFirebaseUserToRoomDatabase(user)
             downloadRealtimeUpdates()
             Log.d(TAG, "saveUserToLocalDatabase called")
             Log.d(TAG, "currentUser is $currentUser")
@@ -96,7 +96,7 @@ class UserViewModel(
                     this.user.value = user
                     Log.d(TAG, "handleFacebookAccessToken credential successful, user is $user")
 
-                    saveLocalUserToRoomDatabase(user!!)
+                    saveFirebaseUserToRoomDatabase(user!!)
                     downloadRealtimeUpdates()
                     Log.d(TAG, "saveLocalUserToRoomDatabase called")
                     MyApp.navController.navigate(R.id.restaurant_list_dest)

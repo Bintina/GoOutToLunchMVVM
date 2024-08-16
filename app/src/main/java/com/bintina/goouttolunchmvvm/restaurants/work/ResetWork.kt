@@ -12,9 +12,12 @@ import androidx.work.WorkerParameters
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.deleteAllUsersWithRestaurantsFromRealtime
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.deleteUserWithRestaurantClassObjects
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.updateUserRestaurantChoiceToRoomObjects
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
@@ -57,6 +60,10 @@ class ResetWork(appContext: Context, workerParams: WorkerParameters)
     }*/
 
     private fun resetUsersAttendance(): ListenableWorker.Result {
+        CoroutineScope(Dispatchers.IO).launch {
+
+        deleteUserWithRestaurantClassObjects()
+        }
         // Use a CompletableDeferred to handle asynchronous result in a synchronous context
         val deferred = CompletableDeferred<Result>()
 

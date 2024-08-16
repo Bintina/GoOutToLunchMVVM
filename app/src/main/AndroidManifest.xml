@@ -80,7 +80,7 @@
         </activity>
 
         <service
-            android:name=".restaurants.model.fcm.MyFirebaseMessagingService"
+            android:name=".restaurants.model.fcm.DataChangeFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

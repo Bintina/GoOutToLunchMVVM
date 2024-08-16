@@ -52,4 +52,5 @@ interface UserDao {
     @Transaction
     @Query(" SELECT u.* FROM LocalUser u INNER JOIN UserRestaurantCrossRef urc ON u.uid = urc.uid WHERE urc.restaurantId = :restaurantId")
     fun getUsersForRestaurant(restaurantId: String): List<LocalUser>
+
 }

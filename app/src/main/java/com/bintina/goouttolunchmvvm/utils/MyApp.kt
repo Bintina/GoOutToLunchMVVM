@@ -9,12 +9,13 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.UserWithRestaurant
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.model.database.repositories.AppDatabase
-import com.bintina.goouttolunchmvvm.restaurants.work.CustomWorkerFactory
+
 import com.facebook.FacebookSdk
 import com.google.android.libraries.places.api.Places
 import java.time.LocalDateTime
 
-class MyApp : Application(), androidx.work.Configuration.Provider {
+class MyApp : Application()//, androidx.work.Configuration.Provider
+ {
 
 
     companion object {
@@ -81,7 +82,7 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
         Places.initialize(applicationContext, "MAP_API_KEY")
     }
 
-    override val workManagerConfiguration: androidx.work.Configuration
+   /* override val workManagerConfiguration: androidx.work.Configuration
         get() {
             // Initialize the DataSource here
             val dataSource =
@@ -90,5 +91,5 @@ class MyApp : Application(), androidx.work.Configuration.Provider {
             return androidx.work.Configuration.Builder()
                 .setWorkerFactory(CustomWorkerFactory(dataSource))
                 .build()
-        }
+        }*/
 }

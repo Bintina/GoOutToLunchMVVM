@@ -6,6 +6,7 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 
+/*
 class CustomWorkerFactory(private val dataSource: DataSource) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -18,4 +19,4 @@ class CustomWorkerFactory(private val dataSource: DataSource) : WorkerFactory() 
             else -> null // Return null to delegate to the default WorkerFactory
         }
     }
-}
+}*/

@@ -16,7 +16,7 @@ import androidx.work.WorkManager
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getWorkManagerStartDelay
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.setPeriodicWorker
+
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
@@ -32,7 +32,7 @@ open class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private val TAG = "MainActivityLog"
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var outPutWorkInfoItems: LiveData<List<WorkInfo>>
+    //private lateinit var outPutWorkInfoItems: LiveData<List<WorkInfo>>
 
 
     // WorkManager variables
@@ -79,15 +79,25 @@ open class MainActivity : AppCompatActivity() {
         //readFromRealtimeDatabase()
 
         // Initialize WorkManager and LiveData
-        outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
-        downloadRestaurants()
-        observeWorkStatus()
+        //outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
+        //downloadRestaurants()
+        //observeWorkStatus()
         downloadRealtimeUpdates()
 
         Log.d(TAG, "Fragment committed")
 
         //Handle incoming intent
         handleIntent(intent)
+
+        // Check if the intent has the detailed message
+        intent?.let {
+            val messageDetail = it.getStringExtra("message_detail")
+            if (!messageDetail.isNullOrEmpty()) {
+                // Show the dialog with the message detail
+                val dialog = NotificationDialog.newInstance(messageDetail)
+                dialog.show(supportFragmentManager, "NotificationDetailDialog")
+            }
+        }
     }
 
     private fun handleIntent(intent: Intent) {
@@ -173,12 +183,12 @@ open class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun downloadRestaurants() {
+  /*  private fun downloadRestaurants() {
         val initialDelay = getWorkManagerStartDelay()
         setPeriodicWorker(initialDelay, this)
     }
-
-    private fun observeWorkStatus() {
+*/
+ /*   private fun observeWorkStatus() {
         outPutWorkInfoItems.observe(this) { workInfos ->
             if (workInfos.isNullOrEmpty()) {
                 return@observe
@@ -219,6 +229,6 @@ open class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
 }

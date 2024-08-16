@@ -8,14 +8,13 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getWorkManagerStartDelay
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.setPeriodicWorker
 
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.firebase.Firebase
@@ -80,7 +79,7 @@ open class MainActivity : AppCompatActivity() {
 
         // Initialize WorkManager and LiveData
         //outPutWorkInfoItems = workManager.getWorkInfosByTagLiveData("restaurant")
-        //downloadRestaurants()
+        resetUserChoicesWork()
         //observeWorkStatus()
         downloadRealtimeUpdates()
 
@@ -183,11 +182,12 @@ open class MainActivity : AppCompatActivity() {
 
     }
 
-  /*  private fun downloadRestaurants() {
+
+
+    private fun resetUserChoicesWork() {
         val initialDelay = getWorkManagerStartDelay()
         setPeriodicWorker(initialDelay, this)
     }
-*/
  /*   private fun observeWorkStatus() {
         outPutWorkInfoItems.observe(this) { workInfos ->
             if (workInfos.isNullOrEmpty()) {

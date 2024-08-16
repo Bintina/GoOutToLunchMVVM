@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.model.fcm
+package com.bintina.goouttolunchmvvm.model.fcm
 
 import android.content.Context
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.bintina.goouttolunchmvvm.restaurants.model.fcm
+package com.bintina.goouttolunchmvvm.model.fcm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

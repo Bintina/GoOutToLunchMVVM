@@ -26,5 +26,12 @@
         android:checked="true"
         />
 
+    <Button
+        android:id="@+id/reset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/refresh_btn_txt"
+        />
+
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,10 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bintina.goouttolunchmvvm.databinding.FragmentSettingsBinding
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.downloadPlacesRestaurantList
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.bintina.goouttolunchmvvm.utils.downloadRealtimeUpdates
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SettingsFragment: Fragment() {
 
@@ -24,7 +30,13 @@ val TAG = "SettingsFragLog"
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         setupNotificationToggle()
+binding.resetBtn.setOnClickListener {
+    CoroutineScope(Dispatchers.IO).launch {
 
+    downloadPlacesRestaurantList()
+        Toast.makeText(requireContext(), "You're local Restaurants are being downloaded.", Toast.LENGTH_LONG).show()
+    }
+}
         return binding.root
     }
 

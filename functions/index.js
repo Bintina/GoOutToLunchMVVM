@@ -32,17 +32,18 @@ exports.notifyRestaurantDataChange = functions.database.ref('/restaurants/{resta
         return admin.messaging().sendToTopic(`restaurants/${restaurantId}`, payload);
     });
 
-    // Function to listen for changes in the 'restaurantsWithUsers' node
-exports.notifyRestaurantWithUsersDataChange = functions.database.ref('/restaurantsWithUsers/{name}')
-    .onWrite((change, context) => {
-        const restaurantName = context.params.name;
-        const newValue = change.after.val();
-        const payload = {
-            notification: {
-                title: 'RestaurantWithUsers Data Changed',
-                body: `RestaurantWithUsers ${name} data updated.`
-            }
-        };
+      // Function to listen for changes in the 'userWithRestaurant' node
+  exports.notifyUserWithRestaurantDataChange = functions.database.ref('/userWithRestaurant/{uid}')
+      .onWrite((change, context) => {
+          const userId = context.params.uid;
+          const newValue = change.after.val();
+          const payload = {
+              data: {
+                title: 'UserWithRestaurant Data Changed',
+                body: `UserWithRestaurant ${userId} data updated.`,
+                userId: userId
+              }
+          };
 
-        return admin.messaging().sendToTopic(`restaurantsWithUsers/${name}`, payload);
-    });
+          return admin.messaging().sendToTopic(`userWithRestaurant/${uid}`, payload);
+      });

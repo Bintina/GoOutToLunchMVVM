@@ -58,6 +58,7 @@ suspend fun markRestaurantAsVisited(restaurant: LocalRestaurant) {
     Log.d("AttendingExtensionLog", "markRestaurantAsVisited() called")
     withContext(Dispatchers.IO) {
         restaurant.visited = true
+        saveRestaurantToRoom(restaurant)
         saveRestaurantsToRealtimeDatabase()
         Log.d("AttendingExtensionLog", "markRestaurantAsVisited() restaurant is $restaurant")
     }
@@ -125,12 +126,14 @@ suspend fun deleteUserWithRestaurantClassObjects(){
     withContext(Dispatchers.IO){
         val db = MyApp.db
         val usersWithRestaurants = db.userDao().getUsersWithRestaurants()
-        usersWithRestaurants.forEach {userWithRestaurant ->
-            val uid = userWithRestaurant.user!!.uid
-            val restaurantId = userWithRestaurant.restaurant!!.restaurantId
+        if (usersWithRestaurants.isEmpty()){
+            usersWithRestaurants.forEach { userWithRestaurant ->
+                val uid = userWithRestaurant.user!!.uid
+                val restaurantId = userWithRestaurant.restaurant!!.restaurantId
 
-            val crossRef = UserRestaurantCrossRef(uid, restaurantId)
-        db.userDao().deleteRestaurantUserCrossRef(crossRef)
+                val crossRef = UserRestaurantCrossRef(uid, restaurantId)
+                db.userDao().deleteRestaurantUserCrossRef(crossRef)
+            }
         }
     }
 }

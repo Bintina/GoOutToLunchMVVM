@@ -34,7 +34,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
 
     private var restaurantList = emptyList<LocalRestaurant?>()
-
+    lateinit var autocompleteFragment: AutocompleteSupportFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +52,7 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+        autocompleteFragment = childFragmentManager.findFragmentById(R.id.search_autocomplete_fragment) as AutocompleteSupportFragment
 
         initializeAutocomplet()
         return binding.root
@@ -64,10 +65,10 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun initializeAutocomplet() {
         // Initialize the AutocompleteSupportFragment.
-        val autocompleteFragment =
+        /*val autocompleteFragment =
             childFragmentManager.findFragmentById(R.id.search_autocomplete_fragment)
                     as AutocompleteSupportFragment
-
+*/
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
 
@@ -96,8 +97,8 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
         Toast.makeText(requireContext(), "Map Fragment intializeViews() called ", Toast.LENGTH_LONG)
             .show()
 
-myMap.clear()
-Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
+        myMap.clear()
+        Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
         restaurantList.let {
 
             it.forEachIndexed { index, restaurant ->
@@ -110,12 +111,15 @@ Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
                         MarkerOptions()
                             .position(position)
                             .title(title)
-                            .icon(BitmapDescriptorFactory.defaultMarker(if (visited == true){
-                                BitmapDescriptorFactory.HUE_GREEN
-                            } else {
-                                BitmapDescriptorFactory.HUE_RED
-                            })
-                    )
+                            .icon(
+                                BitmapDescriptorFactory.defaultMarker(
+                                    if (visited == true) {
+                                        BitmapDescriptorFactory.HUE_GREEN
+                                    } else {
+                                        BitmapDescriptorFactory.HUE_RED
+                                    }
+                                )
+                            )
                     )
                     //myMap.setOnMarkerClickListener { true }
                 }

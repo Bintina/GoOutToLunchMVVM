@@ -1,11 +1,15 @@
 package com.bintina.goouttolunchmvvm.utils
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
@@ -39,6 +43,19 @@ open class MainActivity : AppCompatActivity() {
         WorkManager.getInstance(applicationContext)
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){ isGranted: Boolean ->
+        if (isGranted){
+            Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                this,
+                "FCM can't post notifications without POST_NOTIFICATIONS permission",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,11 +114,14 @@ open class MainActivity : AppCompatActivity() {
                 dialog.show(supportFragmentManager, "NotificationDetailDialog")
             }
         }
+
+        askNotificationPermission()
+        getFcmRegistrationToken(this)
     }
 
     private fun handleIntent(intent: Intent) {
         if (intent.action == "com.bintina.goouttolunchmvvm.SHOW_COWORKER_FRAGMENT")
-            navController.navigate(R.id.coworkers_dest)
+            navController.navigate(R.id.notification_dialog_dest)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -187,6 +207,19 @@ open class MainActivity : AppCompatActivity() {
     private fun resetUserChoicesWork() {
         val initialDelay = getWorkManagerStartDelay()
         setPeriodicWorker(initialDelay, this)
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+                ){
+                //can post notifications
+            } else {
+                //Ask for permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
  /*   private fun observeWorkStatus() {
         outPutWorkInfoItems.observe(this) { workInfos ->

@@ -3,6 +3,7 @@ package com.bintina.goouttolunchmvvm.utils
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.model.LocalRestaurant
@@ -10,16 +11,24 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRealtimeRestaurants
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersWithRestaurantsFromRealtime
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantToRoom
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantsWithUsersToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveUserWithRestaurantToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveUsersWithRestaurantsToRoom
 import com.bintina.goouttolunchmvvm.user.viewmodel.getRealtimeUsers
+import com.bintina.goouttolunchmvvm.user.viewmodel.saveLocalUserToRoom
 import com.bintina.goouttolunchmvvm.user.viewmodel.saveUsersToRealtimeDatabase
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.currentDate
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -159,4 +168,79 @@ fun downloadRealtimeUpdates() {
     getRealtimeUsers()
     getRealtimeRestaurants()
     getUsersWithRestaurantsFromRealtime()
+}
+
+//FCM Methods
+
+fun fetchAndUpdateUser(userId: String) {
+    val databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId)
+    databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val user = dataSnapshot.getValue(LocalUser::class.java)
+            if (user != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    saveLocalUserToRoom(user)
+                }
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d("ExtensionsLog", "Failed to fetch user data: ${databaseError.message}")
+        }
+    })
+}
+
+fun fetchAndUpdateRestaurant(restaurantId: String) {
+    val databaseReference = FirebaseDatabase.getInstance().getReference("restaurants").child(restaurantId)
+    databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val restaurant = dataSnapshot.getValue(LocalRestaurant::class.java)
+            if (restaurant != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    saveRestaurantToRoom(restaurant)
+                }
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d("ExtensionsLog", "Failed to fetch restaurant data: ${databaseError.message}")
+        }
+    })
+}
+fun fetchAndUpdateUserWithRestaurant(uid: String) {
+    val databaseReference = FirebaseDatabase.getInstance().getReference("userWithRestaurant").child(uid)
+    databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            val userWithRestaurant = dataSnapshot.getValue(LocalRestaurant::class.java)
+            if (userWithRestaurant != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    saveRestaurantToRoom(userWithRestaurant)
+                }
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            Log.d("ExtensionsLog", "Failed to fetch userWithRestaurant data: ${databaseError.message}")
+        }
+    })
+}
+
+//Fetch FCM Registration Token
+
+fun getFcmRegistrationToken(context: Context){
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.w("ExtensionsLog", "Fetching FCM registration token failed", task.exception)
+            return@OnCompleteListener
+        }
+
+        // Get new FCM registration token
+        val token = task.result
+
+        // Log and toast
+        //val msg = getString(R.string.msg_token_fmt, token)
+        Log.d("ExtensionsLog", token)
+        //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    })
 }

@@ -110,6 +110,12 @@
         android:label="Settings Screen"
         tools:layout="@layout/fragment_settings">
     </fragment>
+ <fragment
+        android:id="@+id/notification_dialog_dest"
+        android:name="com.bintina.goouttolunchmvvm.utils.NotificationDialog"
+        android:label="Notification Dialog"
+        tools:layout="@layout/fragment_notification_dialog">
+    </fragment>
 
 
 

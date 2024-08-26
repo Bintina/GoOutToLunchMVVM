@@ -121,19 +121,24 @@ suspend fun getUsersRestaurant(uid: String): String? {
 
 }
 
-suspend fun deleteUserWithRestaurantClassObjects(){
-    withContext(Dispatchers.IO){
-        val db = MyApp.db
-        val usersWithRestaurants = db.userDao().getUsersWithRestaurants()
-        usersWithRestaurants.forEach {userWithRestaurant ->
-            val uid = userWithRestaurant.user!!.uid
-            val restaurantId = userWithRestaurant.restaurant!!.restaurantId
+suspend fun deleteUserWithRestaurantClassObjects() {
 
-            val crossRef = UserRestaurantCrossRef(uid, restaurantId)
-        db.userDao().deleteRestaurantUserCrossRef(crossRef)
-        }
+    //reconsider this solution. May be better excecuted from FCF
+    withContext(Dispatchers.IO) {
+       /* val db = MyApp.db
+        val usersWithRestaurants = db.userDao().getUsersWithRestaurants()
+        if (usersWithRestaurants.isNotEmpty()) {
+            usersWithRestaurants.forEach { userWithRestaurant ->
+                val uid = userWithRestaurant.user!!.uid
+                val restaurantId = userWithRestaurant.restaurant!!.restaurantId
+
+                val crossRef = UserRestaurantCrossRef(uid, restaurantId)
+                db.userDao().deleteRestaurantUserCrossRef(crossRef)
+            }
+        }*/
     }
 }
+
 suspend fun saveUsersWithRestaurantsToRoom(usersWithRestaurants: List<UserWithRestaurant>) {
     val db = MyApp.db
     withContext(Dispatchers.IO) {
@@ -142,7 +147,7 @@ suspend fun saveUsersWithRestaurantsToRoom(usersWithRestaurants: List<UserWithRe
             val uid = userWithRestaurant.user?.uid
             val restaurantId = userWithRestaurant.restaurant?.restaurantId
 
-            if (uid != null && restaurantId != null){
+            if (uid != null && restaurantId != null) {
                 val crossRef = UserRestaurantCrossRef(uid, restaurantId)
                 db.userDao().insertRestaurantUserCrossRef(crossRef)
             }
@@ -282,7 +287,6 @@ fun deleteAllUsersWithRestaurantsFromRealtime(callback: (ListenableWorker.Result
             }
     }
 }
-
 
 
 //..................................................................................................

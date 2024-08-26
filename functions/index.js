@@ -47,3 +47,14 @@ exports.notifyRestaurantDataChange = functions.database.ref('/restaurants/{resta
 
           return admin.messaging().sendToTopic(`userWithRestaurant/${uid}`, payload);
       });
+
+      // Schedule a Cloud Function to delete the 'userWithRestaurant' node every day at midnight
+      exports.deleteUserWithRestaurantDaily = functions.pubsub.schedule('0 0 * * *').timeZone('Europe/Istanbul').onRun((context) => {
+          return admin.database().ref('/userWithRestaurant').remove()
+              .then(() => {
+                  console.log('Deleted userWithRestaurant node successfully');
+              })
+              .catch((error) => {
+                  console.error('Error deleting userWithRestaurant node:', error);
+              });
+      });

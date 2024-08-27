@@ -38,6 +38,9 @@ interface UserDao {
     @Delete
     suspend fun deleteRestaurantUserCrossRef(crossRef: UserRestaurantCrossRef)
 
+    @Query("DELETE FROM UserRestaurantCrossRef")
+    suspend fun deleteAllUserWithRestaurant()
+
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insertRestaurantUserCrossRef(crossRef: UserRestaurantCrossRef)
 
@@ -53,4 +56,4 @@ interface UserDao {
     @Query(" SELECT u.* FROM LocalUser u INNER JOIN UserRestaurantCrossRef urc ON u.uid = urc.uid WHERE urc.restaurantId = :restaurantId")
     fun getUsersForRestaurant(restaurantId: String): List<LocalUser>
 
-}
+   }

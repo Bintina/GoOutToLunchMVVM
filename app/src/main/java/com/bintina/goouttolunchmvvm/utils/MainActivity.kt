@@ -18,7 +18,7 @@ import androidx.work.WorkManager
 import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.ActivityMainBinding
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getWorkManagerStartDelay
-import com.bintina.goouttolunchmvvm.restaurants.viewmodel.setPeriodicWorker
+
 
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.firebase.Firebase
@@ -206,7 +206,7 @@ open class MainActivity : AppCompatActivity() {
 
     private fun resetUserChoicesWork() {
         val initialDelay = getWorkManagerStartDelay()
-        setPeriodicWorker(initialDelay, this)
+
     }
 
     private fun askNotificationPermission() {

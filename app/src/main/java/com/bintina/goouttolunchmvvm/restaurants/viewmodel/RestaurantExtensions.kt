@@ -11,7 +11,7 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.database.places.repository.DataSource
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
-import com.bintina.goouttolunchmvvm.restaurants.work.ResetWork
+
 
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.convertRawUrlToUrl
@@ -325,14 +325,4 @@ fun getWorkManagerStartDelay(): Long {
     val initialDelay = midnightTime.timeInMillis - currentTime.timeInMillis
 
     return initialDelay
-}
-
-fun setPeriodicWorker(initialDelay: Long, context: Context) {
-    val downloadRequest = PeriodicWorkRequestBuilder<ResetWork>(24, TimeUnit.HOURS)
-        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
-        .setInputData(workDataOf("key" to "value"))
-        .addTag("restaurant")
-        .build()
-
-    WorkManager.getInstance(context).enqueue(downloadRequest)
 }

@@ -95,63 +95,63 @@ suspend fun getRestaurantUsers(restaurantId: String): List<LocalUser?> {
         val db = MyApp.db
         val userDao = db.userDao()
 
-        val usersWithRestauarantList = userDao.getUsersWithRestaurants()
+        val usersForRestauarantList = userDao.getUsersForRestaurant(restaurantId)
 
-        val restaurantUsers = usersWithRestauarantList
-            .filter { it.restaurant?.restaurantId == restaurantId }
-            .map { it.user }
+
         Log.d(
             "AttendingExtensionLog",
-            "getRestaurantUsers() finished. Number of users: ${restaurantUsers.size}"
+            "getRestaurantUsers() finished. Number of users: ${usersForRestauarantList.size}"
         )
-        restaurantUsers
+        usersForRestauarantList
     }
 
 }
 
-suspend fun getUsersRestaurant(uid: String): String? {
+suspend fun getUsersRestaurantName(uid: String): String? {
     Log.d("AttendingExtensionLog", "getUsersRestaurant() called.")
 
     return withContext(Dispatchers.IO) {
         val userWithRestaurantObject = fetchLocalUserWithRestaurant(uid)
         val restaurantName = userWithRestaurantObject.restaurant?.name
-        Log.d("AttendingExtensionLog", "getUsersRestaurant() restaurantName is $restaurantName")
+        Log.d("AttendingExtensionLog", "getUsersRestaurantName() restaurantName is $restaurantName")
         restaurantName
     }
 
 }
 
-suspend fun deleteUserWithRestaurantClassObjects() {
+suspend fun getUsersRestaurant(uid: String): UserWithRestaurant? {
+    Log.d("AttendingExtensionLog", "getUsersRestaurant() called.")
 
-    //reconsider this solution. May be better excecuted from FCF
-    withContext(Dispatchers.IO) {
-       /* val db = MyApp.db
-        val usersWithRestaurants = db.userDao().getUsersWithRestaurants()
-        if (usersWithRestaurants.isNotEmpty()) {
-            usersWithRestaurants.forEach { userWithRestaurant ->
-                val uid = userWithRestaurant.user!!.uid
-                val restaurantId = userWithRestaurant.restaurant!!.restaurantId
-
-                val crossRef = UserRestaurantCrossRef(uid, restaurantId)
-                db.userDao().deleteRestaurantUserCrossRef(crossRef)
-            }
-        }*/
+    return withContext(Dispatchers.IO) {
+        val userWithRestaurantObject = fetchLocalUserWithRestaurant(uid)
+        Log.d(
+            "AttendingExtensionLog",
+            "getUsersRestaurant() userWithRestaurant is $userWithRestaurantObject"
+        )
+        userWithRestaurantObject
     }
+
 }
+
 
 suspend fun saveUsersWithRestaurantsToRoom(usersWithRestaurants: List<UserWithRestaurant>) {
     val db = MyApp.db
     withContext(Dispatchers.IO) {
-        usersWithRestaurants.forEach { userWithRestaurant ->
+        // If the list is empty, delete all UserWithRestaurant entries
+        if (usersWithRestaurants.isEmpty()) {
+            db.userDao().deleteAllUserWithRestaurant()
+        } else {
+            usersWithRestaurants.forEach { userWithRestaurant ->
 
-            val uid = userWithRestaurant.user?.uid
-            val restaurantId = userWithRestaurant.restaurant?.restaurantId
+                val uid = userWithRestaurant.user?.uid
+                val restaurantId = userWithRestaurant.restaurant?.restaurantId
 
-            if (uid != null && restaurantId != null) {
-                val crossRef = UserRestaurantCrossRef(uid, restaurantId)
-                db.userDao().insertRestaurantUserCrossRef(crossRef)
+                if (uid != null && restaurantId != null) {
+                    val crossRef = UserRestaurantCrossRef(uid, restaurantId)
+                    db.userDao().insertRestaurantUserCrossRef(crossRef)
+                }
+
             }
-
         }
     }
 }
@@ -241,18 +241,12 @@ fun fetchUsersWithRestaurantsFromRealtime(
                         "Final localUsersWithRestaurants size is ${localUserWithRestaurantList.size}."
                     )
                     onUsersWithRestaurantsFetched(localUserWithRestaurantList)
-                } else {
-                    Log.d(
-                        "AttendingExtensionLog",
-                        "No users found other than the current user. Retaining local changes."
-                    )
-                    // Optionally, you can call a method to fetch and use existing local data if needed
-                    // e.g., `fetchLocalUserWithRestaurant()` to maintain local state
                 }
             } else {
-                Log.d("AttendingExtensionLog", "Snapshot has no children. Retaining local changes.")
-                // Optionally, you can call a method to fetch and use existing local data if needed
-                // e.g., `fetchLocalUserWithRestaurant()` to maintain local state
+                //this needs to delete local users to update data refresh.
+
+                CoroutineScope(Dispatchers.IO).launch { saveUsersWithRestaurantsToRoom(emptyList()) }
+                Log.d("AttendingExtensionLog", "Snapshot has no children. Delrting local changes.")
             }
         }
 
@@ -265,27 +259,6 @@ fun fetchUsersWithRestaurantsFromRealtime(
             // onUsersWithRestaurantsFetched(localUserWithRestaurantList) if you have a way to retain existing data
         }
     })
-}
-
-fun deleteAllUsersWithRestaurantsFromRealtime(callback: (ListenableWorker.Result) -> Unit) {
-    Log.d("AttendingExtensionLog", "deleteAllUsersWithRestaurantsFromRealtime() called.")
-    val databaseReference = Firebase.database.reference
-
-    CoroutineScope(Dispatchers.IO).launch {
-        val userWithRestaurantRef = databaseReference.child("usersWithRestaurants")
-
-        userWithRestaurantRef.removeValue()
-            .addOnSuccessListener {
-                Log.d("AttendingExtensionLog", "All UserRestaurant Data deleted successfully")
-                // Call the callback with a success result
-                callback(ListenableWorker.Result.success())
-            }
-            .addOnFailureListener { e ->
-                Log.e("AttendingExtensionLog", "Failed to delete all userRestaurant data", e)
-                // Call the callback with a failure result
-                callback(ListenableWorker.Result.failure())
-            }
-    }
 }
 
 

@@ -56,8 +56,9 @@ import kotlinx.coroutines.withContext
 
             handleCustomMessage(title, body, message)
             val heading = message.data["heading"]
-            if (heading != null){
-                sendNotification(heading, body)
+            val messageText = message.data["message"]
+            if (heading != null && messageText != null){
+                sendNotification(heading, messageText)
             }
         }
 
@@ -91,7 +92,7 @@ Log.d(TAG, " title: $title, body: $body, message: $message")
             this,
             requestCode,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         // Create Channel Id
@@ -99,7 +100,7 @@ Log.d(TAG, " title: $title, body: $body, message: $message")
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
-            .setContentTitle(getString(R.string.fcm_message))
+            .setContentTitle(messageTitle)
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)

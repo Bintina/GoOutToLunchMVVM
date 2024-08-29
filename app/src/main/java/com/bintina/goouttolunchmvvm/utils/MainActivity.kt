@@ -105,7 +105,7 @@ open class MainActivity : AppCompatActivity() {
         //Handle incoming intent
         handleIntent(intent)
 
-        // Check if the intent has the detailed message
+/*        // Check if the intent has the detailed message
         intent?.let {
             val messageDetail = it.getStringExtra("message_detail")
             if (!messageDetail.isNullOrEmpty()) {
@@ -113,7 +113,7 @@ open class MainActivity : AppCompatActivity() {
                 val dialog = NotificationDialog.newInstance(messageDetail)
                 dialog.show(supportFragmentManager, "NotificationDetailDialog")
             }
-        }
+        }*/
 
         askNotificationPermission()
         getFcmRegistrationToken(this)
@@ -124,12 +124,12 @@ open class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.notification_dialog_dest)
     }
 
-    override fun onNewIntent(intent: Intent) {
+ /*   override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         handleIntent(intent)
     }
-
+*/
     private fun readFromRealtimeDatabase() {
         // Read from the database
         databaseReference.addValueEventListener(object : ValueEventListener {

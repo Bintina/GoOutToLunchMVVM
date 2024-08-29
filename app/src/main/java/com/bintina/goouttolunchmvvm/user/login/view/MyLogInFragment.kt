@@ -92,14 +92,14 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                 ),
             )
         }
-        val intent = requireActivity().intent
+/*        val intent = requireActivity().intent
         intent.extras?.let {
             for (key in it.keySet()){
 
             val value = intent.extras?.getString(key)
             Log.d(TAG, "Key: $key, Value: $value")
             }
-        }
+        }*/
 
         //loadCoworkers()
 

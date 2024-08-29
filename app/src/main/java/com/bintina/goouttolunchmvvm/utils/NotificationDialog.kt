@@ -6,18 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.bintina.goouttolunchmvvm.R
 import com.bintina.goouttolunchmvvm.databinding.FragmentNotificationDialogBinding
-import com.bintina.goouttolunchmvvm.databinding.FragmentSettingsBinding
+import com.bintina.goouttolunchmvvm.model.UserWithRestaurant
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getRestaurantUsers
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersRestaurant
+import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getUsersRestaurantName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class NotificationDialog: DialogFragment() {
+class NotificationDialog : DialogFragment() {
     private var _binding: FragmentNotificationDialogBinding? = null
     private val binding get() = _binding!!
-    companion object{
+
+    private var currentUserRestaurant: UserWithRestaurant? = null
+    private var currentUserId = ""
+
+    companion object {
         private const val ARG_MESSAGE_DETAIL = "message_detail"
 
         fun newInstance(messageDetail: String): NotificationDialog {
@@ -43,59 +51,58 @@ class NotificationDialog: DialogFragment() {
         //This should fetch the title instead.
         val messageDetail = arguments?.getString(ARG_MESSAGE_DETAIL)
 
-        val fullText = composeNotification()
-        binding.notificationTv.text = fullText
+        // Show loading message
+        binding.notificationTv.text = getString(R.string.fetching_data_txt)
 
-    }
-
-
-    private fun composeNotification(): String {
-        val currentUserName = MyApp.currentUser!!.displayName
-        val currentRestaurant = MyApp.currentUserWithRestaurant.restaurant
-        var fullNotificationText = ""
-
-        if (currentRestaurant != null) {
-            val currentUserRestaurantChoice = currentRestaurant.name
-            val currentRestaurantVicinity = currentRestaurant.address
-
-            listAttendingUsers { displayNames ->
-                // Handle the list of display names here
-                Log.d("AttendingUsers", "Attending users' names: $displayNames")
-
-                // Example of updating the UI or performing another action
-                if (displayNames.isNotEmpty()) {
-                    // Update UI with the list of names, for example:
-                    val attendingCoworkerNames = displayNames.joinToString(", ")
-                    fullNotificationText =
-                        "$currentUserName, you are going to $currentUserRestaurantChoice, $currentRestaurantVicinity. $attendingCoworkerNames will be joining you."
-                } else {
-                    // Handle case where no users are attending
-                    val noUsersText = "No coworkers are joining you."
-                    fullNotificationText =
-                        "$currentUserName, you are going to $currentUserRestaurantChoice, $currentRestaurantVicinity. $noUsersText"
-                }
-            }
-        } else {
-            val noRestaurantText = "You have not chosen a restaurant today"
-            fullNotificationText = noRestaurantText
+        // Fetch data and update the UI
+        CoroutineScope(Dispatchers.Main).launch {
+            val fullText = composeNotification()
+            binding.notificationTv.text = fullText
         }
 
-        return fullNotificationText
-
     }
 
-    private fun listAttendingUsers(callback: (List<String>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val currentUsersAttendingObjects =
-                getRestaurantUsers(MyApp.currentUserWithRestaurant.restaurant!!.restaurantId)
 
-            val currentUsersAttendingNames = currentUsersAttendingObjects
-                .map { it?.displayName } // Transform each LocalUser to their displayName
-                .filterNotNull() // Remove any null display names if applicable
+    private suspend fun composeNotification(): String {
+        return withContext(Dispatchers.IO) {
+            val currentUserName = MyApp.currentUser!!.displayName
+            currentUserId = MyApp.currentUser!!.uid
+            currentUserRestaurant = getUsersRestaurant(currentUserId)
+            val currentRestaurant = currentUserRestaurant
+            var fullNotificationText = ""
 
-            withContext(Dispatchers.Main) {
-                callback(currentUsersAttendingNames) // Return the result via callback
+            if (currentRestaurant != null) {
+                val currentUserRestaurantChoice = currentRestaurant.restaurant!!.name
+                val currentRestaurantVicinity = currentRestaurant.restaurant!!.address
+                val currentRestaurantId = currentRestaurant.restaurant!!.restaurantId
+
+                val attendingCoworkerNames = listAttendingUsers(currentRestaurantId)
+                fullNotificationText =
+                    if (attendingCoworkerNames.isNotEmpty()) {
+                        val attendingNames = attendingCoworkerNames.joinToString(", ")
+                        "$currentUserName, you are going to $currentUserRestaurantChoice, $currentRestaurantVicinity. $attendingNames will be joining you."
+                    } else {
+                        "$currentUserName, you are going to $currentUserRestaurantChoice, $currentRestaurantVicinity. No coworkers are joining you."
+                    }
+
+            } else {
+                fullNotificationText = "$currentUserName, you have not chosen a restaurant today"
+
             }
+
+            fullNotificationText
+
+        }
+    }
+
+    private suspend fun listAttendingUsers(restaurantId: String): List<String> {
+        return withContext(Dispatchers.IO) {
+            val currentUsersAttendingObjects =
+                MyApp.db.userDao().getUsersForRestaurant(restaurantId)
+
+            currentUsersAttendingObjects
+                .filter { it.uid != currentUserId } // Exclude the current user
+                .map { it.displayName } // Transform each LocalUser to their displayName and remove nulls
         }
     }
 }

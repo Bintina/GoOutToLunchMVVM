@@ -175,6 +175,7 @@
     <string name="receive_lunch_notifications">Receive Lunch Notifications</string>
     <string name="settings_btn_title">Settings Btn Title</string>
     <string name="refresh_btn_txt">Refresh Restaurants</string>
+    <string name="fetching_data_txt">Fetching data...</string>
 
 
 </resources>

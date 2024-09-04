@@ -47,11 +47,10 @@ android {
             )
         }
     }
-    compileOptions {
 
+    compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-
     }
 
     kotlinOptions {
@@ -182,8 +181,8 @@ dependencies {
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     //FCM
-    implementation("com.google.firebase:firebase-messaging")
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-messaging:24.0.1")
+    implementation("com.google.firebase:firebase-messaging-ktx:24.0.1")
     implementation("com.google.firebase:firebase-installations")
     implementation("com.google.firebase:firebase-installations-ktx")
 

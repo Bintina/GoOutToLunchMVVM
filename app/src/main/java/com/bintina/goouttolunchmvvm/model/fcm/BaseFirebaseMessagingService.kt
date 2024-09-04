@@ -54,12 +54,14 @@ import kotlinx.coroutines.withContext
                 fetchAndUpdateUserWithRestaurant(userWithRestaurantUid)
             }
 
-            handleCustomMessage(title, body, message)
             val heading = message.data["heading"]
             val messageText = message.data["message"]
             if (heading != null && messageText != null){
                 sendNotification(heading, messageText)
+            handleCustomMessage(heading, messageText, message)
             }
+        } else {
+            Log.d(TAG, "Message data is empty" )
         }
 
         super.onMessageReceived(message)
@@ -85,7 +87,7 @@ Log.d(TAG, " title: $title, body: $body, message: $message")
 
         val intent = Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            action = "com.bintina.goouttolunchmvvm.SHOW_COWORKER_FRAGMENT"
+            action = "com.google.firebase.MESSAGING_EVENT"
             putExtra("message_title", messageTitle)
         }
         val pendingIntent = PendingIntent.getActivity(

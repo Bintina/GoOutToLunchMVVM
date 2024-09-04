@@ -41,7 +41,7 @@ class NotificationDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentNotificationDialogBinding.inflate(inflater, container, false)
         return binding.root
     }

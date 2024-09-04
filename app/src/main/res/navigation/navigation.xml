@@ -34,6 +34,9 @@
         <action
             android:id="@+id/go_to_restaurants_list"
             app:destination="@id/restaurant_list_dest" />
+        <action
+            android:id="@+id/go_to_notification_dialog"
+            app:destination="@id/notification_dialog_dest" />
 
         <!-- TODO END STEP 7.1 -->
 

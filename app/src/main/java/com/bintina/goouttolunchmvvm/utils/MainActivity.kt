@@ -45,8 +45,8 @@ open class MainActivity : AppCompatActivity() {
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ){ isGranted: Boolean ->
-        if (isGranted){
+    ) { isGranted: Boolean ->
+        if (isGranted) {
             Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(
@@ -105,163 +105,133 @@ open class MainActivity : AppCompatActivity() {
         //Handle incoming intent
         handleIntent(intent)
 
-/*        // Check if the intent has the detailed message
-        intent?.let {
-            val messageDetail = it.getStringExtra("message_detail")
-            if (!messageDetail.isNullOrEmpty()) {
-                // Show the dialog with the message detail
-                val dialog = NotificationDialog.newInstance(messageDetail)
-                dialog.show(supportFragmentManager, "NotificationDetailDialog")
-            }
-        }*/
+        /*        // Check if the intent has the detailed message
+                intent?.let {
+                    val messageDetail = it.getStringExtra("message_detail")
+                    if (!messageDetail.isNullOrEmpty()) {
+                        // Show the dialog with the message detail
+                        val dialog = NotificationDialog.newInstance(messageDetail)
+                        dialog.show(supportFragmentManager, "NotificationDetailDialog")
+                    }
+                }*/
 
         askNotificationPermission()
         getFcmRegistrationToken(this)
     }
 
     private fun handleIntent(intent: Intent) {
-        if (intent.action == "com.bintina.goouttolunchmvvm.SHOW_COWORKER_FRAGMENT")
-            navController.navigate(R.id.notification_dialog_dest)
-    }
-
- /*   override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent)
-    }
-*/
-    private fun readFromRealtimeDatabase() {
-        // Read from the database
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = dataSnapshot.getValue()
-                Log.d(TAG, "Realtime Value is: $value")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read Realtime value.", error.toException())
-            }
-        })
-    }
-
-    //Initialize the contents of the Activity's standard options menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
-    //Called when menu item is selected.
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.coworker_btn -> {
-                navController.navigate(R.id.coworkers_dest)
-
-                return true
-            }
-
-            R.id.restaurant_list_btn -> {
-                navController.navigate(R.id.restaurant_list_dest)
-
-                return true
-            }
-
-            R.id.restaurant_map_btn -> {
-                navController.navigate(R.id.restaurant_map_dest)
-                Log.d(TAG, "navigate to Maps Fragment called.")
-                return true
-            }
-
-            R.id.sign_out_btn -> {
-                signOut()
-                navController.navigate(R.id.login_dest)
-
-                return true
-            }
-
-            R.id.settings_btn -> {
-                navController.navigate(R.id.settings_dest)
-
-                return true
-            }
-
-            else -> return super.onOptionsItemSelected(item)
-
-        }
-    }
-
-    private fun signOut() {
-        Log.d(TAG, "signOut called")
-        com.firebase.ui.auth.AuthUI.getInstance()
-            .signOut(this)
-            .addOnCompleteListener {
-                Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
-            }
-
-    }
-
-
-
-    private fun resetUserChoicesWork() {
-        val initialDelay = getWorkManagerStartDelay()
-
-    }
-
-    private fun askNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-                ){
-                //can post notifications
-            } else {
-                //Ask for permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        Log.d(TAG, "handleIntent() called with action: ${intent.action}")
+        if (intent.action == "com.google.firebase.MESSAGING_EVENT") {
+            val messageTitle = intent.getStringExtra("message_title")
+            if (messageTitle != null) {
+                showDialogFragment(messageTitle)
             }
         }
     }
- /*   private fun observeWorkStatus() {
-        outPutWorkInfoItems.observe(this) { workInfos ->
-            if (workInfos.isNullOrEmpty()) {
-                return@observe
+
+        override fun onNewIntent(intent: Intent) {
+            super.onNewIntent(intent)
+            setIntent(intent)
+            handleIntent(intent)
+        }
+
+        private fun readFromRealtimeDatabase() {
+            // Read from the database
+            databaseReference.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    val value = dataSnapshot.getValue()
+                    Log.d(TAG, "Realtime Value is: $value")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read Realtime value.", error.toException())
+                }
+            })
+        }
+
+        //Initialize the contents of the Activity's standard options menu
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+            menuInflater.inflate(R.menu.menu, menu)
+            return true
+        }
+
+        //Called when menu item is selected.
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            when (item.itemId) {
+                R.id.coworker_btn -> {
+                    navController.navigate(R.id.coworkers_dest)
+
+                    return true
+                }
+
+                R.id.restaurant_list_btn -> {
+                    navController.navigate(R.id.restaurant_list_dest)
+
+                    return true
+                }
+
+                R.id.restaurant_map_btn -> {
+                    navController.navigate(R.id.restaurant_map_dest)
+                    Log.d(TAG, "navigate to Maps Fragment called.")
+                    return true
+                }
+
+                R.id.sign_out_btn -> {
+                    signOut()
+                    navController.navigate(R.id.login_dest)
+
+                    return true
+                }
+
+                R.id.settings_btn -> {
+                    navController.navigate(R.id.settings_dest)
+
+                    return true
+                }
+
+                else -> return super.onOptionsItemSelected(item)
+
             }
+        }
 
-            // Check the status of the work
-            val workInfo = workInfos[0]
-            when (workInfo.state) {
-                WorkInfo.State.ENQUEUED -> {
-                    Log.d(TAG, "Work is enqueued with state: ${workInfo.state}")
-                    // Do something when the work is enqueued
+        private fun signOut() {
+            Log.d(TAG, "signOut called")
+            com.firebase.ui.auth.AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener {
+                    Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
                 }
 
-                WorkInfo.State.RUNNING -> {
-                    Log.d(TAG, "Work is running with state: ${workInfo.state}")
-                    // Do something when the work is running
-                }
+        }
 
-                WorkInfo.State.SUCCEEDED -> {
-                    Log.d(TAG, "Work finished with state: ${workInfo.state}")
-                    // Do something when the work is finished
 
-                }
+        private fun resetUserChoicesWork() {
+            val initialDelay = getWorkManagerStartDelay()
 
-                WorkInfo.State.FAILED -> {
-                    Log.d(TAG, "Work failed with state: ${workInfo.state}")
-                    // Do something when the work has failed
-                }
+        }
 
-                WorkInfo.State.BLOCKED -> {
-                    Log.d(TAG, "Work is blocked with state: ${workInfo.state}")
-                    // Do something when the work is blocked
-                }
-
-                WorkInfo.State.CANCELLED -> {
-                    Log.d(TAG, "Work is cancelled with state: ${workInfo.state}")
-                    // Do something when the work is cancelled
+        private fun askNotificationPermission() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    //can post notifications
+                } else {
+                    //Ask for permission
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
             }
         }
-    }*/
 
+
+        private fun showDialogFragment(messageTitle: String) {
+            val dialogFragment = NotificationDialog.newInstance(messageTitle)
+            dialogFragment.show(supportFragmentManager, "YourDialogFragment")
+        }
 }

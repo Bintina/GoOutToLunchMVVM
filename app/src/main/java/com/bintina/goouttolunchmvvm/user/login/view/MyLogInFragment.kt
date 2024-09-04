@@ -55,7 +55,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             viewModel.handleSignInResult(result)
         }
 
-    //Request notification Launcher
+ /*   //Request notification Launcher
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ){ isGranted: Boolean ->
@@ -65,7 +65,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             Toast.makeText(requireContext(), "Go Out For Lunch can not post notifications without permission", Toast.LENGTH_LONG).show()
         }
     }
-
+*/
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,7 +79,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             )
 
         viewModel.instantiateData()
-        //Set channel if needed
+  /*      //Set channel if needed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channelId = getString(R.string.default_notification_channel_id)
             val channelName = getString(R.string.default_notification_channel_name)
@@ -91,7 +91,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                     NotificationManager.IMPORTANCE_LOW
                 ),
             )
-        }
+        }*/
 /*        val intent = requireActivity().intent
         intent.extras?.let {
             for (key in it.keySet()){
@@ -109,15 +109,15 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
             LoginManager.getInstance()
                 .logInWithReadPermissions(this, listOf("email", "public_profile"))
             Log.d(TAG, "startFacebookSignIn called by onClick")
-            subscribeToUpdates()
+           // subscribeToUpdates()
         }
         binding.googleLoginBtn.setOnClickListener {
             Log.d(TAG, "google btn clicked")
             startGoogleSignIn()
-            subscribeToUpdates()
+            //subscribeToUpdates()
         }
 
-        askNotificationPermission()
+        //askNotificationPermission()
         addCoworker(viewModel.coworker)
 
 
@@ -126,6 +126,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
 
     }
 
+/*
     fun subscribeToUpdates(){
     Firebase.messaging.subscribeToTopic("User Choices")
         .addOnCompleteListener { task ->
@@ -157,6 +158,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
         )
 
     }
+*/
 
     @Deprecated("This method is deprecated")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -205,7 +207,7 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
     }
 
 
-    private fun askNotificationPermission() {
+/*    private fun askNotificationPermission() {
         //Check API level
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
@@ -214,5 +216,5 @@ class MyLogInFragment : Fragment(), LifecycleOwner {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-    }
+    }*/
 }

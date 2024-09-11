@@ -102,8 +102,8 @@ open class MainActivity : AppCompatActivity() {
 
         Log.d(TAG, "Fragment committed")
 
-        //Handle incoming intent
-        handleIntent(intent)
+        /*//Handle incoming intent
+        handleIntent(intent)*/
 
         /*        // Check if the intent has the detailed message
                 intent?.let {
@@ -119,7 +119,7 @@ open class MainActivity : AppCompatActivity() {
         getFcmRegistrationToken(this)
     }
 
-    private fun handleIntent(intent: Intent) {
+ /*   private fun handleIntent(intent: Intent) {
         Log.d(TAG, "handleIntent() called with action: ${intent.action}")
         if (intent.action == "com.google.firebase.MESSAGING_EVENT") {
             val messageTitle = intent.getStringExtra("message_title")
@@ -133,7 +133,7 @@ open class MainActivity : AppCompatActivity() {
             super.onNewIntent(intent)
             setIntent(intent)
             handleIntent(intent)
-        }
+        }*/
 
         private fun readFromRealtimeDatabase() {
             // Read from the database
@@ -232,6 +232,6 @@ open class MainActivity : AppCompatActivity() {
 
         private fun showDialogFragment(messageTitle: String) {
             val dialogFragment = NotificationDialog.newInstance(messageTitle)
-            dialogFragment.show(supportFragmentManager, "YourDialogFragment")
+            dialogFragment.show(supportFragmentManager, "NotificationDialog")
         }
 }

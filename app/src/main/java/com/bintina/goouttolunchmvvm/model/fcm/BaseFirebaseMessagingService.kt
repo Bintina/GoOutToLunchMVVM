@@ -15,6 +15,7 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.saveRestaurantToRoom
 import com.bintina.goouttolunchmvvm.user.viewmodel.saveLocalUserToRoom
 import com.bintina.goouttolunchmvvm.utils.MainActivity
+import com.bintina.goouttolunchmvvm.utils.NotificationActivity
 import com.bintina.goouttolunchmvvm.utils.fetchAndUpdateRestaurant
 import com.bintina.goouttolunchmvvm.utils.fetchAndUpdateUser
 import com.bintina.goouttolunchmvvm.utils.fetchAndUpdateUserWithRestaurant
@@ -29,8 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
- class BaseFirebaseMessagingService: FirebaseMessagingService() {
-    private val TAG  = "BaseFCMServiceLog"
+class BaseFirebaseMessagingService : FirebaseMessagingService() {
+    private val TAG = "BaseFCMServiceLog"
 
     override fun onMessageReceived(message: RemoteMessage) {
         Log.d(TAG, "onMessageReceived() called. Message: $message. From: ${message.from}")
@@ -56,19 +57,19 @@ import kotlinx.coroutines.withContext
 
             val heading = message.data["heading"]
             val messageText = message.data["message"]
-            if (heading != null && messageText != null){
+            if (heading != null && messageText != null) {
                 sendNotification(heading, messageText)
-            handleCustomMessage(heading, messageText, message)
+                handleCustomMessage(heading, messageText, message)
             }
         } else {
-            Log.d(TAG, "Message data is empty" )
+            Log.d(TAG, "Message data is empty")
         }
 
         super.onMessageReceived(message)
     }
 
-    fun handleCustomMessage(title: String, body: String, message: RemoteMessage){
-Log.d(TAG, " title: $title, body: $body, message: $message")
+    fun handleCustomMessage(title: String, body: String, message: RemoteMessage) {
+        Log.d(TAG, " title: $title, body: $body, message: $message")
     }
 
 
@@ -85,9 +86,9 @@ Log.d(TAG, " title: $title, body: $body, message: $message")
     private fun sendNotification(messageTitle: String, messageBody: String) {
         val requestCode = 0
 
-        val intent = Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            action = "com.google.firebase.MESSAGING_EVENT"
+        val intent = Intent(this, NotificationActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            action = "OPEN_NOTIFICATION_ACTIVITY"
             putExtra("message_title", messageTitle)
         }
         val pendingIntent = PendingIntent.getActivity(
@@ -104,9 +105,11 @@ Log.d(TAG, " title: $title, body: $body, message: $message")
             .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
             .setContentTitle(messageTitle)
             .setContentText(messageBody)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+            .build()
 
 
         val notificationManager =
@@ -116,14 +119,14 @@ Log.d(TAG, " title: $title, body: $body, message: $message")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT
+                "Lunch time reminder",
+                NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
         }
 
         val notificationId = 1
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationManager.notify(notificationId, notificationBuilder)
 
     }
 

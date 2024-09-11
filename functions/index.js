@@ -58,3 +58,30 @@ exports.notifyRestaurantDataChange = functions.database.ref('/restaurants/{resta
                   console.error('Error deleting userWithRestaurant node:', error);
               });
       });
+
+      // Add new function to send a "Lunch Time Reminder" notification
+      exports.sendLunchTimeReminder = functions.https.onRequest((req, res) => {
+          const token = req.body.token;  // Get the FCM token from request
+
+          const payload = {
+              data: {
+                  title: "Go For Lunch",
+                  message: "It's time to eat!!",
+                  click_action: "OPEN_NOTIFICATION_ACTIVITY"
+              },
+              notification: {
+                  title: "Go For Lunch",
+                  body: "It's time to eat!!"
+              }
+          };
+
+          admin.messaging().sendToDevice(token, payload)
+              .then(response => {
+                  console.log('Lunch Time Reminder sent successfully:', response);
+                  res.status(200).send('Notification sent successfully');
+              })
+              .catch(error => {
+                  console.error('Error sending notification:', error);
+                  res.status(500).send('Error sending notification');
+              });
+      });

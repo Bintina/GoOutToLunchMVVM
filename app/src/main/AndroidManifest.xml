@@ -64,11 +64,11 @@
         </activity>
         <activity android:name=".utils.NotificationActivity"
             android:exported="true"
-            android:launchMode="standard">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="OPEN_NOTIFICATION_ACTIVITY" />
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity

@@ -17,12 +17,11 @@ class NotificationActivity: AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //Handle incoming intent
-        handleIntent(intent)
+       showDialogFragment()
 
     }
 
-    private fun handleIntent(intent: Intent) {
+/*    private fun handleIntent(intent: Intent) {
         Log.d(TAG, "handleIntent() called with action: ${intent.action}")
         if (intent.action == "OPEN_NOTIFICATION_ACTIVITY") {
             val messageTitle = intent.getStringExtra("message_title")
@@ -30,15 +29,25 @@ class NotificationActivity: AppCompatActivity() {
                 showDialogFragment(messageTitle)
             }
         }
-    }
+    }*/
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        setIntent(intent)
-        handleIntent(intent)
+       /* setIntent(intent)
+        handleIntent(intent)*/
     }
-    private fun showDialogFragment(messageTitle: String) {
-        val dialogFragment = NotificationDialog.newInstance(messageTitle)
-        dialogFragment.show(supportFragmentManager, "NotificationDialog")
+    private fun showDialogFragment() {
+        // If the fragment is not already added, show it
+        val currentFragment = supportFragmentManager.findFragmentByTag("NotificationDialog")
+        if (currentFragment == null) {
+            // Here, you can optionally get the title from the intent if needed
+            val messageTitle = intent.getStringExtra("message_title") ?: "Default Title"
+
+            // Create and show the dialog fragment
+            val dialogFragment = NotificationDialog.newInstance(messageTitle)
+            dialogFragment.show(supportFragmentManager, "NotificationDialog")
+        } else {
+            Log.d(TAG, "Dialog fragment already added")
+        }
     }
 }

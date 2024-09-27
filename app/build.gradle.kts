@@ -174,11 +174,9 @@ dependencies {
     // Firebase UI
     // Used in FirebaseUIActivity.
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
-    // Import the BoM for the Firebase platform
-
+    
     // Add the dependencies for the App Check libraries
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+     implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
     //FCM
     implementation("com.google.firebase:firebase-messaging:24.0.1")
@@ -220,9 +218,12 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     //Google Maps
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.maps.android:android-maps-utils:3.8.2")
-    implementation("com.google.android.libraries.places:places:3.4.0")
+    implementation("com.google.android.libraries.places:places:3.5.0")
+    implementation("com.google.maps.android:places-ktx:3.3.0")
+
+
 
 
     //Retrofit implementations

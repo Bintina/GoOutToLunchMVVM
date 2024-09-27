@@ -11,6 +11,8 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.api.ApiClient
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.api.ApiService
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
@@ -44,6 +46,10 @@ class RestaurantViewModel(
     private val restaurantDataSource: RestaurantDataRepository =
         RestaurantDataRepository(restaurantDao)
     lateinit var databaseReference: DatabaseReference
+
+    private val apiClient: ApiClient by lazy {
+        ApiService.create()
+    }
 
     fun loadRestaurantsWithUsers() {
         viewModelScope.launch {
@@ -134,4 +140,19 @@ class RestaurantViewModel(
         }
         return MyApp.localRestaurantList
     }
+
+
+   /* suspend fun sendPostRequest(requestData: Restaurant): Result? {
+        return try {
+            val response = apiClient.sendData(requestData)
+            if (response.isSuccessful){
+                response
+            } else {
+                null
+            }
+        } catch (e: Exception){
+            Log.d("RestaurantDataRepositoryLog", "sendPostRequest called and failed error: $e.")
+            null
+        }
+    }*/
 }

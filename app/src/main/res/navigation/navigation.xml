@@ -120,6 +120,13 @@
         tools:layout="@layout/fragment_notification_dialog">
     </fragment>
 
+    <activity
+        android:id="@+id/map_activity"
+        android:name="com.bintina.goouttolunchmvvm.restaurants.map.view.MapActivity"
+        android:label="Map Activity">
 
+       <!-- <deepLink
+            app:uri="yourapp://notificationActivity" />-->
+    </activity>
 
 </navigation>

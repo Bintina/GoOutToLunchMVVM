@@ -48,26 +48,32 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.getLocalRestaurants()
         restaurantList = MyApp.localRestaurantList
-        Log.d(TAG, "Maps restaurantList is $restaurantList")
+        Log.d(TAG, "Maps restaurantList has ${restaurantList.size}")
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
-        initializeAutocomplet()
+        initializeAutocomplete()
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+/*    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-    }
+    }*/
 
-    private fun initializeAutocomplet() {
+    private fun initializeAutocomplete() {
+        Log.d(TAG, "initializeAutocomplete() called")
         // Initialize the AutocompleteSupportFragment.
-        val autocompleteFragment =
-            childFragmentManager.findFragmentById(R.id.search_autocomplete_fragment)
+        val autocompleteFragment: AutocompleteSupportFragment =
+            childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                     as AutocompleteSupportFragment
 
+        Log.d(
+            TAG,
+            "initializeAutocomplete() called autocompleteFrag is ${autocompleteFragment.toString()}"
+        )
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
 
@@ -93,11 +99,11 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun initializeViews(myMap: GoogleMap) {
         Log.d(TAG, "initializeViews() called")
-        Toast.makeText(requireContext(), "Map Fragment intializeViews() called ", Toast.LENGTH_LONG)
-            .show()
+        /* Toast.makeText(requireContext(), "Map Fragment intializeViews() called ", Toast.LENGTH_LONG)
+             .show()*/
 
-myMap.clear()
-Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
+        myMap.clear()
+        Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
         restaurantList.let {
 
             it.forEachIndexed { index, restaurant ->
@@ -105,17 +111,20 @@ Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
                     val position = LatLng(restaurant.latitude, restaurant.longitude)
                     val title = restaurant.name
                     val visited = restaurant.visited
-                    Log.d(TAG, "marker restaurant name is $title")
+                    //Log.d(TAG, "marker restaurant name is $title")
                     myMap.addMarker(
                         MarkerOptions()
                             .position(position)
                             .title(title)
-                            .icon(BitmapDescriptorFactory.defaultMarker(if (visited == true){
-                                BitmapDescriptorFactory.HUE_GREEN
-                            } else {
-                                BitmapDescriptorFactory.HUE_RED
-                            })
-                    )
+                            .icon(
+                                BitmapDescriptorFactory.defaultMarker(
+                                    if (visited == true) {
+                                        BitmapDescriptorFactory.HUE_GREEN
+                                    } else {
+                                        BitmapDescriptorFactory.HUE_RED
+                                    }
+                                )
+                            )
                     )
                     //myMap.setOnMarkerClickListener { true }
                 }
@@ -158,9 +167,9 @@ Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
         myMap.animateCamera(newLatLngZoom)
     }
 
-    override fun onResume() {
-        super.onResume()
+    /* override fun onResume() {
+         super.onResume()
 
 
-    }
+     }*/
 }

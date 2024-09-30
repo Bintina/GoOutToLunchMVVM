@@ -22,4 +22,6 @@
     <color name="gold">#deb20b</color>
     <color name="whiteSmoke">#eaeff0</color>
     <color name="home_overlay">#40ffffff</color>
+
+    <color name="colorGray">#dedede</color>
 </resources>

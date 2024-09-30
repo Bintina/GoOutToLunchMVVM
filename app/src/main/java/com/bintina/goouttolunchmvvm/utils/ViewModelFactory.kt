@@ -7,6 +7,7 @@ import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.model.database.dao.UserDao
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
+import com.google.android.libraries.places.api.net.PlacesClient
 
 
 class ViewModelFactory(
@@ -15,6 +16,7 @@ class ViewModelFactory(
     private val executor: Executor*/
     //private val userId: Long,
     private val restaurantDao: RestaurantDao,
+    private val placesClient: PlacesClient,
     private val userDao: UserDao
 ) : ViewModelProvider.Factory {
 
@@ -27,7 +29,7 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(RestaurantViewModel::class.java) -> {
-                RestaurantViewModel(application, restaurantDao) as T
+                RestaurantViewModel(application, placesClient, restaurantDao) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class")

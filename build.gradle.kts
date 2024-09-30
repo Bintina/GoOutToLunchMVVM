@@ -26,6 +26,7 @@ buildscript{
         classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20")
         classpath("com.google.gms:google-services:4.4.2")
+        classpath ("com.google.dagger:hilt-android-gradle-plugin:2.48")
         //classpath("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24")
     }
 

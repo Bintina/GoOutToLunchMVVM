@@ -11,19 +11,38 @@ import com.bintina.goouttolunchmvvm.model.LocalUser
 import com.bintina.goouttolunchmvvm.model.RestaurantWithUsers
 import com.bintina.goouttolunchmvvm.model.database.dao.RestaurantDao
 import com.bintina.goouttolunchmvvm.restaurants.list.view.adapter.Adapter
-import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.api.ApiClient
-import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.api.ApiService
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.PlacesSearchEvent
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.PlacesSearchEventError
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.PlacesSearchEventFound
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.PlacesSearchEventLoading
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.api.net.awaitFetchPlace
+import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.api.net.awaitFindAutocompletePredictions
+
 import com.bintina.goouttolunchmvvm.restaurants.model.database.repository.RestaurantDataRepository
 import com.bintina.goouttolunchmvvm.restaurants.model.database.responseclasses.Restaurant
 import com.bintina.goouttolunchmvvm.utils.MyApp
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.google.android.libraries.places.api.model.LocationBias
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.PlaceTypes
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.database.DatabaseReference
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-
-class RestaurantViewModel(
+@HiltViewModel
+class RestaurantViewModel @Inject constructor(
     application: Application,
+    private val placesClient: PlacesClient,
     private val restaurantDao: RestaurantDao
 ) : AndroidViewModel(application) {
 
@@ -47,8 +66,61 @@ class RestaurantViewModel(
         RestaurantDataRepository(restaurantDao)
     lateinit var databaseReference: DatabaseReference
 
-    private val apiClient: ApiClient by lazy {
-        ApiService.create()
+private val _events = MutableLiveData<PlacesSearchEvent>()
+    val events: LiveData<PlacesSearchEvent> = _events
+
+    private var searchJob: Job? = null
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun onSearchQueryChanged(query: String) {
+        searchJob?.cancel()
+
+        _events.value = PlacesSearchEventLoading
+
+        val handler = CoroutineExceptionHandler { _, throwable ->
+            _events.value = PlacesSearchEventError(throwable)
+        }
+        searchJob = viewModelScope.launch(handler) {
+            // Add delay so that network call is performed only after there is a 300 ms pause in the
+            // search query. This prevents network calls from being invoked if the user is still
+            // typing.
+            delay(300)
+
+            val bias: LocationBias = RectangularBounds.newInstance(
+                LatLng(-4.3515359, 39.5244260), // SW lat, lng (approx. 5km southwest)
+                LatLng(-4.2515359, 39.6244260)  // NE lat, lng (approx. 5km northeast)
+            )
+
+            val response = placesClient
+                .awaitFindAutocompletePredictions {
+                    locationBias = bias
+                    typesFilter = listOf(PlaceTypes.RESTAURANT)
+                    this.query = query
+                    countries = listOf("KE")
+                }
+
+            _events.value = PlacesSearchEventFound(response.autocompletePredictions)
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun onAutocompletePredictionClicked(prediction: AutocompletePrediction) {
+        val handler = CoroutineExceptionHandler { _, e ->
+            e.printStackTrace()
+            Log.e("PlacesSearchViewModel", e.message, e)
+        }
+        viewModelScope.launch(handler) {
+            val place = placesClient.awaitFetchPlace(
+                prediction.placeId,
+                listOf(
+                    Place.Field.NAME,
+                    Place.Field.ADDRESS,
+                    Place.Field.LAT_LNG,
+                    Place.Field.BUSINESS_STATUS
+                )
+            )
+            Log.d("PlacesSearchViewModel", "Got place $place")
+        }
     }
 
     fun loadRestaurantsWithUsers() {

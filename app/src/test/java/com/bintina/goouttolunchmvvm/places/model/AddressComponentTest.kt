@@ -1,5 +1,4 @@
-/*
-package com.bintina.goouttolunchmvvm.places.model
+/*package com.bintina.goouttolunchmvvm.places.model
 
 import com.google.android.libraries.places.ktx.api.model.addressComponent
 import org.junit.Assert.assertEquals

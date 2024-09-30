@@ -22,15 +22,20 @@ import com.bintina.goouttolunchmvvm.restaurants.viewmodel.getWorkManagerStartDel
 
 import com.bintina.goouttolunchmvvm.utils.MyApp.Companion.navController
 import com.google.firebase.Firebase
+import com.google.firebase.components.Dependency
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 open class MainActivity : AppCompatActivity() {
 
+    @Inject lateinit var myDependency: Dependency
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
     private val TAG = "MainActivityLog"
@@ -174,7 +179,7 @@ open class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.restaurant_map_btn -> {
-                    navController.navigate(R.id.restaurant_map_dest)
+                    navController.navigate(R.id.map_activity)
                     Log.d(TAG, "navigate to Maps Fragment called.")
                     return true
                 }

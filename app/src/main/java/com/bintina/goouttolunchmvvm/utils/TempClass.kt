@@ -1,116 +1,135 @@
 package com.bintina.goouttolunchmvvm.utils
 
 class TempClass {
-/*
-    Expected:
-    TableInfo
-    {name='LocalUser',
-        columns=
-            {uid=Column
-                {name='uid',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=1,
-                    defaultValue='undefined'},
-                updated_at=Column
-                {name='updated_at',
-                    type='INTEGER',
-                    affinity='3',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                profile_picture_url=Column
-                {name='profile_picture_url',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=false,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                created_at=Column
-                {name='created_at',
-                    type='INTEGER',
-                    affinity='3',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                attending_string=Column
-                {name='attending_string',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                display_name=Column
-                {name='display_name',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                email=Column
-                {name='email',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'}
-            }, foreignKeys=[], indices=[]}
-    Found:
-    TableInfo
-    {name='LocalUser',
-        columns=
-            {uid=Column
-                {name='uid',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=1,
-                    defaultValue='undefined'},
-                display_name=Column
-                {name='display_name',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                email=Column
-                {name='email',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                profile_picture_url=Column
-                {name='profile_picture_url',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=false,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                attending_string=Column
-                {name='attending_string',
-                    type='TEXT',
-                    affinity='2',
-                    notNull=false,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                created_at=Column
-                {name='created_at',
-                    type='INTEGER',
-                    affinity='3',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'},
-                updated_at=Column
-                {name='updated_at',
-                    type='INTEGER',
-                    affinity='3',
-                    notNull=true,
-                    primaryKeyPosition=0,
-                    defaultValue='undefined'}
-            }, foreignKeys=[], indices=[]}
-*/
+    /*
+// Call the sendPostRequest() function with the selected place's data
+val placeData = LocalRestaurant(
+    name = place.name ?: "",
+    restaurantId = place.id ?: "",
+    latitude = place.latLng?.latitude ?: 0.0,
+    longitude = place.latLng?.longitude ?: 0.0
+)
+
+// Asynchronously make the POST request
+lifecycleScope.launch {
+    val response = viewModel.sendPostRequest(placeData)
+    if (response.isSuccessful) {
+        Log.i(TAG, "POST request successful: ${response.body()}")
+    } else {
+        Log.e(TAG, "POST request failed: ${response.errorBody()}")
+    }
+}*/
+
+    /*
+        Expected:
+        TableInfo
+        {name='LocalUser',
+            columns=
+                {uid=Column
+                    {name='uid',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=1,
+                        defaultValue='undefined'},
+                    updated_at=Column
+                    {name='updated_at',
+                        type='INTEGER',
+                        affinity='3',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    profile_picture_url=Column
+                    {name='profile_picture_url',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=false,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    created_at=Column
+                    {name='created_at',
+                        type='INTEGER',
+                        affinity='3',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    attending_string=Column
+                    {name='attending_string',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    display_name=Column
+                    {name='display_name',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    email=Column
+                    {name='email',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'}
+                }, foreignKeys=[], indices=[]}
+        Found:
+        TableInfo
+        {name='LocalUser',
+            columns=
+                {uid=Column
+                    {name='uid',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=1,
+                        defaultValue='undefined'},
+                    display_name=Column
+                    {name='display_name',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    email=Column
+                    {name='email',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    profile_picture_url=Column
+                    {name='profile_picture_url',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=false,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    attending_string=Column
+                    {name='attending_string',
+                        type='TEXT',
+                        affinity='2',
+                        notNull=false,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    created_at=Column
+                    {name='created_at',
+                        type='INTEGER',
+                        affinity='3',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'},
+                    updated_at=Column
+                    {name='updated_at',
+                        type='INTEGER',
+                        affinity='3',
+                        notNull=true,
+                        primaryKeyPosition=0,
+                        defaultValue='undefined'}
+                }, foreignKeys=[], indices=[]}
+    */
 
     /* Strings
     <resources>

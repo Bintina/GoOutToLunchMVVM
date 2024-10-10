@@ -21,6 +21,7 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -34,7 +35,8 @@ import kotlinx.coroutines.withContext
 
 class UserViewModel(
     application: Application,
-    val userDao: UserDao
+    val userDao: UserDao,
+    private val placesClient: PlacesClient
 ) : ViewModel() {
 
     val TAG = "UserVMLog"

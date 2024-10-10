@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.AppBarConfiguration
 import com.bintina.goouttolunchmvvm.BuildConfig.MAPS_API_KEY
 import com.bintina.goouttolunchmvvm.R
@@ -36,9 +38,13 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.ktx.widget.PlaceSelectionError
+import com.google.android.libraries.places.ktx.widget.PlaceSelectionSuccess
+import com.google.android.libraries.places.ktx.widget.placeSelectionEvents
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.database.DatabaseReference
+import kotlinx.coroutines.launch
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -85,6 +91,37 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             supportFragmentManager.findFragmentById(R.id.my_map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
+        // Initialize the AutocompleteSupportFragment.
+        val autocompleteFragment: AutocompleteSupportFragment =
+            supportFragmentManager.findFragmentById(R.id.my_autocomplete_fragment)
+                    as AutocompleteSupportFragment
+
+        Log.d(
+            TAG,
+            "map and autocomplete fragments instantiated autocompleteFrag is ${autocompleteFragment.toString()}"
+        )
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID,Place.Field.NAME))
+
+        // Listen to place selection events
+        Log.d(TAG, "autocompleteFragment instantiated")
+        lifecycleScope.launch {
+            autocompleteFragment.placeSelectionEvents().collect { event ->
+                when (event) {
+                    is PlaceSelectionSuccess -> Toast.makeText(
+                        this@MapActivity,
+                        "Got place '${event.place.name}'",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    is PlaceSelectionError -> Toast.makeText(
+                        this@MapActivity,
+                        "Failed to get place '${event.status.statusMessage}'",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
 
         //initializeMap() restructuring consideration.
     }
@@ -191,23 +228,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initializeAutocomplete() {
         Log.d(TAG, "initializeAutocomplete() called")
-        // Initialize the AutocompleteSupportFragment.
-        val autocompleteFragment: AutocompleteSupportFragment =
-            supportFragmentManager.findFragmentById(R.id.my_autocomplete_fragment)
-                    as AutocompleteSupportFragment
-
-        Log.d(
-            TAG,
-            "initializeAutocomplete() called autocompleteFrag is ${autocompleteFragment.toString()}"
-        )
-        Places.initializeWithNewPlacesApiEnabled(this, MAPS_API_KEY)
+                Places.initializeWithNewPlacesApiEnabled(this, MAPS_API_KEY)
 
         val center = fallbackLatLng
 
-        //val placeFields = getPlaceFields()
+
         val placesClient = Places.createClient(this)
 
-        val circle = CircularBounds.newInstance(center, /* radius = */ 5000.0)
+        val circle = CircularBounds.newInstance(center, 5000.0)
         val autocompletePlacesRequest = FindAutocompletePredictionsRequest.builder()
             .setQuery("Piz")
             .setCountries("KE")

@@ -19,4 +19,6 @@ object Constants {
     const val GEOLOCATE_BASE_URL = "https://www.googleapis.com/geolocation/v1/"
     const val GEOLOCATE_END_URL ="geolocate?key=${MAPS_API_KEY}"
 
+    const val AUTOCOMPLETE_BASE_URL = "https://places.googleapis.com/v1/places:autocomplete"
+
 }

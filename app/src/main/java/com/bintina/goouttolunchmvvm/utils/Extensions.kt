@@ -244,3 +244,14 @@ fun getFcmRegistrationToken(context: Context){
         //Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     })
 }
+
+ fun signOut(context: Context) {
+    Log.d("ExtensionsLog", "signOut called")
+    com.firebase.ui.auth.AuthUI.getInstance()
+        .signOut(context)
+        .addOnCompleteListener {
+            Toast.makeText(context, "Signed out", Toast.LENGTH_SHORT).show()
+        }
+
+}
+

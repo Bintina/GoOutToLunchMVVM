@@ -20,7 +20,6 @@ plugins {
     //KSP plugin
     id("com.google.devtools.ksp")
     id("androidx.room")
-    id("dagger.hilt.android.plugin")
 
 }
 
@@ -47,6 +46,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+// Define the toolchain for Java 21
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
 
@@ -146,11 +151,7 @@ dependencies {
     //Dagger2
     implementation("com.google.dagger:dagger:2.49")
     ksp("com.google.dagger:dagger-compiler:2.48.1")
-    //Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    ksp("com.google.dagger:hilt-compiler:2.48")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    ksp("androidx.hilt:hilt-compiler:1.0.0")
+
 
     //ViewModel and LiveData dependencies
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")

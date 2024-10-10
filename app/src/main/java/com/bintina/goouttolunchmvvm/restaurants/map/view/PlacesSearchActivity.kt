@@ -16,9 +16,9 @@ import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.PlacesSearchEve
 import com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.PlacesSearchEventLoading
 import com.bintina.goouttolunchmvvm.restaurants.map.view.adapter.PlacePredictionAdapter
 import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
+
 class PlacesSearchActivity : AppCompatActivity() {
 
     private val viewAnimator: ViewAnimator by lazy {

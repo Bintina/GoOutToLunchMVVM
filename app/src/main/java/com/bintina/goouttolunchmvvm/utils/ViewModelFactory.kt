@@ -25,7 +25,7 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(UserViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
-                UserViewModel(application, userDao) as T
+                UserViewModel(application, userDao, placesClient) as T
             }
 
             modelClass.isAssignableFrom(RestaurantViewModel::class.java) -> {

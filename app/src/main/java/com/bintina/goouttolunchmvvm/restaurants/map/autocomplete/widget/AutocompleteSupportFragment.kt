@@ -1,5 +1,6 @@
 package com.bintina.goouttolunchmvvm.restaurants.map.autocomplete.widget
 
+import android.util.Log
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -19,10 +20,12 @@ public fun AutocompleteSupportFragment.placeSelectionEvents() : Flow<PlaceSelect
         this@placeSelectionEvents.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 trySend(PlaceSelectionSuccess(place))
+                Log.d("AutocompleteSupportFragLog", "onPlaceSelected called")
             }
 
             override fun onError(status: Status) {
                 trySend(PlaceSelectionError(status))
+                Log.d("AutocompleteSupportFragLog", "onError called, status: $status")
             }
         })
         awaitClose { this@placeSelectionEvents.setOnPlaceSelectedListener(null) }

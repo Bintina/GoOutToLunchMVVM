@@ -29,18 +29,16 @@ import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.database.DatabaseReference
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-@HiltViewModel
-class RestaurantViewModel @Inject constructor(
+
+
+class RestaurantViewModel (
     application: Application,
     private val placesClient: PlacesClient,
     private val restaurantDao: RestaurantDao
@@ -71,7 +69,7 @@ private val _events = MutableLiveData<PlacesSearchEvent>()
 
     private var searchJob: Job? = null
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     fun onSearchQueryChanged(query: String) {
         searchJob?.cancel()
 
@@ -103,7 +101,7 @@ private val _events = MutableLiveData<PlacesSearchEvent>()
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     fun onAutocompletePredictionClicked(prediction: AutocompletePrediction) {
         val handler = CoroutineExceptionHandler { _, e ->
             e.printStackTrace()

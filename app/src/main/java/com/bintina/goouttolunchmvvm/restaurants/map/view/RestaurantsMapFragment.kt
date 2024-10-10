@@ -1,3 +1,4 @@
+/*
 package com.bintina.goouttolunchmvvm.restaurants.map.view
 
 import android.os.Bundle
@@ -58,10 +59,12 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
+*/
 /*    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-    }*/
+    }*//*
+
 
     private fun initializeAutocomplete() {
         Log.d(TAG, "initializeAutocomplete() called")
@@ -99,8 +102,10 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun initializeViews(myMap: GoogleMap) {
         Log.d(TAG, "initializeViews() called")
-        /* Toast.makeText(requireContext(), "Map Fragment intializeViews() called ", Toast.LENGTH_LONG)
-             .show()*/
+        */
+/* Toast.makeText(requireContext(), "Map Fragment intializeViews() called ", Toast.LENGTH_LONG)
+             .show()*//*
+
 
         myMap.clear()
         Log.d(TAG, "in initializeViews, restaurantList is $restaurantList")
@@ -143,10 +148,12 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
 
 
         initializeViews(myMap)
-        /*        //ChatGPT suggested
+        */
+/*        //ChatGPT suggested
                 // Set up initial map settings
                 myMap.uiSettings.isZoomControlsEnabled = true
-                myMap.uiSettings.isMyLocationButtonEnabled = true*/
+                myMap.uiSettings.isMyLocationButtonEnabled = true*//*
+
 
 
         val defaultLatLng = LatLng(-4.3015359, 39.5744260)
@@ -167,9 +174,12 @@ class RestaurantsMapFragment : Fragment(), OnMapReadyCallback {
         myMap.animateCamera(newLatLngZoom)
     }
 
-    /* override fun onResume() {
+    */
+/* override fun onResume() {
          super.onResume()
 
 
-     }*/
+     }*//*
+
 }
+*/

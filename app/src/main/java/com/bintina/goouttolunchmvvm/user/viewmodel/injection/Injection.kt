@@ -9,6 +9,8 @@ import com.bintina.goouttolunchmvvm.restaurants.viewmodel.RestaurantViewModel
 import com.bintina.goouttolunchmvvm.user.viewmodel.UserViewModel
 import com.bintina.goouttolunchmvvm.utils.MyApp
 import com.bintina.goouttolunchmvvm.utils.ViewModelFactory
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -31,18 +33,26 @@ object Injection {
         return Executors.newSingleThreadExecutor()
     }
 
+    // Initialize Places API and create PlacesClient
+    private fun providePlacesClient(context: Context): PlacesClient {
+        Places.initialize(context, "YOUR_API_KEY") // Replace with your actual API key
+        return Places.createClient(context)
+    }
+
     fun provideViewModelFactory(context: Context): ViewModelFactory {
         val userDao = provideUserDao(provideDatabase(context))
        val restaurantDao = provideRestaurantDao(provideDatabase(context))
         val application = MyApp()
-        return ViewModelFactory(application, restaurantDao, userDao)
+        val placesClient = providePlacesClient(context)
+        return ViewModelFactory(application, restaurantDao, placesClient, userDao)
     }
 
     fun provideUserViewModel(context: Context): UserViewModel {
         val userDao = provideUserDao(provideDatabase(context))
         val restaurantDao = provideRestaurantDao(provideDatabase(context))
-        val application = MyApp() // Assuming MyApp extends Application
-        val factory = ViewModelFactory(application, restaurantDao,userDao)
+        val application = MyApp()
+        val placesClient = providePlacesClient(context)
+        val factory = ViewModelFactory(application, restaurantDao, placesClient, userDao)
         return factory.create(UserViewModel::class.java)
     }
 
